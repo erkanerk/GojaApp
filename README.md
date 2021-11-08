@@ -25,6 +25,10 @@ You can learn more about expo here: [Introduction to Expo](https://docs.expo.dev
 
 You can learn more about React by reading the [React documentation](https://reactjs.org/).
 
-Find useable components by exploring the [React Native Core Components](https://reactnative.dev/docs/components-and-apis).
+Find useable components by exploring the [React Native Core Components](https://reactnative.dev/docs/components-and-apis) and expos [API Reference](https://docs.expo.dev/versions/latest/).
 
 Short video about React Native: [React Native in 100 Seconds](https://youtu.be/gvkqT_Uoahw).
+
+## Expo packages used
+
+Expo-av is used for recording and playing audio [Documentation](https://docs.expo.dev/versions/v43.0.0/sdk/audio/), [Github](https://github.com/expo/expo/tree/master/packages/expo-av).
