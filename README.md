@@ -23,6 +23,8 @@ When you have downloaded Expo Go to your phone you can scan the QR code visible 
 
 You can learn more about expo here: [Introduction to Expo](https://docs.expo.dev/).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+You can learn more about React by reading the [React documentation](https://reactjs.org/).
 
-Find useable React Native components here: [https://reactnative.dev/docs/components-and-apis](https://reactnative.dev/docs/components-and-apis)
+Find useable components by exploring the [React Native Core Components](https://reactnative.dev/docs/components-and-apis).
+
+Short video about React Native: [React Native in 100 Seconds](https://youtu.be/gvkqT_Uoahw).
