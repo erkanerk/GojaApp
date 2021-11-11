@@ -10,6 +10,21 @@ const audio: PostAudio = {
     profilePicture: 'https://reactnative.dev/img/tiny_logo.png',
     following: true
   }
+
+  const hashtags: Hashtag[] = [
+    {
+        id: 'asdgqwerq',
+        text: '#bra',
+    },
+    {
+        id: 'qwetweryhsdfh',
+        text: '#bättre',
+    },
+    {
+        id: 'wqetsadfx',
+        text: '#bäst',
+    }
+]
   
   export const SamplePosts: Post[] = [
       {
@@ -17,20 +32,23 @@ const audio: PostAudio = {
         audio: audio,
         user: user,
         likes: 10,
-        hashtags: ['#bra','#bättre','#bäst']
+        hashtags: hashtags,
+        commentsCount: 10,
       },
       {
         id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
         audio: audio,
         user: user,
         likes: 101,
-        hashtags: ['#bra','#bättre','#bäst']
+        hashtags: hashtags,
+        commentsCount: 123,
       },
       {
         id: '58694a0f-3da1-471f-bd96-145571e29d72',
         audio: audio,
         user: user,
         likes: 1011,
-        hashtags: ['#bra','#bättre','#bäst']
+        hashtags: hashtags,
+        commentsCount: 5,
       },
     ];
