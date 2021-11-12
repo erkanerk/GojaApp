@@ -178,6 +178,7 @@ export const Post = ({
         if (sound?._loaded && !isSeeking) {
             setIsSeeking(true)
             setShouldPlayAtEndOfSeek(shouldPlay)
+            sound.pauseAsync()
         }
     };
 
