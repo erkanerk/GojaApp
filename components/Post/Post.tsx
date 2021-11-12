@@ -4,7 +4,6 @@ import { Audio, AVPlaybackStatus } from 'expo-av';
 import { DropDown } from './subcomponents/DropDown';
 import { Likes } from './subcomponents/Likes';
 import { StyleSheet } from 'react-native';
-import { AVPlaybackSource } from 'expo-av/build/AV.types';
 
 export const styles = StyleSheet.create({
     container: {
@@ -59,6 +58,12 @@ export const Post = ({
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [expanded, setExpanded] = useState<boolean>(false);
     const [likes, setLikes] = useState<number>(post.likes);
+    const [soundPosition, setSoundPosition] = useState<number | undefined>(undefined);
+    const [soundDuration, setSoundDuration] = useState<number | undefined>(undefined);
+    const [isSeeking, setIsSeeking] = useState<boolean>(false);
+    const [shouldPlayAtEndOfSeek, setShouldPlayAtEndOfSeek] = useState<boolean>(false);
+    const [shouldPlay, setShouldPlay] = useState<boolean>(false);
+    const [isPlaybackAllowed, setIsPlaybackAllowed] = useState<boolean>(false);
 
     // TODO: change to S3 files 
     const TempSoundUrl = require('../../assets/audio/assets_audio_assets_audio_file_example_MP3_700KB.mp3')
@@ -67,6 +72,10 @@ export const Post = ({
     function onPlaybackStatusUpdate( playbackStatus: AVPlaybackStatus ) {
         if (!playbackStatus.isLoaded) {
             // Update your UI for the unloaded state
+            setIsPlaybackAllowed(false)
+            setSoundDuration(undefined)
+            setSoundPosition(undefined)
+
             if (playbackStatus.error) {
               console.log(`Encountered a fatal error during playback: ${playbackStatus.error}`);
               // Send Expo team the error on Slack or the forums so we can help you debug!
@@ -94,11 +103,16 @@ export const Post = ({
               loadAndPlayPost()
             }
 
+            // Set duration left
+            setSoundDuration(playbackStatus.durationMillis)
+            setSoundPosition(playbackStatus.positionMillis)
+            setIsPlaybackAllowed(true)
             // etc...
           }
     }
 
     async function loadAndPlayPost() {
+        setIsLoading(true)
         console.log('Loading and play Sound')
         const { sound } = await Audio.Sound.createAsync(
             TempSoundUrl,
@@ -106,6 +120,8 @@ export const Post = ({
             onPlaybackStatusUpdate
         );
         setSound(sound)
+        setIsPlaying(true)
+        setIsLoading(false)
     }
 
     async function replayPost() {
@@ -154,6 +170,52 @@ export const Post = ({
             playPost()
             setExpanded(true);
         }
+    }
+
+    function getSeekSliderPosition() {
+        if (
+            sound?._loaded &&
+            soundPosition != undefined &&
+            soundDuration != undefined
+        ) {
+            return soundPosition / soundDuration;
+        }
+        return 0;
+    }
+
+    async function onSeekSliderSlidingComplete(value: number) {
+        if (sound?._loaded) {
+          setIsSeeking(false)
+          const seekPosition = value * (soundDuration || 0);
+          if (shouldPlayAtEndOfSeek) {
+            sound.playFromPositionAsync(seekPosition);
+          } else {
+            sound.setPositionAsync(seekPosition);
+          }
+        }
+    };
+    
+    function onSeekSliderValueChange(value: number) {
+        if (sound?._loaded && !isSeeking) {
+            setIsSeeking(true)
+            setShouldPlayAtEndOfSeek(shouldPlay)
+        }
+    };
+
+    function getPlaybackTimestamp() {
+        if (
+          sound?._loaded &&
+          soundPosition != undefined &&
+          soundDuration != undefined
+        ) {
+          return `${getSSFromMillis(soundPosition)} / ${getSSFromMillis(soundDuration)}`;
+        }
+        return "- / -";
+    }
+
+    function getSSFromMillis(millis: number) {
+        const seconds = ((millis % 60000) / 1000).toFixed(0);
+        return seconds;
       }
     
     useEffect(() => {
@@ -206,6 +268,12 @@ export const Post = ({
             isPlaying={isPlaying}
             onPlayPausePressed={onPlayPausePressed}
             commentsCount={post.commentsCount}
+            isPlaybackAllowed={isPlaybackAllowed}
+            isLoading={isLoading}
+            getSeekSliderPosition={getSeekSliderPosition}
+            onSeekSliderValueChange={onSeekSliderValueChange}
+            onSeekSliderSlidingComplete={onSeekSliderSlidingComplete}
+            getPlaybackTimestamp={getPlaybackTimestamp}
             />
         }
     </View>

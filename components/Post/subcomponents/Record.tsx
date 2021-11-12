@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, View, Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +25,7 @@ export const Record = () => {
         >
         <Image
             style={styles.image}
-            source={require('../../../assets/images/red-circle-1155276042606ekqvli9k.png')}/>
+            source={require('../../../assets/images/record_button.png')}/>
       </Pressable>
     </View>
     );

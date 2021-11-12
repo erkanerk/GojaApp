@@ -1,6 +1,5 @@
-import { AVPlaybackStatus } from 'expo-av';
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, View, Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,11 +16,13 @@ const styles = StyleSheet.create({
 
 interface Props {
     isPlaying: boolean
+    isLoading: boolean
     onPlayPausePressed(): Promise<void>
 }
 
 export const PausePlay = ({ 
     isPlaying,
+    isLoading,
     onPlayPausePressed
 }: Props) => {
 
@@ -33,16 +34,17 @@ export const PausePlay = ({
     <View style={styles.container}>
         <Pressable
           onPress={handleOnPress}
+          disabled={isLoading}
           >
           {isPlaying
             ? 
             <Image
               style={styles.image}
-              source={require('../../../assets/images/1486348534-music-pause-stop-control-play_80459.png')}/>
+              source={require('../../../assets/images/pause_button.png')}/>
             : 
             <Image
               style={styles.image}
-              source={require('../../../assets/images/1486348532-music-play-pause-control-go-arrow_80458.png')}/>
+              source={require('../../../assets/images/play_button.png')}/>
           }
       </Pressable>
     </View>

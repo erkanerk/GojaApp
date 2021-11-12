@@ -45,11 +45,11 @@ export const Likes = ({
           ? 
           <Image
             style={styles.image}
-            source={require('../../../assets/images/heart-431.png')}/>
+            source={require('../../../assets/images/liked_icon.png')}/>
           : 
           <Image
             style={styles.image}
-            source={require('../../../assets/images/heart-492.png')}/>
+            source={require('../../../assets/images/not_liked_icon.png')}/>
         }
       </Pressable>
       <Text style={styles.text}>{likes}</Text>
