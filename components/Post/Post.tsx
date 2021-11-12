@@ -62,7 +62,7 @@ export const Post = ({
     const [soundDuration, setSoundDuration] = useState<number | undefined>(undefined);
     const [isSeeking, setIsSeeking] = useState<boolean>(false);
     const [shouldPlayAtEndOfSeek, setShouldPlayAtEndOfSeek] = useState<boolean>(false);
-    const [shouldPlay, setShouldPlay] = useState<boolean>(false);
+    const [shouldPlay, setShouldPlay] = useState<boolean>(true);
     const [isPlaybackAllowed, setIsPlaybackAllowed] = useState<boolean>(false);
 
     // TODO: change to S3 files 
@@ -71,66 +71,45 @@ export const Post = ({
     
     function onPlaybackStatusUpdate( playbackStatus: AVPlaybackStatus ) {
         if (!playbackStatus.isLoaded) {
-            // Update your UI for the unloaded state
+            // Updating UI for the unloaded state
             setIsPlaybackAllowed(false)
             setSoundDuration(undefined)
             setSoundPosition(undefined)
 
             if (playbackStatus.error) {
               console.log(`Encountered a fatal error during playback: ${playbackStatus.error}`);
-              // Send Expo team the error on Slack or the forums so we can help you debug!
             }
           } else {
-            // Update your UI for the loaded state
+            // Updating UI for the loaded state
         
-            if (playbackStatus.isPlaying) {
-                // Update your UI for the playing state
-                setIsPlaying(true)
-            } else {
-                // Update your UI for the paused state
-                setIsPlaying(false)
-            }
-        
-            if (playbackStatus.isBuffering) {
-              // Update your UI for the buffering state
-                setIsLoading(true)
-            } else {
-                setIsLoading(false)
-            }
+            setIsPlaying(playbackStatus.isPlaying)
+            setIsLoading(playbackStatus.isBuffering)
         
             if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
-              // The player has just finished playing and will stop. Maybe you want to play something else?
+              // The player has just finished playing
               loadAndPlayPost()
             }
-
-            // Set duration left
+            // Set slider options
             setSoundDuration(playbackStatus.durationMillis)
             setSoundPosition(playbackStatus.positionMillis)
             setIsPlaybackAllowed(true)
-            // etc...
           }
     }
 
     async function loadAndPlayPost() {
         setIsLoading(true)
-        console.log('Loading and play Sound')
+        console.log('Load and play Sound')
+        const initialStatus = { 
+            shouldPlay: true,
+            progressUpdateIntervalMillis: 100
+        }
         const { sound } = await Audio.Sound.createAsync(
             TempSoundUrl,
-            { shouldPlay: true },
+            initialStatus,
             onPlaybackStatusUpdate
         );
         setSound(sound)
-        setIsPlaying(true)
         setIsLoading(false)
-    }
-
-    async function replayPost() {
-        if (sound?._loaded) {
-            console.log('Replaying Sound');
-            await sound.replayAsync()
-        } else {
-            console.log('error replaying post')
-        }
     }
 
     async function playPost() {
@@ -214,7 +193,7 @@ export const Post = ({
     }
 
     function getSSFromMillis(millis: number) {
-        const seconds = ((millis % 60000) / 1000).toFixed(0);
+        const seconds = ((millis % 60000) / 1000).toFixed(1);
         return seconds;
       }
     
@@ -232,7 +211,7 @@ export const Post = ({
             onPress={handleOnPress}
             style={({ pressed }) => [
                 {backgroundColor: pressed
-                    ? 'gray'
+                    ? '#d0e8ff'
                     : '#e0f0ff'
                 }]}
         >
