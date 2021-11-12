@@ -14,6 +14,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import PostFeed from '../screens/PostFeed/PostFeed';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -89,6 +90,14 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={{
           title: 'Tab Two',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="TabThree"
+        component={PostFeed}
+        options={{
+          title: 'Feed',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
