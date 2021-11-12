@@ -1,3 +1,4 @@
+import { AVPlaybackStatus } from 'expo-av';
 import React from 'react';
 import { Image, View, StyleSheet, Text, Pressable } from 'react-native';
 import { Comments } from './Comments';
@@ -25,14 +26,12 @@ const styles = StyleSheet.create({
 
 interface Props {
   isPlaying: boolean
-  isLoading: boolean
   commentsCount: number
   onPlayPausePressed(): Promise<void>
 }
 
 export const DropDown = ({ 
   isPlaying,
-  isLoading,
   commentsCount,
   onPlayPausePressed
 }: Props) => {
@@ -43,7 +42,6 @@ export const DropDown = ({
       </View>
       <View style={styles.middleView}>
         <PausePlay 
-          isLoading={isLoading}
           isPlaying={isPlaying}
           onPlayPausePressed={onPlayPausePressed}/>
       </View>

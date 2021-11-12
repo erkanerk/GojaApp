@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { FlatList, View } from 'react-native';
 import { RootTabScreenProps } from '../types';
-import { FeedPost } from '../components/FeedPost/FeedPost';
+import { Post } from '../components/Post/Post';
 import { StyleSheet } from 'react-native';
 
-// TODO
+// TODO: Fetch posts from api endpoint
 import { SamplePosts } from '../assets/sampleData/Posts';
 
 
@@ -14,28 +14,24 @@ export const styles = StyleSheet.create({
         backgroundColor: 'white',
         flex: 1,
     },
-  });
-  
+});
+
 export default function PostFeed({ 
     navigation 
 }: RootTabScreenProps<'TabThree'>) {
 
-  const renderPost = ({ 
-    item, 
-    index, 
-    separators 
-  }:any) => (
-      <FeedPost post={item} />
+    const renderPost = ({ item, index, separators }:any) => (
+        <Post post={item} />
     );
 
-  return (
+    return (
     <View style={styles.container}>
-      <FlatList
-      data={SamplePosts}
-      keyExtractor={post => post.id}
-      renderItem={renderPost}
-      />
+        <FlatList
+        data={SamplePosts}
+        keyExtractor={post => post.id}
+        renderItem={renderPost}
+        />
     </View>
-  );
+    );
 }
 
