@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -49,7 +49,7 @@ export const Comments = ({
         <View style={styles.leftView}>
             <Image 
                 style={styles.image}
-                source={require('../../../assets/images/51904-200.png')}/>
+                source={require('../../../assets/images/speech_bubble_icon.png')}/>
         </View>
         <View style={styles.rightView}>
             <Text style={styles.text}>{count}</Text>

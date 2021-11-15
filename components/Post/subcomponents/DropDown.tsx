@@ -1,12 +1,20 @@
-import { AVPlaybackStatus } from 'expo-av';
 import React from 'react';
-import { Image, View, StyleSheet, Text, Pressable } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Comments } from './Comments';
 import { PausePlay } from './PausePlay';
 import { Record } from './Record';
+import { SoundSlider } from './SoundSlider';
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'column',
+    margin: 20,
+  },
+  sliderContainer: {
+    flex: 1,
+  },
+  functionalityContainer: {
+    flex: 1,
     flexDirection: 'row',
     margin: 20,
   },
@@ -28,26 +36,53 @@ interface Props {
   isPlaying: boolean
   commentsCount: number
   onPlayPausePressed(): Promise<void>
+
+  isPlaybackAllowed: boolean
+  isLoading: boolean
+  getSeekSliderPosition(): number
+  onSeekSliderValueChange(value:number): void
+  onSeekSliderSlidingComplete(value:number): Promise<void>
+  getPlaybackTimestamp(): string,
 }
 
 export const DropDown = ({ 
   isPlaying,
   commentsCount,
-  onPlayPausePressed
+  onPlayPausePressed,
+  
+  isPlaybackAllowed,
+  isLoading,
+  getSeekSliderPosition,
+  onSeekSliderValueChange,
+  onSeekSliderSlidingComplete,
+  getPlaybackTimestamp,
 }: Props) => {
     return (
     <View style={styles.container}>
-      <View style={styles.leftView}>
-        <Record />
+      <View style={styles.sliderContainer}>
+        <SoundSlider 
+          isPlaybackAllowed={isPlaybackAllowed}
+          isLoading={isLoading}
+          getSeekSliderPosition={getSeekSliderPosition}
+          onSeekSliderValueChange={onSeekSliderValueChange}
+          onSeekSliderSlidingComplete={onSeekSliderSlidingComplete}
+          getPlaybackTimestamp={getPlaybackTimestamp}
+          />
       </View>
-      <View style={styles.middleView}>
-        <PausePlay 
-          isPlaying={isPlaying}
-          onPlayPausePressed={onPlayPausePressed}/>
-      </View>
-      <View style={styles.rightView}>
-        <Comments 
-        count={commentsCount}/>
+      <View style={styles.functionalityContainer}>
+        <View style={styles.leftView}>
+          <Record />
+        </View>
+        <View style={styles.middleView}>
+          <PausePlay 
+            isPlaying={isPlaying}
+            isLoading={isLoading}
+            onPlayPausePressed={onPlayPausePressed}/>
+        </View>
+        <View style={styles.rightView}>
+          <Comments 
+          count={commentsCount}/>
+        </View>
       </View>
     </View>
     );
