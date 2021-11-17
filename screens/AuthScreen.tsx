@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Platform, Image, StyleSheet } from "react-native";
+import { Platform, Image, StyleSheet, Pressable } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
@@ -22,17 +22,25 @@ function FormTypeSwitcher() {
     if (formType == "Login") {
         return (
             <>
-                <Text style={styles.title}>loginFrom!</Text>
-                <button onClick={() => setFormType("Register")}>
-                    Register
-                </button>
+                <Text style={styles.buttonText}>loginFrom!</Text>
+                <Pressable
+                    style={styles.button}
+                    onPress={() => setFormType("Register")}
+                >
+                    <Text style={styles.buttonText}>register</Text>
+                </Pressable>
             </>
         );
     } else {
         return (
             <>
-                <Text style={styles.title}>registerFrom!</Text>
-                <button onClick={() => setFormType("Login")}>Login</button>
+                <Text style={styles.buttonText}>registerFrom!</Text>
+                <Pressable
+                    style={styles.button}
+                    onPress={() => setFormType("Login")}
+                >
+                    <Text style={styles.buttonText}>login</Text>
+                </Pressable>
             </>
         );
     }
@@ -52,5 +60,13 @@ const styles = StyleSheet.create({
     bigLogo: {
         height: 150,
         width: 150,
+    },
+    button: {
+        marginTop: 15,
+        backgroundColor: "rgba(0, 0, 0, 0)",
+    },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: "bold",
     },
 });
