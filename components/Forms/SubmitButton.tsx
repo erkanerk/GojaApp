@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -25,10 +25,10 @@ interface Props {
 
 export const SubmitButton = (props: Props) => {
     return (
-        <>
+        <View>
             <Pressable style={styles.wrapper} onPress={props.onPress}>
                 <Text style={styles.text}>{props.text}</Text>   
             </Pressable>
-        </>
+        </View>
     )
 }
