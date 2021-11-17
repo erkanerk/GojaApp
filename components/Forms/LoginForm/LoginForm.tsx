@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, TextInput, Keyboard, Text, View } from "react-native";
 import { SubmitButton } from '../SubmitButton';
 import {APIKit, setClientToken} from '../../../shared/APIkit';
+import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const styles = StyleSheet.create({
@@ -29,13 +30,34 @@ const styles = StyleSheet.create({
     }
 });
 
-export const RegisterForm = () => {
-    const [userName, setUserName] = useState("");
+export const LoginForm = () => {
+    const [email, setUserName] = useState("");
     const [password, setPassword] = useState("");
+    const [formErrors, setFormErrors] = useState<IFormErrors>(emptyFormErrors);
     const [isLoading, setIsLoading] = useState(false);
 
     const onSubmit = async () => {
+        const {isValid, formErrors} = validateForm(email, password);
+        setFormErrors(formErrors);
+        if (isValid) {
+            Keyboard.dismiss();
+            await logInUser();
+        }
+    }
 
+    const logInUser = async () => {
+        const payload = {email: email, password};
+        setIsLoading(true);
+        APIKit.post('/users/login/', payload)
+            .then((response) => {
+                setClientToken(response.data.token);
+                setIsLoading(false);
+                console.log("Signed in!!")
+            })
+            .catch((error) => {
+                console.log(error && error);
+                setIsLoading(false);
+            });
     }
 
     return (
@@ -44,13 +66,13 @@ export const RegisterForm = () => {
         <View style={styles.formWrapper}>
             <View style={styles.inputField}>
                 <TextInput
-                    style={[styles.input, formErrors.usernameErrorMessage ? styles.faultyInput : null]}
-                    value={userName}
+                    style={[styles.input, formErrors.emailErrorMessage ? styles.faultyInput : null]}
+                    value={email}
                     placeholder={"Username"}
                     onChangeText={(text) => setUserName(text)}
                     autoCapitalize={"none"}
                 />
-                {formErrors.usernameErrorMessage ? <Text style={styles.errorMessage}>{formErrors.usernameErrorMessage}</Text> : null}
+                {formErrors.emailErrorMessage ? <Text style={styles.errorMessage}>{formErrors.emailErrorMessage}</Text> : null}
             </View>
             <View style={styles.inputField}>
                 <TextInput
