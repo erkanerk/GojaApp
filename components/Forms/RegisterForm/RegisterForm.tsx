@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, Keyboard, Text, View } from "react-native";
 import { SubmitButton } from '../SubmitButton';
 import {APIKit, setClientToken} from '../../../shared/APIkit';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { emptyFormErrors, validateForm } from "./Utils";
+import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
 
 const styles = StyleSheet.create({
     input: {
@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
 });
 
 export const RegisterForm = () => {
-    const [email, setEmail] = useState("");
-    const [userName, setUserName] = useState("");
-    const [password, setPassword] = useState("");
-    const [formErrors, setFormErrors] = useState(emptyFormErrors);
-    const [isLoading, setIsLoading] = useState(false);
+    const [email, setEmail] = useState<string>("");
+    const [userName, setUserName] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [formErrors, setFormErrors] = useState<IFormErrors>(emptyFormErrors);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const onSubmit = async () => {
         const {isValid, formErrors} = validateForm(email, userName, password);
