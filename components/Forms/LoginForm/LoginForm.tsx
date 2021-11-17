@@ -1,34 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput, Keyboard, Text, View } from "react-native";
+import { TextInput, Keyboard, Text, View } from "react-native";
 import { SubmitButton } from '../SubmitButton';
 import {APIKit, saveUserSession} from '../../../shared/APIkit';
 import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
 import Spinner from 'react-native-loading-spinner-overlay';
+import { styles } from '../Forms.Styles'
 
-const styles = StyleSheet.create({
-    input: {
-      width: 200,
-      height: 30,
-      borderRadius: 20,
-      paddingLeft: 15,
-      backgroundColor: '#fff',
-    },
-    faultyInput: {
-        borderWidth: 2,
-        borderColor: 'red',
-    },
-    errorMessage: {
-        color: 'red',
-        marginLeft: 5,
-    },
-    formWrapper: {
-        marginBottom: 40
-    },
-    inputField: {
-        width: 200,
-        marginBottom: 15,
-    }
-});
 
 export const LoginForm = () => {
     const [email, setUserName] = useState<string>("");
