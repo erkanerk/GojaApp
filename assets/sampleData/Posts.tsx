@@ -1,6 +1,6 @@
 const audio: PostAudio = {
     type: 'bahamasvitastränder',
-    url: 'audioURL'
+    url: 'https://goja-audio.s3.eu-north-1.amazonaws.com/1636722311756'
   }
   
   const user: PostUser = {

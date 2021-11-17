@@ -104,7 +104,7 @@ export const Post = ({
             progressUpdateIntervalMillis: 100
         }
         const { sound } = await Audio.Sound.createAsync(
-            TempSoundUrl,
+            {uri: post.audio.url},
             initialStatus,
             onPlaybackStatusUpdate
         );
