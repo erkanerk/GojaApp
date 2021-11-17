@@ -17,10 +17,18 @@ const authInterceptor = APIKit.interceptors.request.use(async (config) => {
       Authorization: `Bearer ${token}`
     };
     return config;
-  });
+});
 
 export const saveUserSession = async (key, value) => {
   await SecureStore.setItemAsync(key, JSON.stringify(value));
+}
+
+const getToken = async () => {
+  const credentials = await readUserSession();
+  if (credentials) {
+    return credentials.token;
+  }
+  return null;
 }
 
 export const readUserSession = async () => {
@@ -31,15 +39,8 @@ export const readUserSession = async () => {
   return null;
 }
 
+// Use when logging user out
 export const clearUserSession = async () => {
   APIKit.interceptors.request.eject(authInterceptor);
   await SecureStore.deleteItemAsync('userSession');
-}
-
-const getToken = async () => {
-  const credentials = await readUserSession();
-  if (credentials) {
-    return credentials.token;
-  }
-  return null;
 }

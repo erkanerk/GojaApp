@@ -56,7 +56,6 @@ export const LoginForm = () => {
                     token : response.data.token,
                 })
                 setIsLoading(false);
-                console.log("Signed in!!")
             })
             .catch((error) => {
                 console.log(error && error);
