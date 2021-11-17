@@ -61,7 +61,7 @@ export const RegisterForm = () => {
     }
 
     return (
-    <>
+    <View>
         <Spinner visible={isLoading} />
         <View style={styles.formWrapper}>
             <View style={styles.inputField}>
@@ -99,6 +99,6 @@ export const RegisterForm = () => {
             text={"Register"}
             onPress={onSubmit}
         />
-    </>
+    </View>
     );
 }; 
