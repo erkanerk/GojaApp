@@ -35,19 +35,16 @@ export default function PostFeed({
           })
           .then(function (response) {
             // handle success
-            console.log("success")
-            console.log(JSON.stringify(response.data));
+            console.log("Successfull posts/like response: \n" + JSON.stringify(response.data))
             setPosts(response.data)
           })
           .catch(function (error) {
             // handle error
-            console.log("error")
-            console.log(error.message);
+            console.log("Something went wrong when using posts/all: " + error.message)
           })
           .finally(function () {
             // always executed
             console.log("finally")
-            console.log('Finally called');
           });
           setIsLoading(false)
     }, []);
