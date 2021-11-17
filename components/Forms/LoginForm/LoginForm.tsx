@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     }
 });
 
-
 export const LoginForm = () => {
     const [email, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
