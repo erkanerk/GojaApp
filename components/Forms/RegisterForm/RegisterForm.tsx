@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, TextInput, Keyboard, Text, View } from "react-native";
 import { SubmitButton } from '../SubmitButton';
-import {APIKit, setClientToken} from '../../../shared/APIkit';
+import {APIKit, saveUserSession} from '../../../shared/APIkit';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
 
@@ -51,7 +51,10 @@ export const RegisterForm = () => {
         setIsLoading(true);
         APIKit.post('/users/signup/', payload)
             .then((response) => {
-                setClientToken(response.data.token);
+                saveUserSession('userSession', {
+                    email : email,
+                    token : response.data.token,
+                })
                 setIsLoading(false);
             })
             .catch((error) => {

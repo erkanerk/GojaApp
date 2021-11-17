@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, TextInput, Keyboard, Text, View } from "react-native";
 import { SubmitButton } from '../SubmitButton';
-import {APIKit, setClientToken} from '../../../shared/APIkit';
+import {APIKit, saveUserSession} from '../../../shared/APIkit';
 import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -30,11 +30,12 @@ const styles = StyleSheet.create({
     }
 });
 
+
 export const LoginForm = () => {
-    const [email, setUserName] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setUserName] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const [formErrors, setFormErrors] = useState<IFormErrors>(emptyFormErrors);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const onSubmit = async () => {
         const {isValid, formErrors} = validateForm(email, password);
@@ -50,7 +51,10 @@ export const LoginForm = () => {
         setIsLoading(true);
         APIKit.post('/users/login/', payload)
             .then((response) => {
-                setClientToken(response.data.token);
+                saveUserSession('userSession', {
+                    email : email,
+                    token : response.data.token,
+                })
                 setIsLoading(false);
                 console.log("Signed in!!")
             })
@@ -68,7 +72,7 @@ export const LoginForm = () => {
                 <TextInput
                     style={[styles.input, formErrors.emailErrorMessage ? styles.faultyInput : null]}
                     value={email}
-                    placeholder={"Username"}
+                    placeholder={"Email"}
                     onChangeText={(text) => setUserName(text)}
                     autoCapitalize={"none"}
                 />
@@ -86,7 +90,7 @@ export const LoginForm = () => {
             </View>
         </View>
         <SubmitButton
-            text={"Register"}
+            text={"Log in"}
             onPress={onSubmit}
         />
     </>
