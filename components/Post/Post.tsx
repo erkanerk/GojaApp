@@ -99,12 +99,13 @@ export const Post = ({
     async function loadAndPlayPost() {
         setIsLoading(true)
         console.log('Load and play Sound')
+        console.log(post.audio)
         const initialStatus = { 
             shouldPlay: true,
             progressUpdateIntervalMillis: 100
         }
         const { sound } = await Audio.Sound.createAsync(
-            {uri: post.audio.url},
+            {uri: post.audio},
             initialStatus,
             onPlaybackStatusUpdate
         );
@@ -230,7 +231,7 @@ export const Post = ({
     
                 <View style={styles.hashtagView}>
                     {post.hashtags.map(hashtag => 
-                        <Text style={styles.hashtag}>{hashtag.text}</Text>
+                        <Text key={hashtag} style={styles.hashtag}>{hashtag}</Text>
                     )}
                 </View>
             </View>
