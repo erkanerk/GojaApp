@@ -1,15 +1,9 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { RootTabScreenProps } from '../types';
 import { Post } from '../components/Post/Post';
 import { StyleSheet } from 'react-native';
 import axios from 'axios';
-
-// TODO: Fetch posts from api endpoint
-import { SamplePosts } from '../assets/sampleData/Posts';
-import { useEffect } from 'react';
-import { useState } from 'react';
-
 
 export const styles = StyleSheet.create({
     container: {
