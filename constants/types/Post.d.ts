@@ -1,26 +1,27 @@
 // This is a Declaration file: https://medium.com/jspoint/typescript-type-declaration-files-4b29077c43
-
-interface PostAudio {
-    type: string;
-    url: string;
-}
-interface PostUser {
-    id: string;
+interface User {
+    id: string
     userName: string;
-    friendsCount: number;
-    profilePicture: string;
-    following: boolean;
-}
+    email: string;
 
-interface Hashtag {
-    id: string;
-    text: string;
+    profileAudio: string;
+    profilePicture: string;
+}
+interface Like {
+    _id: string;
+    userId: string;
+    userName: string;
 }
 interface Post {
-    id: string;
-    hashtags: Hashtag[];
-    audio: PostAudio;
-    user: PostUser;
-    likes: number;
+    _id: string;
+    hashtags: string[];
+    audio: string;
+    user: User;
     commentsCount: number;
+    // Javascript moment
+    created_at: string;
+    likes: number;
+    likedByUsers: Like[];
+    __v:number;
+    inReplyToUser: string | null;
   }
