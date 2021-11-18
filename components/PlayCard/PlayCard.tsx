@@ -1,59 +1,27 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Image, View, Text, Pressable } from 'react-native';
-import { Audio, AVPlaybackStatus } from 'expo-av';
-import { DropDown } from './subcomponents/DropDown';
-import { Likes } from './subcomponents/Likes';
+import React, { useEffect, useState } from 'react';
+import { View} from 'react-native';
 import { StyleSheet } from 'react-native';
+import { SoundSlider } from '../Post/subcomponents/SoundSlider';
+import { PostInformation } from './subcomponents/PostInformation';
+import { SoundController } from './subcomponents/SoundController';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
         padding: 5,
-        backgroundColor: '#e0f0ff',
-        margin: 10,
-        borderRadius: 5,
-    },
-    userName: {
-        fontSize: 12,
-    },
-    profilePicture: {
-        width: 50,
-        height: 50,
-    },
-    hashtagView: {
-        flexDirection: "row",
-    },
-    hashtag: {
-        fontSize: 10,
-    },
-    leftView: {
-        flex: 2,
-        margin: 5,
-    },
-    middleView: {
-        flexDirection: "column",
-        flex: 7,
-        margin: 5,
-    },
-    rightView: {
-        flexDirection: "column",    
-        flex: 2,
-        margin: 5,
-    },
-    pressableView: {
-        flexDirection: "row",    
+        backgroundColor: '#F2F2F2',
+        flexDirection: 'column',
     },
   }); 
 
 interface Props {
     post: Post
-    setFocusedPost: Dispatch<SetStateAction<Post | undefined>>
 }
 
-export const Post = ({ 
-    post,
-    setFocusedPost
+export const PlayCard = ({ 
+    post
 }: Props) => {
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -138,7 +106,6 @@ export const Post = ({
 
     function handleOnPress() {
         if (!sound?._loaded) {
-            setFocusedPost(post)
             loadAndPlayPost()
             setExpanded(true)
         } else if (expanded){
@@ -207,53 +174,22 @@ export const Post = ({
 
     return (
     <View style={styles.container}>
-        <Pressable
-            onPress={handleOnPress}
-            style={({ pressed }) => [
-                {backgroundColor: pressed
-                    ? '#d0e8ff'
-                    : '#e0f0ff'
-                }]}
-        >
-        <View style={styles.pressableView}>
-            <View style={styles.leftView}>
-                <Image
-                style={styles.profilePicture}
-                source={{
-                    uri: post.user.profilePicture,
-                }} 
-                /> 
-            </View>
-            <View style={styles.middleView}>
-                <Text style={styles.userName}>{post.user.userName}</Text>
-    
-                <View style={styles.hashtagView}>
-                    {post.hashtags.map(hashtag => 
-                        <Text key={hashtag} style={styles.hashtag}>#{hashtag}</Text>
-                    )}
-                </View>
-            </View>
-            <View style={styles.rightView}>
-                <Likes 
-                post={post}
-                />
-            </View>
+        <View>
+            <PostInformation 
+            post={post}/>
         </View>
-        
-        </Pressable>
-        {expanded &&
-            <DropDown
-            isPlaying={isPlaying}
-            onPlayPausePressed={onPlayPausePressed}
-            commentsCount={post.commentsCount}
+        <View>
+            <SoundSlider 
             isPlaybackAllowed={isPlaybackAllowed}
             isLoading={isLoading}
             getSeekSliderPosition={getSeekSliderPosition}
             onSeekSliderValueChange={onSeekSliderValueChange}
             onSeekSliderSlidingComplete={onSeekSliderSlidingComplete}
-            getPlaybackTimestamp={getPlaybackTimestamp}
-            />
-        }
+            getPlaybackTimestamp={getPlaybackTimestamp}/>
+        </View>
+        <View>
+            <SoundController />
+        </View>
     </View>
     );
 }; 

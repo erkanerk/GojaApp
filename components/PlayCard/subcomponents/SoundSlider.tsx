@@ -41,19 +41,17 @@ export const SoundSlider = ({
     onSeekSliderSlidingComplete,
     getPlaybackTimestamp,
 }: Props) => {
-    
     return (
     <View style={styles.container}>
-          <Slider
-            style={styles.playbackSlider}
-            value={getSeekSliderPosition()}
-            onValueChange={onSeekSliderValueChange}
-            onSlidingComplete={onSeekSliderSlidingComplete}
-            disabled={!isPlaybackAllowed || isLoading}
-          />
-          <Text style={styles.playbackTimestamp}>
-            {getPlaybackTimestamp()}
-          </Text>
-        </View>
+        <Slider
+        style={styles.playbackSlider}
+        value={getSeekSliderPosition()}
+        onValueChange={onSeekSliderValueChange}
+        onSlidingComplete={onSeekSliderSlidingComplete}
+        disabled={!isPlaybackAllowed || isLoading}/>
+        <Text style={styles.playbackTimestamp}>
+        {getPlaybackTimestamp()}
+        </Text>
+    </View>
     );
 }; 

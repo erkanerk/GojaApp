@@ -4,12 +4,20 @@ import { RootTabScreenProps } from '../types';
 import { Post } from '../components/Post/Post';
 import { StyleSheet } from 'react-native';
 import axios from 'axios';
+import { PlayCard } from '../components/PlayCard/PlayCard';
+import { SamplePosts } from '../assets/sampleData/Posts';
 
 export const styles = StyleSheet.create({
     container: {
         padding: 10,
         backgroundColor: 'white',
         flex: 1,
+    },
+    feedView: {
+        flex: 1,
+    },
+    playCardView: {
+
     },
 });
 
@@ -18,6 +26,7 @@ export default function PostFeed({
 }: RootTabScreenProps<'TabThree'>) {
     const [posts, setPosts] = useState<Post[] | undefined>(undefined)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [focusedPost, setFocusedPost] = useState<Post | undefined>(undefined)
 
     useEffect(() => {
         setIsLoading(true)
@@ -44,18 +53,27 @@ export default function PostFeed({
     }, []);
 
     const renderPost = ({ item, index, separators }:any) => (
-        <Post post={item} />
+        <Post 
+        post={item}
+        setFocusedPost={setFocusedPost}/>
     );
 
     return (
     <View style={styles.container}>
         {isLoading ? <Text>Loading...</Text> : null}
-        <FlatList
-        data={posts}
-        keyExtractor={post => post._id}
-        renderItem={renderPost}
-        />
-    </View>
+        <View style={styles.feedView}>
+            <FlatList
+            data={posts}
+            keyExtractor={post => post._id}
+            renderItem={renderPost}/>
+        </View>
+        <View style={styles.playCardView}>
+            {focusedPost ?
+                <PlayCard 
+                post={focusedPost}/>
+            : null}
+        </View>
+        </View>
     );
 }
 
