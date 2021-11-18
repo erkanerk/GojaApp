@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Platform, Image, StyleSheet, Pressable } from "react-native";
 
-import EditScreenInfo from "../components/EditScreenInfo";
+import { RegisterForm } from "../components/Forms/RegisterForm/RegisterForm";
 import { Text, View } from "../components/Themed";
 
 export default function AuthScreen() {
@@ -9,7 +9,7 @@ export default function AuthScreen() {
         <View style={styles.container}>
             <Image
                 style={styles.bigLogo}
-                source={require("../assets/images/parrot.svg")}
+                source={require("../assets/images/parrot.png")}
             />
             <Text style={styles.title}>Goja</Text>
             <FormTypeSwitcher />
@@ -34,7 +34,7 @@ function FormTypeSwitcher() {
     } else {
         return (
             <>
-                <Text style={styles.buttonText}>registerFrom!</Text>
+                <RegisterForm />
                 <Pressable
                     style={styles.button}
                     onPress={() => setFormType("Login")}
@@ -56,13 +56,15 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 40,
         fontWeight: "bold",
+        marginBottom: 40,
     },
     bigLogo: {
-        height: 150,
-        width: 150,
+        height: 120,
+        width: 120,
+        marginBottom: 10,
     },
     button: {
-        marginTop: 15,
+        marginTop: 25,
         backgroundColor: "rgba(0, 0, 0, 0)",
     },
     buttonText: {
