@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
+import { Image, StyleSheet, View, Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {

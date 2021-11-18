@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Image, View, Text, Pressable } from 'react-native';
-import { Audio, AVPlaybackStatus } from 'expo-av';
+import React from 'react';
+import { Image, View, Text} from 'react-native';
+
 import { StyleSheet } from 'react-native';
 import { Reply } from './Reply';
 import { Likes } from './Likes';
-import { SamplePosts } from '../../../assets/sampleData/Posts';
 
 export const styles = StyleSheet.create({
     container: {

@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
+        flexDirection: 'row',
     },
     image: {
         width: 30,
@@ -93,20 +94,24 @@ export const Likes = ({
     
     return (
     <View style={styles.container}>
-      <Pressable
-        onPress={handleOnPress}>
-        {isLiked 
-          ? 
-          <Image
-            style={styles.image}
-            source={require('../../../assets/images/liked_icon.png')}/>
-          : 
-          <Image
-            style={styles.image}
-            source={require('../../../assets/images/not_liked_icon.png')}/>
-        }
-      </Pressable>
-      <Text style={styles.text}>{likes}</Text>
+      <View>
+        <Pressable
+            onPress={handleOnPress}>
+            {isLiked 
+            ? 
+            <Image
+                style={styles.image}
+                source={require('../../../assets/images/liked_icon.png')}/>
+            : 
+            <Image
+                style={styles.image}
+                source={require('../../../assets/images/not_liked_icon.png')}/>
+            }
+        </Pressable>
+      </View>
+      <View>
+        <Text style={styles.text}>{likes}</Text>
+      </View>
     </View>
     );
 }; 
