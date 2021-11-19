@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { TextInput, Keyboard, Text, View } from "react-native";
-import { SubmitButton } from '../SubmitButton';
-import {APIKit, saveUserSession} from '../../../shared/APIkit';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { SubmitButton } from "../SubmitButton";
+import { APIKit, saveUserSession } from "../../../shared/APIkit";
+import Spinner from "react-native-loading-spinner-overlay";
 import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
-import { styles } from '../Forms.Styles'
+import { styles } from "../Forms.Styles";
 
 export const RegisterForm = () => {
     const [email, setEmail] = useState<string>("");
@@ -14,70 +14,97 @@ export const RegisterForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const onSubmit = async () => {
-        const {isValid, formErrors} = validateForm(email, userName, password);
+        const { isValid, formErrors } = validateForm(email, userName, password);
         setFormErrors(formErrors);
         if (isValid) {
             Keyboard.dismiss();
             await registerUser();
         }
-    }
+    };
 
     const registerUser = async () => {
-        const payload = {email, userName, password};
+        const payload = { email, userName, password };
         setIsLoading(true);
-        APIKit.post('/users/signup/', payload)
+        APIKit.post("/users/signup/", payload)
             .then((response) => {
-                saveUserSession('userSession', {
-                    email : email,
-                    token : response.data.token,
-                })
+                saveUserSession("userSession", {
+                    email: email,
+                    token: response.data.token,
+                });
                 setIsLoading(false);
             })
             .catch((error) => {
                 console.log(error && error);
                 setIsLoading(false);
             });
-    }
+    };
 
     return (
-    <View>
-        <Spinner visible={isLoading} />
-        <View style={styles.formWrapper}>
-            <View style={styles.inputField}>
-                <TextInput
-                    style={[styles.input, formErrors.emailErrorMessage ? styles.faultyInput : null]}
-                    value={email}
-                    placeholder={"Email"}
-                    onChangeText={(text) => setEmail(text)}
-                    autoCapitalize={"none"}
-                />
-                {formErrors.emailErrorMessage ? <Text style={styles.errorMessage}>{formErrors.emailErrorMessage}</Text> : null}
+        <View style={styles.wrapper}>
+            <Spinner visible={isLoading} />
+            <View style={styles.formWrapper}>
+                <View style={styles.inputField}>
+                    <TextInput
+                        style={[
+                            styles.input,
+                            formErrors.emailErrorMessage
+                                ? styles.faultyInput
+                                : null,
+                        ]}
+                        value={email}
+                        placeholder={"Email"}
+                        placeholderTextColor={styles.placeHolder.color}
+                        onChangeText={(text) => setEmail(text)}
+                        autoCapitalize={"none"}
+                    />
+                    {formErrors.emailErrorMessage ? (
+                        <Text style={styles.errorMessage}>
+                            {formErrors.emailErrorMessage}
+                        </Text>
+                    ) : null}
+                </View>
+                <View style={styles.inputField}>
+                    <TextInput
+                        style={[
+                            styles.input,
+                            formErrors.usernameErrorMessage
+                                ? styles.faultyInput
+                                : null,
+                        ]}
+                        value={userName}
+                        placeholder={"Username"}
+                        placeholderTextColor={styles.placeHolder.color}
+                        onChangeText={(text) => setUserName(text)}
+                        autoCapitalize={"none"}
+                    />
+                    {formErrors.usernameErrorMessage ? (
+                        <Text style={styles.errorMessage}>
+                            {formErrors.usernameErrorMessage}
+                        </Text>
+                    ) : null}
+                </View>
+                <View style={styles.inputField}>
+                    <TextInput
+                        style={[
+                            styles.input,
+                            formErrors.passwordErrorMessage
+                                ? styles.faultyInput
+                                : null,
+                        ]}
+                        value={password}
+                        placeholder={"Password"}
+                        placeholderTextColor={styles.placeHolder.color}
+                        secureTextEntry
+                        onChangeText={(text) => setPassword(text)}
+                    />
+                    {formErrors.passwordErrorMessage ? (
+                        <Text style={styles.errorMessage}>
+                            {formErrors.passwordErrorMessage}
+                        </Text>
+                    ) : null}
+                </View>
             </View>
-            <View style={styles.inputField}>
-                <TextInput
-                    style={[styles.input, formErrors.usernameErrorMessage ? styles.faultyInput : null]}
-                    value={userName}
-                    placeholder={"Username"}
-                    onChangeText={(text) => setUserName(text)}
-                    autoCapitalize={"none"}
-                />
-                {formErrors.usernameErrorMessage ? <Text style={styles.errorMessage}>{formErrors.usernameErrorMessage}</Text> : null}
-            </View>
-            <View style={styles.inputField}>
-                <TextInput
-                    style={[styles.input, formErrors.passwordErrorMessage ? styles.faultyInput : null]}
-                    value={password}
-                    placeholder={"Password"}
-                    secureTextEntry
-                    onChangeText={(text) => setPassword(text)}
-                />
-                {formErrors.passwordErrorMessage ? <Text style={styles.errorMessage}>{formErrors.passwordErrorMessage}</Text> : null}
-            </View>
+            <SubmitButton text={"Register"} onPress={onSubmit} />
         </View>
-        <SubmitButton
-            text={"Register"}
-            onPress={onSubmit}
-        />
-    </View>
     );
-}; 
+};
