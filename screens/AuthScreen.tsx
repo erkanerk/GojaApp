@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Platform, Image, StyleSheet, Pressable } from "react-native";
 
 import { RegisterForm } from "../components/Forms/RegisterForm/RegisterForm";
+import { LoginForm } from "../components/Forms/LoginForm/LoginForm";
 import { Text, View } from "../components/Themed";
 
 export default function AuthScreen() {
@@ -22,7 +23,7 @@ function FormTypeSwitcher() {
     if (formType == "Login") {
         return (
             <>
-                <Text style={styles.buttonText}>loginFrom!</Text>
+                <LoginForm />
                 <Pressable
                     style={styles.button}
                     onPress={() => setFormType("Register")}
