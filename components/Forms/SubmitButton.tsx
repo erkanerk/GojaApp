@@ -1,20 +1,21 @@
-import React from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import React from "react";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 
 const styles = StyleSheet.create({
     wrapper: {
-        marginBottom: 20,
         borderRadius: 19,
-        backgroundColor: 'red',
+        width: 100,
+        height: 40,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "red",
     },
     text: {
-        color: 'white',
-        width: 100,
-        height: 50,
-        textAlign: 'center',
-        textAlignVertical: 'center',
+        color: "white",
+        textAlign: "center",
+        textAlignVertical: "center",
         fontSize: 15,
-        fontWeight: 'bold'
+        fontWeight: "bold",
     },
 });
 
@@ -27,8 +28,8 @@ export const SubmitButton = (props: Props) => {
     return (
         <View>
             <Pressable style={styles.wrapper} onPress={props.onPress}>
-                <Text style={styles.text}>{props.text}</Text>   
+                <Text style={styles.text}>{props.text}</Text>
             </Pressable>
         </View>
-    )
-}
+    );
+};
