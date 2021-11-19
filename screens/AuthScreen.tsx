@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Platform, Image, StyleSheet, Pressable } from "react-native";
+import {
+    Platform,
+    Image,
+    StyleSheet,
+    Pressable,
+    KeyboardAvoidingView,
+} from "react-native";
 
 import { RegisterForm } from "../components/Forms/RegisterForm/RegisterForm";
 import { LoginForm } from "../components/Forms/LoginForm/LoginForm";
@@ -7,14 +13,19 @@ import { Text, View } from "../components/Themed";
 
 export default function AuthScreen() {
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
+        >
             <Image
                 style={styles.bigLogo}
                 source={require("../assets/images/parrot.png")}
             />
-            <Text style={styles.title}>Goja</Text>
+            <View style={styles.titleBox}>
+                <Text style={styles.title}>Goja</Text>
+            </View>
             <FormTypeSwitcher />
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -54,6 +65,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: "#BA0505",
     },
+    titleBox: {
+        backgroundColor: "rgba(0, 0, 0, 0)",
+    },
     title: {
         fontSize: 40,
         fontWeight: "bold",
@@ -67,6 +81,10 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 25,
         backgroundColor: "rgba(0, 0, 0, 0)",
+        width: 100,
+        height: 40,
+        alignItems: "center",
+        justifyContent: "center",
     },
     buttonText: {
         fontSize: 16,
