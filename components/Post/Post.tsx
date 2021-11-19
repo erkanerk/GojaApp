@@ -57,7 +57,6 @@ export const Post = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [expanded, setExpanded] = useState<boolean>(false);
-    const [likes, setLikes] = useState<number>(post.likes);
     const [soundPosition, setSoundPosition] = useState<number | undefined>(undefined);
     const [soundDuration, setSoundDuration] = useState<number | undefined>(undefined);
     const [isSeeking, setIsSeeking] = useState<boolean>(false);
@@ -231,14 +230,13 @@ export const Post = ({
     
                 <View style={styles.hashtagView}>
                     {post.hashtags.map(hashtag => 
-                        <Text key={hashtag} style={styles.hashtag}>{hashtag}</Text>
+                        <Text key={hashtag} style={styles.hashtag}>#{hashtag}</Text>
                     )}
                 </View>
             </View>
             <View style={styles.rightView}>
                 <Likes 
-                likes={likes}
-                setLikes={setLikes}
+                post={post}
                 />
             </View>
         </View>

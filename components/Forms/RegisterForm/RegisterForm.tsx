@@ -1,41 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput, Keyboard, Text, View } from "react-native";
+import { TextInput, Keyboard, Text, View } from "react-native";
 import { SubmitButton } from "../SubmitButton";
-import { APIKit, setClientToken } from "../../../shared/APIkit";
+import { APIKit, saveUserSession } from "../../../shared/APIkit";
 import Spinner from "react-native-loading-spinner-overlay";
 import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
-
-const styles = StyleSheet.create({
-    wrapper: {
-        alignItems: "center",
-    },
-    input: {
-        width: 200,
-        height: 30,
-        borderRadius: 20,
-        paddingLeft: 15,
-        backgroundColor: "#fff",
-    },
-    faultyInput: {
-        borderWidth: 2,
-        borderColor: "pink",
-    },
-    errorMessage: {
-        color: "pink",
-        marginLeft: 5,
-    },
-    formWrapper: {
-        marginBottom: 24,
-    },
-    inputField: {
-        color: "black",
-        width: 200,
-        marginBottom: 15,
-    },
-    placeHolder: {
-        color: "grey",
-    },
-});
+import { styles } from "../Forms.Styles";
 
 export const RegisterForm = () => {
     const [email, setEmail] = useState<string>("");
@@ -58,7 +27,10 @@ export const RegisterForm = () => {
         setIsLoading(true);
         APIKit.post("/users/signup/", payload)
             .then((response) => {
-                setClientToken(response.data.token);
+                saveUserSession("userSession", {
+                    email: email,
+                    token: response.data.token,
+                });
                 setIsLoading(false);
             })
             .catch((error) => {
