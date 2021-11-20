@@ -37,10 +37,6 @@ export const styles = StyleSheet.create({
         fontSize: 10,
         fontWeight: 'bold'
     },
-    leftView: {
-        flex: 2,
-        margin: 5,
-    },
     pictureView: {
         flex: 2,
     },
