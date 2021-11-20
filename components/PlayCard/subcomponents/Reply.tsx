@@ -5,10 +5,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
+    flexDirection: 'row',
   },
   image: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
 }); 
 

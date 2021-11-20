@@ -3,12 +3,13 @@ import { Image, View, Text} from 'react-native';
 
 import { StyleSheet } from 'react-native';
 import { Reply } from './Reply';
-import { Likes } from './Likes';
+import { Likes } from '../../Likes/Likes';
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "row",
+        alignItems: 'center',
     },
     pictureView: {
         flex: 1,

@@ -4,51 +4,61 @@ import { Image, StyleSheet, View, Pressable } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignSelf: 'center',
         flexDirection: 'row',
     },
     image: {
         width: 30,
         height: 30,
     },
-    text: {
-        fontSize: 12,
-    },
     previousView: {
         flex: 1,
+        alignSelf: 'center',
+        alignItems: 'flex-end',
     },
     playPauseView: {
         flex: 1,
+        alignSelf: 'center',
+        alignItems: 'center',
+
     },  
     nextView: {
         flex: 1,
+        alignItems: 'flex-start',
     },
 }); 
 
 interface Props {
-
+    isLoading: boolean
+    isPlaying: boolean
+    playPausePost(): Promise<void>
+    playNextPost(): Promise<void>
+    playPreviousPost(): Promise<void>
 }
 
 export const SoundController = ({ 
-
+    isLoading,
+    isPlaying,
+    playPausePost,
+    playPreviousPost,
+    playNextPost
 }: Props) => {
-
-    const isLoading = false
-    const isPlaying = false
 
     function handlePlayPrevious() {
         console.log("Previous button pressed")
+        playPreviousPost()
     }
 
 
     function handlePlayPause() {
         console.log("Play/paused button pressed")
+        playPausePost()
     }
 
 
 
     function handlePlayNext() {
         console.log("Next button pressed")
+        playNextPost()
     }
     
     return (
