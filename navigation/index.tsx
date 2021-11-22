@@ -12,6 +12,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
+import { useContext } from "react";
 import { ColorSchemeName, Pressable } from "react-native";
 
 import Colors from "../constants/Colors";
@@ -31,13 +32,15 @@ import AuthScreen from "../screens/AuthScreen";
 import ProfilePage from "../screens/ProfilePage";
 
 let loggedIn = true;
+import AppContext from "../shared/AppContext";
 
 export default function Navigation({
     colorScheme,
 }: {
     colorScheme: ColorSchemeName;
 }) {
-    if (loggedIn) {
+    const globalCtx = useContext(AppContext);
+    if (globalCtx.loggedIn) {
         return (
             <NavigationContainer
                 linking={LinkingConfiguration}
