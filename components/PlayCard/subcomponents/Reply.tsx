@@ -3,19 +3,30 @@ import { Image, StyleSheet, View, Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: 'center',
+    alignContent: 'center',
     alignSelf: 'center',
+    flexDirection: 'row',
   },
   image: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
 }); 
 
+// TODO: This whole component man
 
-export const Record = () => {
+interface Props {
+    post: Post
+}
+
+export const Reply = ({ 
+    post
+}: Props) => {
 
     function handleOnPress() {
-        console.log("Record button pressed")
+        console.log("Reply button pressed")
     }
     
     return (
@@ -23,9 +34,9 @@ export const Record = () => {
       <Pressable
         onPress={handleOnPress}
         >
-        <Image
+        <Image 
             style={styles.image}
-            source={require('../../../assets/images/record_button.png')}/>
+            source={require('../../../assets/images/reply_icon.png')}/>
       </Pressable>
     </View>
     );

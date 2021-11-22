@@ -3,39 +3,35 @@ import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
+    flex: 1,
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
+    flexDirection: 'row',
   },
   pressable: {
     flexDirection: 'row'
   },
   image: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
   text: {   
-    fontSize: 12,
-  },
-  leftView: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'flex-end',
-  },
-  rightView: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'flex-start',
     marginLeft: 5,
-  },
+    fontSize: 12,
+  }
 }); 
 
 interface Props {
-  count: number
+  post: Post
 }
 
 export const Comments = ({ 
-    count
+    post
 }: Props) => {
-
+    // TODO: Temporary count
+    const count = 4
+    
     function handleOnPress() {
         console.log("comment button pressed")
     }
@@ -46,12 +42,12 @@ export const Comments = ({
         style={styles.pressable}
         onPress={handleOnPress}
         >
-        <View style={styles.leftView}>
+        <View>
             <Image 
                 style={styles.image}
                 source={require('../../../assets/images/speech_bubble_icon.png')}/>
         </View>
-        <View style={styles.rightView}>
+        <View>
             <Text style={styles.text}>{count}</Text>
         </View>
       </Pressable>
