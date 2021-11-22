@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TextInput, Keyboard, Text, View } from "react-native";
 import { SubmitButton } from "../SubmitButton";
-import { APIKit, saveUserSession } from "../../../shared/APIkit";
+import {
+    APIKit,
+    saveUserSession,
+    clearUserSession,
+} from "../../../shared/APIkit";
 import Spinner from "react-native-loading-spinner-overlay";
 import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
 import { styles } from "../Forms.Styles";
+import AppContext from "../../../shared/AppContext";
 
 export const RegisterForm = () => {
+    const globalCtx = useContext(AppContext);
     const [email, setEmail] = useState<string>("");
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -32,10 +38,16 @@ export const RegisterForm = () => {
                     token: response.data.token,
                 });
                 setIsLoading(false);
+                globalCtx.setLoggedIn(true);
             })
             .catch((error) => {
                 console.log(error && error);
                 setIsLoading(false);
+                let errorCode = error.response.status;
+                if (errorCode == 400 || errorCode == 401) {
+                    clearUserSession();
+                    globalCtx.setLoggedIn(false);
+                }
             });
     };
 
