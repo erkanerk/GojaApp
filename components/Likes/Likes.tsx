@@ -3,17 +3,24 @@ import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
 import axios from 'axios';
 
 const styles = StyleSheet.create({
-  container: {
-    alignSelf: 'flex-end',
-  },
-  image: {
-    width: 30,
-    height: 30,
-  },
-  text: {
-    fontSize: 12,
-    textAlign: 'center',
-  }
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        alignContent: 'center',
+        alignSelf: 'center',
+        flexDirection: 'row',
+    },
+    pressable: {
+        flexDirection: 'row'
+      },
+    image: {
+        width: 20,
+        height: 20,
+    },
+    text: {
+        marginLeft: 5,
+        fontSize: 12,
+    }
 }); 
 
 interface Props {
@@ -23,6 +30,7 @@ interface Props {
 export const Likes = ({ 
   post,
 }: Props) => {
+    // TODO: isLiked and likes should change when liking the post using the PlayCard or Post.
     // TODO: isLiked should be based on if the user has liked the post before or not
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const [likes, setLikes] = useState<number>(post.likes)
@@ -52,6 +60,7 @@ export const Likes = ({
         user: {
           userName: tempUserName,
        }});
+       // TODO: change this to use APIkit instead
       const config = {
         headers: {
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MThiZDRmYjVmYThjNjQxNDNlYWE1NTMiLCJpYXQiOjE2MzcxNDYxNjh9.HdtsKrKNkpVFSqe6QzsRCCSAUIq8j_a4aazaV4RVaiM',
@@ -93,22 +102,25 @@ export const Likes = ({
     
     return (
     <View style={styles.container}>
-      <Pressable
-        onPress={handleOnPress}
-        >
-        {isLiked 
-          ? 
-          <Image
-            style={styles.image}
-            source={require('../../../assets/images/liked_icon.png')}/>
-          : 
-          <Image
-            style={styles.image}
-            source={require('../../../assets/images/not_liked_icon.png')}/>
-        }
-      </Pressable>
-      <Text style={styles.text}>{likes}</Text>
-      {isLoading ? <Text>Loading...</Text> : null}
+        <Pressable
+        style={styles.pressable}
+        onPress={handleOnPress}>
+            <View>
+                {isLiked 
+                ? 
+                <Image
+                    style={styles.image}
+                    source={require('../../assets/images/liked_icon.png')}/>
+                : 
+                <Image
+                    style={styles.image}
+                    source={require('../../assets/images/not_liked_icon.png')}/>
+                }
+            </View>
+            <View>
+                <Text style={styles.text}>{likes}</Text>
+            </View>
+        </Pressable>
     </View>
     );
 }; 
