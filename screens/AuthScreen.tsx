@@ -5,6 +5,8 @@ import {
     StyleSheet,
     Pressable,
     KeyboardAvoidingView,
+    Keyboard,
+    TouchableWithoutFeedback,
 } from "react-native";
 
 import { RegisterForm } from "../components/Forms/RegisterForm/RegisterForm";
@@ -13,19 +15,21 @@ import { Text, View } from "../components/Themed";
 
 export default function AuthScreen() {
     return (
-        <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.container}
-        >
-            <Image
-                style={styles.bigLogo}
-                source={require("../assets/images/parrot.png")}
-            />
-            <View style={styles.titleBox}>
-                <Text style={styles.title}>Goja</Text>
-            </View>
-            <FormTypeSwitcher />
-        </KeyboardAvoidingView>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={styles.container}
+            >
+                <Image
+                    style={styles.bigLogo}
+                    source={require("../assets/images/parrotVit.png")}
+                />
+                <View style={styles.titleBox}>
+                    <Text style={styles.title}>Goja</Text>
+                </View>
+                <FormTypeSwitcher />
+            </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -39,7 +43,7 @@ function FormTypeSwitcher() {
                     style={styles.button}
                     onPress={() => setFormType("Register")}
                 >
-                    <Text style={styles.buttonText}>register</Text>
+                    <Text style={styles.buttonText}>Register</Text>
                 </Pressable>
             </>
         );
@@ -51,7 +55,7 @@ function FormTypeSwitcher() {
                     style={styles.button}
                     onPress={() => setFormType("Login")}
                 >
-                    <Text style={styles.buttonText}>login</Text>
+                    <Text style={styles.buttonText}>Log in</Text>
                 </Pressable>
             </>
         );
@@ -71,15 +75,16 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 40,
         fontWeight: "bold",
-        marginBottom: 40,
+        marginBottom: 35,
+        color: "white",
     },
     bigLogo: {
-        height: 120,
-        width: 120,
-        marginBottom: 10,
+        height: 140,
+        width: 140,
+        marginBottom: 20,
     },
     button: {
-        marginTop: 25,
+        marginTop: 20,
         backgroundColor: "rgba(0, 0, 0, 0)",
         width: 100,
         height: 40,
@@ -87,7 +92,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     buttonText: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: "bold",
+        color: "white",
     },
 });
