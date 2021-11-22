@@ -53,6 +53,7 @@ export const Likes = ({
         user: {
           userName: tempUserName,
        }});
+       // TODO: change this to use APIkit instead
       const config = {
         headers: {
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MThiZDRmYjVmYThjNjQxNDNlYWE1NTMiLCJpYXQiOjE2MzcxNDYxNjh9.HdtsKrKNkpVFSqe6QzsRCCSAUIq8j_a4aazaV4RVaiM',
