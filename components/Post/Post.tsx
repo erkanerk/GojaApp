@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
         flex: 2,
         margin: 5,
     },
-    border: {
+    line: {
         borderBottomColor: 'lightgray',
         borderBottomWidth: 1,
     }
@@ -133,9 +133,7 @@ export const Post = ({
                 </View>
             </View>
         </Pressable>
-        <View style={styles.border}>
-
-        </View>
+        <View style={styles.line} />
     </View>
     );
 }; 
