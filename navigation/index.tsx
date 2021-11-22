@@ -28,8 +28,9 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import AuthScreen from "../screens/AuthScreen";
+import ProfilePage from "../screens/ProfilePage";
 
-let loggedIn = false;
+let loggedIn = true;
 
 export default function Navigation({
     colorScheme,
@@ -138,6 +139,16 @@ function BottomTabNavigator() {
                 component={PostFeed}
                 options={{
                     title: "Feed",
+                    tabBarIcon: ({ color }) => (
+                        <TabBarIcon name="code" color={color} />
+                    ),
+                }}
+            />
+                <BottomTab.Screen
+                name="TabFour"
+                component={ProfilePage}
+                options={{
+                    title: "ProfilePage",
                     tabBarIcon: ({ color }) => (
                         <TabBarIcon name="code" color={color} />
                     ),
