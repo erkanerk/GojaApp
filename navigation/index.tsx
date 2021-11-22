@@ -30,8 +30,6 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import AuthScreen from "../screens/AuthScreen";
 import ProfilePage from "../screens/ProfilePage";
-
-let loggedIn = true;
 import AppContext from "../shared/AppContext";
 
 export default function Navigation({
