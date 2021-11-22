@@ -28,15 +28,30 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import AuthScreen from "../screens/AuthScreen";
+import { getToken } from "../shared/APIkit"
 
-let loggedIn = false;
+let loggedIn = true;
 
 export default function Navigation({
     colorScheme,
 }: {
     colorScheme: ColorSchemeName;
-}) {
+}) 
+{
+  //const [loggedIn, setLoggedIn] = React.useState<true | false>(true);
+
+  // React.useEffect(() => {
+  //   (async function() {
+  //     const token = await getToken();
+  //     if (token) {
+  //       setLoggedIn(true);
+  //     } else {
+  //       setLoggedIn(false);
+  //     }
+  //   })();;
+  // }, [])
     if (loggedIn) {
+      console.log("Logged inn");
         return (
             <NavigationContainer
                 linking={LinkingConfiguration}

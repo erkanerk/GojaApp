@@ -12,10 +12,13 @@ export const APIKit = axios.create({
 
 //Set JSON Web Token in Client to be included in all calls
 const authInterceptor = APIKit.interceptors.request.use(async (config) => {
+  console.log("Intercepting!!!!")
     const token = await getToken();
     config.headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
+      //'Content-type': "multipart/form-data"
     };
+    console.log(config.headers);
     return config;
 });
 
@@ -23,11 +26,14 @@ export const saveUserSession = async (key, value) => {
   await SecureStore.setItemAsync(key, JSON.stringify(value));
 }
 
-const getToken = async () => {
+export const getToken = async () => {
+  console.log("i gettoken");
   const credentials = await readUserSession();
   if (credentials) {
+    console.log("Creds:" + credentials.token);
     return credentials.token;
   }
+  console.log("returning null");
   return null;
 }
 
@@ -43,4 +49,5 @@ export const readUserSession = async () => {
 export const clearUserSession = async () => {
   APIKit.interceptors.request.eject(authInterceptor);
   await SecureStore.deleteItemAsync('userSession');
+  readUserSession;
 }
