@@ -16,7 +16,7 @@ const authInterceptor = APIKit.interceptors.request.use(async (config) => {
     const token = await getToken();
     config.headers = {
       Authorization: `Bearer ${token}`,
-      //'Content-type': "multipart/form-data"
+      'Content-type': "multipart/form-data"
     };
     console.log(config.headers);
     return config;

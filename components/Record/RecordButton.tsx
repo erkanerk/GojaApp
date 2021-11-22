@@ -6,7 +6,8 @@ import axios from 'axios';
 import Constants from "expo-constants";
 const { manifest } = Constants;
 import FormData from 'form-data';
-
+//import * as fs from 'fs';
+//var fs = require('react-native-fs')
 
 export const RecordButton = () => {
     
@@ -53,23 +54,34 @@ export const RecordButton = () => {
 }
     async function postSound() {
         console.log('Posting Sound');
+
+        var formData = new FormData();
+        //formData.append("file", "./file_example_MP3_700KB.mp3");
+        //formData.append('file', fs.createReadStream('/Users/majadanielsson/Downloads/file_example_MP3_700KB.mp3'));
+
         //let formData = new FormData();
+        // formData.append("audio", {
+        //   recordingURI,
+        //   name: "teest",
+        //   type: "audio/m4a",
+        // });
 
-        let formData = new FormData();
-        formData.append("audio", {
-          recordingURI,
-        });
+        // fetch(`http://${manifest?.debuggerHost?.split(':').shift()}:3000/posts/upload-audio/`, {
+        //   method: "POST",
+        //   body: JSON.stringify(formData),
+        //   headers: {
+        //     Accept: "application/json",
+        //     "Content-Type": "multipart/form-data",
+        //     Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MThiZDRmYjVmYThjNjQxNDNlYWE1NTMiLCJpYXQiOjE2MzcxNDYxNjh9.HdtsKrKNkpVFSqe6QzsRCCSAUIq8j_a4aazaV4RVaiM',
+        //   }
+        // }).then((res) => {
+        //   console.log("OKKK");
+        //   console.log(res.statusText);
+        // }).catch((error) => {
+        //   console.log("ERROR");
+        //   console.log(error);
+        // });
 
-        const response = await fetch(`http://${manifest?.debuggerHost?.split(':').shift()}:3000/posts/upload-audio/`, {
-          method: "POST",
-          body: JSON.stringify(formData),
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data"
-          }
-        });
-
-        console.log("RES: " + response);
         // const payload = {audioURL: recordingURI};
         // console.log(payload);
 
@@ -106,20 +118,20 @@ export const RecordButton = () => {
         //     });
 
         // axios.defaults.headers.common['Content-Type'] = 'multipart/form-data';
-        // const headers = {
-        //     'Content-Type': 'multipart/form-data',
-        //     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MThiZDRmYjVmYThjNjQxNDNlYWE1NTMiLCJpYXQiOjE2MzcxNDYxNjh9.HdtsKrKNkpVFSqe6QzsRCCSAUIq8j_a4aazaV4RVaiM',
-        //     //...formData.getHeaders() // this line is the key
-        // }
-        // axios
-        //     .post(`http://${manifest?.debuggerHost?.split(':').shift()}:3000` + "/posts/upload-audio", formData, {headers})
-        //     .then((response) => {
-        //     // Respond with AWS S3 URL
-        //         console.log(response.data)
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MThiZDRmYjVmYThjNjQxNDNlYWE1NTMiLCJpYXQiOjE2MzcxNDYxNjh9.HdtsKrKNkpVFSqe6QzsRCCSAUIq8j_a4aazaV4RVaiM',
+            //...formData.getHeaders() // this line is the key
+        }
+        axios
+            .post(`http://${manifest?.debuggerHost?.split(':').shift()}:3000` + "/posts/upload-audio", formData, {headers})
+            .then((response) => {
+            // Respond with AWS S3 URL
+                console.log(response.data)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
 
         // axios({
         // method: "post",
