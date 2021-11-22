@@ -86,6 +86,7 @@ export const Post = ({
         }
     }
 
+    // TODO: Might not be the most optimal way of finding the focused post.
     useEffect(() => {
         if (focusedPostIndex == index) {
             setIsFocused(true)
