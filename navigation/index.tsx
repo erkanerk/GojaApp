@@ -29,6 +29,7 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import AuthScreen from "../screens/AuthScreen";
+import ProfilePage from "../screens/ProfilePage";
 import AppContext from "../shared/AppContext";
 
 export default function Navigation({
@@ -92,54 +93,71 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
-  return (
-    <BottomTab.Navigator
-      initialRouteName="Feed"
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}
-    >
-      <BottomTab.Screen
-        name="Feed"
-        component={PostFeed}
-        options={{
-          title: "Feed",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={({ navigation }: RootTabScreenProps<"TabTwo">) => ({
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
-      />
-      <BottomTab.Screen
-        name="TabThree"
-        component={TabThreeScreen}
-        options={{
-          title: "Tab Three",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </BottomTab.Navigator>
-  );
+    return (
+        <BottomTab.Navigator
+            initialRouteName="TabOne"
+            screenOptions={{
+                tabBarActiveTintColor: Colors[colorScheme].tint,
+            }}
+        >
+            <BottomTab.Screen
+                name="TabOne"
+                component={TabOneScreen}
+                options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
+                    title: "Tab One",
+                    tabBarIcon: ({ color }) => (
+                        <TabBarIcon name="code" color={color} />
+                    ),
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => navigation.navigate("Modal")}
+                            style={({ pressed }) => ({
+                                opacity: pressed ? 0.5 : 1,
+                            })}
+                        >
+                            <FontAwesome
+                                name="info-circle"
+                                size={25}
+                                color={Colors[colorScheme].text}
+                                style={{ marginRight: 15 }}
+                            />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <BottomTab.Screen
+                name="TabTwo"
+                component={TabTwoScreen}
+                options={{
+                    title: "Tab Two",
+                    tabBarIcon: ({ color }) => (
+                        <TabBarIcon name="code" color={color} />
+                    ),
+                }}
+            />
+            <BottomTab.Screen
+                name="TabThree"
+                component={PostFeed}
+                options={{
+                    title: "Feed",
+                    tabBarIcon: ({ color }) => (
+                        <TabBarIcon name="code" color={color} />
+                    ),
+                }}
+            />
+                <BottomTab.Screen
+                name="TabFour"
+                component={ProfilePage}
+                options={{
+                    title: "ProfilePage",
+                    tabBarIcon: ({ color }) => (
+                        <TabBarIcon name="code" color={color} />
+                    ),
+                }}
+            />
+        </BottomTab.Navigator>
+    );
+
 }
 
 /**
