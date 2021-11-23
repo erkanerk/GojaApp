@@ -18,7 +18,7 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
-import PostFeed from "../screens/PostFeed";
+import PostFeed from "../screens/HomeFeed";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import {
@@ -29,7 +29,7 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import AuthScreen from "../screens/AuthScreen";
 
-let loggedIn = false;
+let loggedIn = true;
 
 export default function Navigation({
     colorScheme,

@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Likes } from '../Likes/Likes';
-import { Comments } from './subComponents/Comments';
+import { Comments } from './subcomponents/Comments';
 
 export const styles = StyleSheet.create({
     container: {
