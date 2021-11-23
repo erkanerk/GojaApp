@@ -47,6 +47,7 @@ export default function Navigation({
             </NavigationContainer>
         );
     } else {
+        //use a stack navigator here!?
         return (
             <NavigationContainer
                 theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
