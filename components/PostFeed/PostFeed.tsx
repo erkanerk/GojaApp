@@ -77,7 +77,6 @@ export const PostFeed = ({ posts }: Props) => {
       const url = posts[focusedPostIndex].audio;
       const splitUrl = url.split("/");
       const lastItem = splitUrl[splitUrl.length - 1];
-      // FIX + .m4a TO THE CORRECT FILE TYPE FOR EXAMPLE posts[focusedPostIndex].audioFileType
       const { uri } = await FileSystem.downloadAsync(
         url,
         FileSystem.documentDirectory +
