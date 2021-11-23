@@ -1,19 +1,15 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import { Audio } from 'expo-av';
-import { APIKit } from '../../shared/APIkit';
-import axios from 'axios';
+import { APIKit, getToken } from '../../shared/APIkit';
 import Constants from "expo-constants";
 const { manifest } = Constants;
-import FormData from 'form-data';
-//import * as fs from 'fs';
-//var fs = require('react-native-fs')
+import * as FileSystem from 'expo-file-system';
 
 export const RecordButton = () => {
     
   const [recording, setRecording] = React.useState<any | null>(null);
   const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
-  const [sound, setSound] = React.useState<any | null>(null);
 
   async function startRecording() {
     try {
@@ -44,127 +40,57 @@ export const RecordButton = () => {
   }
 
   async function playSound() {
-    console.log('Loading Sound');
     console.log(recordingURI);
     const { sound } = await Audio.Sound.createAsync({uri: recordingURI});
-    setSound(sound);
 
     console.log('Playing Sound');
     await sound.playAsync(); 
-}
+  }
+
     async function postSound() {
-        console.log('Posting Sound');
+        let apiUrl = `http://${manifest?.debuggerHost?.split(':').shift()}:3000` + "/posts/upload-audio/";
+        const token = await getToken();
 
-        var formData = new FormData();
-        //formData.append("file", "./file_example_MP3_700KB.mp3");
-        //formData.append('file', fs.createReadStream('/Users/majadanielsson/Downloads/file_example_MP3_700KB.mp3'));
+        const uriParts = recordingURI.split('.');
+        const fileType = "." + uriParts[uriParts.length - 1];
 
-        //let formData = new FormData();
-        // formData.append("audio", {
-        //   recordingURI,
-        //   name: "teest",
-        //   type: "audio/m4a",
-        // });
-
-        // fetch(`http://${manifest?.debuggerHost?.split(':').shift()}:3000/posts/upload-audio/`, {
-        //   method: "POST",
-        //   body: JSON.stringify(formData),
-        //   headers: {
-        //     Accept: "application/json",
-        //     "Content-Type": "multipart/form-data",
-        //     Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MThiZDRmYjVmYThjNjQxNDNlYWE1NTMiLCJpYXQiOjE2MzcxNDYxNjh9.HdtsKrKNkpVFSqe6QzsRCCSAUIq8j_a4aazaV4RVaiM',
-        //   }
-        // }).then((res) => {
-        //   console.log("OKKK");
-        //   console.log(res.statusText);
-        // }).catch((error) => {
-        //   console.log("ERROR");
-        //   console.log(error);
-        // });
-
-        // const payload = {audioURL: recordingURI};
-        // console.log(payload);
-
-        //formData.append('file', JSON.stringify({ uri: recordingURI, type: 'audio/m4a', name: 'testAudio' }) );
-
-        //console.log("HEJ"+ formData.getHeaders);
-
-        // let options = {
-        //   method: 'POST',
-        //   body: formData,
-        //   headers: {
-        //     'Accept': 'application/json',
-        //     'Content-Type': 'multipart/form-data',
-        //   },
-        // };
-
-        // console.log("POSTing " + recordingURI + " to " + `http://${manifest?.debuggerHost?.split(':').shift()}:3000/posts/upload-audio`);
-        // let res = await fetch(`http://${manifest?.debuggerHost?.split(':').shift()}:3000/posts/upload-audio`, {
-        //   method: 'POST',
-        //   body: JSON.stringify(formData),
-        //   headers: {
-        //     'Accept': 'application/json',
-        //     'Content-Type': 'multipart/form-data',
-        //   },
-        // });  
-        // console.log(res)
-        // APIKit.post("/posts/upload-audio/", formData)
-        //     .then((response) => {
-        //         console.log(response.data);
-        //     })
-        //     .catch((error) => {
-        //         console.log(error && error);
-
-        //     });
-
-        // axios.defaults.headers.common['Content-Type'] = 'multipart/form-data';
-        const headers = {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MThiZDRmYjVmYThjNjQxNDNlYWE1NTMiLCJpYXQiOjE2MzcxNDYxNjh9.HdtsKrKNkpVFSqe6QzsRCCSAUIq8j_a4aazaV4RVaiM',
-            //...formData.getHeaders() // this line is the key
-        }
-        axios
-            .post(`http://${manifest?.debuggerHost?.split(':').shift()}:3000` + "/posts/upload-audio", formData, {headers})
+        FileSystem.uploadAsync(apiUrl, recordingURI, {
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: "file",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          }
+        }).then((res) => {
+          var urlNoQuotes = res.body.split('"').join('');
+          // TODO: Change from mockup data to real user data
+          const payload = {
+            audio: urlNoQuotes,
+            audioFileType: fileType,
+            user: {
+              profileAudio: "url",
+              profilePicture: "url",
+              userName: "test",
+              email: "test@erk.com"
+            }
+          }
+          APIKit.post("/posts", payload)
             .then((response) => {
-            // Respond with AWS S3 URL
-                console.log(response.data)
+              console.log(response.data);
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch((error) => {
+              console.log(error);
             });
 
-        // axios({
-        // method: "post",
-        // url: `http://${manifest?.debuggerHost?.split(':').shift()}:3000/posts/upload-audio/`,
-        // data: formData
-        // })
-
-        // const payload = {audioURL: recordingURI};
-        // console.log(payload);
-        // APIKit.post("/posts/upload-audio/", payload)
-        //     .then((response) => {
-        //         console.log(response.data);
-        //     })
-        //     .catch((error) => {
-        //         console.log(error && error);
-
-        //     });
+        }).catch((error) => {
+          console.log(error);
+        }) 
     }
 
   return (
-    <View style={styles.container}>
-      <Button
-        title={recording ? 'Stop Recording' : 'Start Recording'}
-        onPress={recording ? stopRecording : startRecording}
-      />
-      <Button
-        title={"Play recording"}
-        onPress={playSound}
-      />
-      <Button
-        title={"Post recording"}
-        onPress={postSound}
-      />
+    <View>
+
     </View>
   );
 }
