@@ -14,9 +14,8 @@ export const APIKit = axios.create({
 const authInterceptor = APIKit.interceptors.request.use(async (config) => {
     const token = await getToken();
     config.headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     };
-    console.log(config.headers);
     return config;
 });
 
@@ -44,5 +43,4 @@ export const readUserSession = async () => {
 export const clearUserSession = async () => {
   APIKit.interceptors.request.eject(authInterceptor);
   await SecureStore.deleteItemAsync('userSession');
-  readUserSession;
 }
