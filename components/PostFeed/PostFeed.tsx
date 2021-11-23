@@ -77,6 +77,10 @@ export const PostFeed = ({ posts }: Props) => {
       const url = posts[focusedPostIndex].audio;
       const splitUrl = url.split("/");
       const lastItem = splitUrl[splitUrl.length - 1];
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        playsInSilentModeIOS: true,
+      });
       const { uri } = await FileSystem.downloadAsync(
         url,
         FileSystem.documentDirectory +
@@ -85,9 +89,15 @@ export const PostFeed = ({ posts }: Props) => {
       );
       const source = { uri: uri };
       console.log(source);
+      const { sound } = await Audio.Sound.createAsync({ uri: source.uri });
+
+      console.log("Playing Sound");
+      await sound.playAsync();
+      /*
       const soundObject = new Audio.Sound();
       await soundObject.loadAsync(source);
       soundObject.playAsync();
+      */
     }
   }
 
