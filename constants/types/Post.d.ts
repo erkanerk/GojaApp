@@ -4,13 +4,13 @@ interface PostUser {
     userName: string;
     email: string;
 
-    profileAudio: string;
-    profilePicture: string;
+  profileAudio: string;
+  profilePicture: string;
 }
 interface Like {
-    _id: string;
-    userId: string;
-    userName: string;
+  _id: string;
+  userId: string;
+  userName: string;
 }
 interface Post {
     _id: string;
