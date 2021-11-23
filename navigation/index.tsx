@@ -20,8 +20,8 @@ import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import PostFeed from "../screens/HomeFeed";
-import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
+import TabThreeScreen from "../screens/TabThreeScreen";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -157,6 +157,7 @@ function BottomTabNavigator() {
             />
         </BottomTab.Navigator>
     );
+
 }
 
 /**

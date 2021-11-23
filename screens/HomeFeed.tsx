@@ -4,6 +4,7 @@ import { RootTabScreenProps } from "../types";
 import { StyleSheet } from "react-native";
 import { PostFeed } from "../components/PostFeed/PostFeed";
 import { APIKit } from "../shared/APIkit";
+import { useIsFocused } from "@react-navigation/native";
 
 export const styles = StyleSheet.create({
   container: {
@@ -22,9 +23,15 @@ export default function HomeFeed({
 }: RootTabScreenProps<"TabThree">) {
   const [posts, setPosts] = useState<Post[] | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    setIsLoading(true);
+    if (isFocused) {
+      getAllPosts();
+    }
+  }, [isFocused]);
+
+  async function getAllPosts() {
     APIKit.get("/posts/all")
       .then((response) => {
         setPosts(response.data);
@@ -34,8 +41,7 @@ export default function HomeFeed({
         console.log(error && error);
         setIsLoading(false);
       });
-    setIsLoading(false);
-  }, []);
+  }
 
   return (
     <View style={styles.container}>
