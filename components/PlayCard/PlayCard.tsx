@@ -7,7 +7,6 @@ import { SoundController } from "./subComponents/SoundController";
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#F2F2F2',
         flexDirection: 'column',
         padding: 7,
