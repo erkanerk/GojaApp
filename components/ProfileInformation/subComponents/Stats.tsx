@@ -5,7 +5,6 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'row',
         textAlign: 'center'
     },
@@ -20,11 +19,13 @@ export const styles = StyleSheet.create({
     },
     text: {
         color: 'gray',
-        fontWeight: 'normal'
+        fontWeight: 'normal',
+        textAlign: 'center',
     },
     textFocused: {
         color: 'black',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign: 'center',
     }
 });
 
