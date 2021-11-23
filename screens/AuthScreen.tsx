@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
         color: "white",
     },
     bigLogo: {
-        height: 140,
-        width: 140,
-        marginBottom: 20,
+        height: 100,
+        width: 100,
+        marginBottom: 0,
     },
     button: {
         marginTop: 20,

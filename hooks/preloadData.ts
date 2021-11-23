@@ -1,5 +1,5 @@
-import { FontAwesome } from "@expo/vector-icons";
 import * as Font from "expo-font";
+import { Asset } from "expo-asset";
 import * as SplashScreen from "expo-splash-screen";
 import * as React from "react";
 import { useEffect, useState, useContext } from "react";
@@ -9,16 +9,19 @@ export default function preloadData(globalCtx) {
     const [loadingDataDone, setLoadingDataDone] = useState(false);
     const [loggedInDone, setLoggedInDone] = useState(false);
 
-    // Load any resources or data that we need prior to rendering the app
     useEffect(() => {
         async function loadResourcesAndDataAsync() {
             try {
                 SplashScreen.preventAutoHideAsync();
 
-                // Load fonts
-                await Font.loadAsync({
-                    ...FontAwesome.font,
-                    "space-mono": require("../assets/fonts/SpaceMono-Regular.ttf"),
+                await cacheAssetsAsync({
+                    images: [require("../assets/images/parrot.png")],
+                    fonts: [
+                        {
+                            "space-mono": require("../assets/fonts/SpaceMono-Regular.ttf"),
+                        },
+                    ],
+                    videos: [],
                 });
 
                 getUser();
@@ -60,5 +63,33 @@ export default function preloadData(globalCtx) {
             });
     };
 
-    return loadingDataDone, loggedInDone;
+    return [loadingDataDone, loggedInDone];
+}
+
+function cacheAssetsAsync({
+    images = [],
+    fonts = [],
+    videos = [],
+}: {
+    images: string[];
+    fonts: { [key: string]: string }[];
+    videos: string[];
+}) {
+    return Promise.all([
+        ...cacheImages(images),
+        ...cacheFonts(fonts),
+        ...cacheVideos(videos),
+    ]);
+}
+
+function cacheImages(images) {
+    return images.map((image) => Asset.fromModule(image).downloadAsync());
+}
+
+function cacheVideos(videos) {
+    return videos.map((video) => Asset.fromModule(video).downloadAsync());
+}
+
+function cacheFonts(fonts) {
+    return fonts.map((font) => Font.loadAsync(font));
 }
