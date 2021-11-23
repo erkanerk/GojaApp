@@ -1,9 +1,9 @@
 import React from 'react';
 import { View} from 'react-native';
 import { StyleSheet } from 'react-native';
-import { SoundSlider } from "./subComponents/SoundSlider";
-import { PostInformation } from "./subComponents/PostInformation";
-import { SoundController } from "./subComponents/SoundController";
+import { SoundSlider } from "./subcomponents/SoundSlider";
+import { PostInformation } from "./subcomponents/PostInformation";
+import { SoundController } from "./subcomponents/SoundController";
 
 export const styles = StyleSheet.create({
     container: {
