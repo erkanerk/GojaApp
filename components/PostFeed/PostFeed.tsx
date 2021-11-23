@@ -89,10 +89,16 @@ export const PostFeed = ({ posts }: Props) => {
       );
       const source = { uri: uri };
       console.log(source);
-      const { sound } = await Audio.Sound.createAsync({ uri: source.uri });
+      const initialStatus = {};
+      const { sound } = await Audio.Sound.createAsync(
+        { uri: source.uri },
+        initialStatus,
+        onPlaybackStatusUpdate
+      );
 
       console.log("Playing Sound");
       await sound.playAsync();
+      setIsLoading(false);
       /*
       const soundObject = new Audio.Sound();
       await soundObject.loadAsync(source);
