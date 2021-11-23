@@ -31,11 +31,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import AuthScreen from "../screens/AuthScreen";
 import AppContext from "../shared/AppContext";
 
-export default function Navigation({
-    colorScheme,
-}: {
-    colorScheme: ColorSchemeName;
-}) {
+export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
     const globalCtx = useContext(AppContext);
     if (globalCtx.loggedIn) {
         return (

@@ -22,7 +22,7 @@ export default function AuthScreen() {
             >
                 <Image
                     style={styles.bigLogo}
-                    source={require("../assets/images/parrotVit.png")}
+                    source={require("../assets/images/parrot.png")}
                 />
                 <View style={styles.titleBox}>
                     <Text style={styles.title}>Goja</Text>
