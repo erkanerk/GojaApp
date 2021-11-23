@@ -23,13 +23,13 @@ export const saveUserSession = async (key, value) => {
     await SecureStore.setItemAsync(key, JSON.stringify(value));
 };
 
-const getToken = async () => {
-    const credentials = await readUserSession();
-    if (credentials) {
-        return credentials.token;
-    }
-    return null;
-};
+export const getToken = async () => {
+  const credentials = await readUserSession();
+  if (credentials) {
+    return credentials.token;
+  }
+  return null;
+}
 
 export const readUserSession = async () => {
     const credentials = await SecureStore.getItemAsync("userSession");

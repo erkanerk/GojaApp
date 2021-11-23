@@ -1,22 +1,22 @@
 // This is a Declaration file: https://medium.com/jspoint/typescript-type-declaration-files-4b29077c43
-interface User {
+interface PostUser {
     id: string
     userName: string;
     email: string;
 
-    profileAudio: string;
-    profilePicture: string;
+  profileAudio: string;
+  profilePicture: string;
 }
 interface Like {
-    _id: string;
-    userId: string;
-    userName: string;
+  _id: string;
+  userId: string;
+  userName: string;
 }
 interface Post {
     _id: string;
     hashtags: string[];
     audio: string;
-    user: User;
+    user: PostUser;
     commentsCount: number;
     // Javascript moment
     created_at: string;
