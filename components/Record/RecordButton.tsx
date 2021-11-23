@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
 });
 
 export const RecordButton = () => {
-    
   const [recording, setRecording] = React.useState<any | null>(null);
   const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
   const [sound, setSound] = React.useState<any | null>(null);
@@ -74,33 +73,36 @@ export const RecordButton = () => {
   async function startRecording() {
     setPosted(false);
     try {
-      console.log('Requesting permissions..');
+      console.log("Requesting permissions..");
       await Audio.requestPermissionsAsync();
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
         playsInSilentModeIOS: true,
-      }); 
-      console.log('Starting recording..');
+      });
+      console.log("Starting recording..");
       const { recording } = await Audio.Recording.createAsync(
-         Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
       );
       setRecording(recording);
-      console.log('Recording started');
+      console.log("Recording started");
     } catch (err) {
-      console.error('Failed to start recording', err);
+      console.error("Failed to start recording", err);
     }
   }
 
   async function stopRecording() {
-    console.log('Stopping recording..');
+    console.log("Stopping recording..");
     setRecording(undefined);
     await recording.stopAndUnloadAsync();
-    const uri = recording.getURI(); 
+    const uri = recording.getURI();
     setRecordingURI(uri);
     console.log('Recording stopped and stored at', uri);  
   }
 
   async function playSound() {  
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+      });
       const { sound } = await Audio.Sound.createAsync({uri: recordingURI});
       setSound(sound);
       console.log('Playing Sound');
@@ -114,12 +116,14 @@ export const RecordButton = () => {
     setRecording(null);
   }
 
-    async function postSound() {
-        let apiUrl = `http://${manifest?.debuggerHost?.split(':').shift()}:3000` + "/posts/upload-audio/";
-        const token = await getToken();
+  async function postSound() {
+    let apiUrl =
+      `http://${manifest?.debuggerHost?.split(":").shift()}:3000` +
+      "/posts/upload-audio/";
+    const token = await getToken();
 
-        const uriParts = recordingURI.split('.');
-        const fileType = "." + uriParts[uriParts.length - 1];
+    const uriParts = recordingURI.split(".");
+    const fileType = "." + uriParts[uriParts.length - 1];
 
         FileSystem.uploadAsync(apiUrl, recordingURI, {
           uploadType: FileSystem.FileSystemUploadType.MULTIPART,

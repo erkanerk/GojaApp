@@ -2,8 +2,9 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { RecordButton } from '../components/Record/RecordButton';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import EditScreenInfo from "../components/EditScreenInfo";
+import { Text, View } from "../components/Themed";
+import { RootTabScreenProps } from "../types";
 
 export default function TabTwoScreen() {
   return (
@@ -22,11 +23,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });
