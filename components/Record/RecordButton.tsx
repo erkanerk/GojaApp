@@ -6,15 +6,6 @@ import Constants from "expo-constants";
 const { manifest } = Constants;
 import * as FileSystem from "expo-file-system";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#ECF0F1",
-    padding: 10,
-  },
-});
-
 export const RecordButton = () => {
   const [recording, setRecording] = React.useState<any | null>(null);
   const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
@@ -102,14 +93,5 @@ export const RecordButton = () => {
       });
   }
 
-  return (
-    <View>
-      <Button
-        title={recording ? "Stop Recording" : "Start Recording"}
-        onPress={recording ? stopRecording : startRecording}
-      />
-      <Button title={"Play recording"} onPress={playSound} />
-      <Button title={"Post recording"} onPress={postSound} />
-    </View>
-  );
+  return <View></View>;
 };
