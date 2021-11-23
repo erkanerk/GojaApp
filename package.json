@@ -41,6 +41,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.2",
+    "react-native-elements": "^3.4.2",
     "react-native-input-validator": "^1.0.12",
     "react-native-loading-spinner-overlay": "^2.0.0",
     "react-native-safe-area-context": "3.3.2",
