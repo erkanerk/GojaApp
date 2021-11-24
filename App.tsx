@@ -7,6 +7,8 @@ import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import AppContext from "./shared/AppContext";
 
+import { RegisterSoundScreen } from "./screens/postFlow/RegisterSoundScreen";
+
 export default function App() {
     const isLoadingComplete = useCachedResources();
     const colorScheme = useColorScheme();
@@ -22,10 +24,12 @@ export default function App() {
         return (
             <AppContext.Provider value={appCtx}>
                 <SafeAreaProvider>
-                    <Navigation colorScheme={colorScheme} />
-                    <StatusBar />
+                    <RegisterSoundScreen />
                 </SafeAreaProvider>
             </AppContext.Provider>
         );
     }
 }
+
+/** <Navigation colorScheme={colorScheme} />
+                    <StatusBar />*/
