@@ -4,7 +4,6 @@ import Slider from '@react-native-community/slider';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",

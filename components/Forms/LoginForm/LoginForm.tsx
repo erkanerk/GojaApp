@@ -1,11 +1,7 @@
 import React, { useState, useContext } from "react";
 import { TextInput, Keyboard, Text, View } from "react-native";
 import { SubmitButton } from "../SubmitButton";
-import {
-    APIKit,
-    saveUserSession,
-    clearUserSession,
-} from "../../../shared/APIkit";
+import { APIKit, saveUserSession, onFailure } from "../../../shared/APIkit";
 import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
 import Spinner from "react-native-loading-spinner-overlay";
 import { styles } from "../Forms.Styles";
@@ -42,11 +38,7 @@ export const LoginForm = () => {
             .catch((error) => {
                 console.log(error && error);
                 setIsLoading(false);
-                let errorCode = error.response.status;
-                if (errorCode == 400 || errorCode == 401) {
-                    clearUserSession();
-                    globalCtx.setLoggedIn(false);
-                }
+                onFailure(error, globalCtx);
             });
     };
 
