@@ -41,7 +41,6 @@ export const readUserSession = async () => {
 
 // Use when logging user out
 export const clearUserSession = async () => {
-    APIKit.interceptors.request.eject(authInterceptor);
     await SecureStore.deleteItemAsync("userSession");
 };
 
