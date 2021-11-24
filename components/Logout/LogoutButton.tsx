@@ -9,13 +9,8 @@ export const LogoutButton = () => {
     const globalCtx = useContext(AppContext);
     
     async function logout() {
-        console.log("Loging out");
-        let token = await getToken();
-        console.log(token);
         await clearUserSession();
         globalCtx.setLoggedIn(false);
-        token = await getToken();
-        console.log(token);
     }
   
     return (
