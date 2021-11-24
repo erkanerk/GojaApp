@@ -15,6 +15,7 @@ interface Like {
 interface Post {
     _id: string;
     hashtags: string[];
+    audioFileType: string;
     audio: string;
     user: PostUser;
     commentsCount: number;

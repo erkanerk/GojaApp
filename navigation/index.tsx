@@ -19,7 +19,7 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
-import PostFeed from "../screens/HomeFeed";
+import HomeFeed from "../screens/HomeFeed";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import TabThreeScreen from "../screens/TabThreeScreen";
 import {
@@ -95,16 +95,24 @@ function BottomTabNavigator() {
 
     return (
         <BottomTab.Navigator
-            initialRouteName="TabOne"
+            initialRouteName="Feed"
             screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme].tint,
             }}
         >
             <BottomTab.Screen
-                name="TabOne"
-                component={TabOneScreen}
-                options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
-                    title: "Tab One",
+                name="Feed"
+                component={HomeFeed}
+                options={{
+                  title: "Feed",
+                  tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                }}
+              />
+              <BottomTab.Screen
+                name="TabTwo"
+                component={TabTwoScreen}
+                options={({ navigation }: RootTabScreenProps<"TabTwo">) => ({
+                  title: "Tab Two",
                     tabBarIcon: ({ color }) => (
                         <TabBarIcon name="code" color={color} />
                     ),
@@ -126,20 +134,10 @@ function BottomTabNavigator() {
                 })}
             />
             <BottomTab.Screen
-                name="TabTwo"
-                component={TabTwoScreen}
-                options={{
-                    title: "Tab Two",
-                    tabBarIcon: ({ color }) => (
-                        <TabBarIcon name="code" color={color} />
-                    ),
-                }}
-            />
-            <BottomTab.Screen
                 name="TabThree"
-                component={PostFeed}
+                component={TabThreeScreen}
                 options={{
-                    title: "Feed",
+                    title: "Tab three",
                     tabBarIcon: ({ color }) => (
                         <TabBarIcon name="code" color={color} />
                     ),
@@ -155,8 +153,8 @@ function BottomTabNavigator() {
                     ),
                 }}
             />
-        </BottomTab.Navigator>
-    );
+    </BottomTab.Navigator>
+  );
 
 }
 
