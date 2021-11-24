@@ -22,7 +22,7 @@ export default function AuthScreen() {
             >
                 <Image
                     style={styles.bigLogo}
-                    source={require("../assets/images/parrotVit.png")}
+                    source={require("../assets/images/parrot.png")}
                 />
                 <View style={styles.titleBox}>
                     <Text style={styles.title}>Goja</Text>
@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
         color: "white",
     },
     bigLogo: {
-        height: 140,
-        width: 140,
-        marginBottom: 20,
+        height: 100,
+        width: 100,
+        marginBottom: 0,
     },
     button: {
         marginTop: 20,

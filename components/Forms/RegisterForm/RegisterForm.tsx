@@ -1,11 +1,7 @@
 import React, { useState, useContext } from "react";
 import { TextInput, Keyboard, Text, View } from "react-native";
 import { SubmitButton } from "../SubmitButton";
-import {
-  APIKit,
-  saveUserSession,
-  clearUserSession,
-} from "../../../shared/APIkit";
+import { APIKit, saveUserSession, onFailure } from "../../../shared/APIkit";
 import Spinner from "react-native-loading-spinner-overlay";
 import { IFormErrors, emptyFormErrors, validateForm } from "./Utils";
 import { styles } from "../Forms.Styles";
@@ -28,28 +24,24 @@ export const RegisterForm = () => {
     }
   };
 
-  const registerUser = async () => {
-    const payload = { email, userName, password };
-    setIsLoading(true);
-    APIKit.post("/users/signup/", payload)
-      .then((response) => {
-        saveUserSession("userSession", {
-          email: email,
-          token: response.data.token,
-        });
-        setIsLoading(false);
-        globalCtx.setLoggedIn(true);
-      })
-      .catch((error) => {
-        console.log(error && error);
-        setIsLoading(false);
-        let errorCode = error.response.status;
-        if (errorCode == 400 || errorCode == 401) {
-          clearUserSession();
-          globalCtx.setLoggedIn(false);
-        }
-      });
-  };
+    const registerUser = async () => {
+        const payload = { email, userName, password };
+        setIsLoading(true);
+        APIKit.post("/users/signup/", payload)
+            .then((response) => {
+                saveUserSession("userSession", {
+                    email: email,
+                    token: response.data.token,
+                });
+                setIsLoading(false);
+                globalCtx.setLoggedIn(true);
+            })
+            .catch((error) => {
+                console.log(error && error);
+                setIsLoading(false);
+                onFailure(error, globalCtx);
+            });
+    };
 
   return (
     <View style={styles.wrapper}>

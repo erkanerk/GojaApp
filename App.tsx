@@ -1,28 +1,42 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import useCachedResources from "./hooks/useCachedResources";
+import preloadData from "./hooks/preloadData";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import AppContext from "./shared/AppContext";
+import { clearUserSession } from "./shared/APIkit";
 
 import { RegisterSoundScreen } from "./screens/postFlow/RegisterSoundScreen";
 
 export default function App() {
-    const isLoadingComplete = useCachedResources();
-    const colorScheme = useColorScheme();
-    const [loggedIn, setLoggedIn] = useState(false);
-    const appCtx = {
+    //clearUserSession();
+
+    const defaultCtx = useContext(AppContext);
+
+    const [loggedIn, setLoggedIn] = useState(defaultCtx.loggedIn);
+    const [userInfo, setUserInfo] = useState(defaultCtx.userInfo);
+    const [mainFeedPosts, setMainFeedPosts] = useState(
+        defaultCtx.mainFeedPosts
+    );
+    const globalCtx = {
         loggedIn,
         setLoggedIn,
+        userInfo,
+        setUserInfo,
+        mainFeedPosts,
+        setMainFeedPosts,
     };
 
-    if (!isLoadingComplete) {
+    const [loadingDataDone, loggedInDone] = preloadData(globalCtx);
+    const colorScheme = useColorScheme();
+
+    if (!loadingDataDone || !loggedInDone) {
         return null;
     } else {
         return (
-            <AppContext.Provider value={appCtx}>
+            <AppContext.Provider value={globalCtx}>
                 <SafeAreaProvider>
                     <RegisterSoundScreen />
                 </SafeAreaProvider>
