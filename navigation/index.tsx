@@ -153,8 +153,8 @@ function BottomTabNavigator() {
                     ),
                 }}
             />
-        </BottomTab.Navigator>
-    );
+    </BottomTab.Navigator>
+  );
 
 }
 
