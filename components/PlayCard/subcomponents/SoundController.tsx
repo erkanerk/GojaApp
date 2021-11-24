@@ -3,7 +3,6 @@ import { Image, StyleSheet, View, Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'row',
     },
     image: {

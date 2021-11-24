@@ -95,6 +95,7 @@ export const PostFeed = ({ posts }: Props) => {
         initialStatus,
         onPlaybackStatusUpdate
       );
+      setSound(sound)
 
       console.log("Playing Sound");
       await sound.playAsync();
