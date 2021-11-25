@@ -9,6 +9,7 @@ import AppContext from "./shared/AppContext";
 import { clearUserSession } from "./shared/APIkit";
 
 import { RegisterSoundScreen } from "./screens/postFlow/RegisterSoundScreen";
+import { RecordingScreen } from "./screens/postFlow/RecordingScreen";
 
 export default function App() {
     //clearUserSession();
@@ -38,7 +39,7 @@ export default function App() {
         return (
             <AppContext.Provider value={globalCtx}>
                 <SafeAreaProvider>
-                    <RegisterSoundScreen />
+                <RecordingScreen />
                 </SafeAreaProvider>
             </AppContext.Provider>
         );
@@ -46,4 +47,6 @@ export default function App() {
 }
 
 /** <Navigation colorScheme={colorScheme} />
-                    <StatusBar />*/
+                    <StatusBar />
+                    
+                     <RegisterSoundScreen />*/

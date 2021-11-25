@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, Pressable, Image } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { FollowButton } from "./subcomponents/FollowButton";
-import { Stats } from "./subcomponents/Stats";
+import { FollowButton } from "./subComponents/FollowButton";
+import { Stats } from "./subComponents/Stats";
 
 export const styles = StyleSheet.create({
     container: {

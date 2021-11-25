@@ -6,9 +6,10 @@ import {TopBar} from '../../components/Record/TopBar'
 
 export const RegisterSoundScreen = () => {
     return (
-        <View>
+        <View style={{flexDirection:"row", backgroundColor:"red"}}>
             <TopBar/>
-            <RecordButton/>
+            <View style= {{alignItems:"flex-end"}}><RecordButton /></View>
+            
         </View>
     )
 }
