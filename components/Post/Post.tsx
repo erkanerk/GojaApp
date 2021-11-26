@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
+import { Hashtags } from '../Hashtags/Hashtags';
 import { Likes } from '../Likes/Likes';
 import { Comments } from "./subcomponents/Comments";
 
@@ -26,16 +27,7 @@ export const styles = StyleSheet.create({
     pressableView: {
         flexDirection: "row",    
     },
-    hashtagView: {
-        flexDirection: "row",
-    },
-    hashtag: {
-        fontSize: 10,
-    },
-    focused_hashtag: {
-        fontSize: 10,
-        fontWeight: 'bold'
-    },
+    hashtagView: {},
     pictureView: {
         flex: 2,
     },
@@ -101,7 +93,7 @@ export const Post = ({
         style={({ pressed }) => [
             {backgroundColor: pressed
                 ? '#edf7fd'
-                : 'white'
+                : 'transparent'
                 }]}>
             <View style={styles.pressableView}>
                 <View style={styles.pictureView}>

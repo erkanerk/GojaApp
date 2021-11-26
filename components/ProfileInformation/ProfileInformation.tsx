@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, Text, Pressable, Image } from 'react-native';
+import React, { SetStateAction } from 'react';
+import { Dispatch } from 'react';
+import { View, Text, Pressable, Image, ActivityIndicator } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { FollowButton } from "./subcomponents/FollowButton";
 import { Stats } from "./subcomponents/Stats";
@@ -38,33 +39,39 @@ export const styles = StyleSheet.create({
 });
 
 interface Props {
-    user: User
+    user: UserInfo
+    setRender: Dispatch<SetStateAction<string>>
 }
 export const ProfileInformation = ({ 
-    user
+    user,
+    setRender,
 }: Props) => {
-
 
     return (
     <View style={styles.container}>
-        <View style={styles.imageView}>
-            <Image
-            style={styles.image}
-            source={{
-                uri: user.profilePicture
-            }}/> 
+        {!user ? <ActivityIndicator /> :
+        <View>
+            <View style={styles.imageView}>
+                <Image
+                style={styles.image}
+                source={user.profilePicture ? {
+                    uri: user.profilePicture
+                } : require('../../assets/images/icon.png')}/> 
+            </View>
+            <View style={styles.textView}>
+                <Text style={styles.text}>{user.userName}</Text>
+            </View>
+            <View style={styles.followButtonView}>
+                <FollowButton />
+            </View>
+            <View style={styles.statsView}>
+                <Stats 
+                user={user}
+                setRender={setRender}/>
+            </View>
+            <View style={styles.line} />
         </View>
-        <View style={styles.textView}>
-            <Text style={styles.text}>{user.userName}</Text>
-        </View>
-        <View style={styles.followButtonView}>
-            <FollowButton />
-        </View>
-        <View style={styles.statsView}>
-            <Stats 
-            user={user}/>
-        </View>
-        <View style={styles.line} />
+        }
     </View>
     );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
@@ -30,10 +30,12 @@ export const styles = StyleSheet.create({
 });
 
 interface Props {
-    user: User
+    user: UserInfo
+    setRender: Dispatch<SetStateAction<string>>
 }
 export const Stats = ({ 
-    user
+    user,
+    setRender
 }: Props) => {
     const [nPostsIsPressed, setNPostsIsPressed] = useState<boolean>(true)
     const [nFollowingIsPressed, setNFollowingIsPressed] = useState<boolean>(false)
@@ -41,21 +43,30 @@ export const Stats = ({
 
     function handleNPostsOnPress() {
         console.log("Number of post button pressed")
-        setNPostsIsPressed(true)
-        setNFollowersIsPressed(false)
-        setNFollowingIsPressed(false)
+        if (!nPostsIsPressed) {
+            setNPostsIsPressed(true)
+            setNFollowersIsPressed(false)
+            setNFollowingIsPressed(false)
+            setRender('posts')
+        }
     }
     function handleNFollowersOnPress() {
         console.log("Number of followers button pressed")
-        setNPostsIsPressed(false)
-        setNFollowersIsPressed(true)
-        setNFollowingIsPressed(false)
+        if (!nFollowingIsPressed) {
+            setNPostsIsPressed(false)
+            setNFollowersIsPressed(true)
+            setNFollowingIsPressed(false)
+            setRender('followers')
+        }
     }
     function handleNFollowingOnPress() {
         console.log("Number of following button pressed")
-        setNPostsIsPressed(false)
-        setNFollowersIsPressed(false)
-        setNFollowingIsPressed(true)
+        if (!nFollowingIsPressed) {
+            setNPostsIsPressed(false)
+            setNFollowersIsPressed(false)
+            setNFollowingIsPressed(true)
+            setRender('following')
+        }
     }
     return (
     <View style={styles.container}>
@@ -63,14 +74,14 @@ export const Stats = ({
             <Pressable
             onPress={handleNPostsOnPress}>
                 <Text style={nPostsIsPressed ? styles.textFocused : styles.text}>Posts</Text>
-                <Text style={nPostsIsPressed ? styles.textFocused : styles.text}>{user.nPosts}</Text>
+                <Text style={nPostsIsPressed ? styles.textFocused : styles.text}>{user.postCount}</Text>
             </Pressable>
         </View>
         <View style={styles.nFollowersView}>
             <Pressable
             onPress={handleNFollowersOnPress}>
                 <Text style={nFollowersIsPressed ? styles.textFocused : styles.text}>Followers</Text>
-                <Text style={nFollowersIsPressed ? styles.textFocused : styles.text}>{user.nFollowers}</Text>
+                <Text style={nFollowersIsPressed ? styles.textFocused : styles.text}>{user.followerCount}</Text>
             </Pressable>
             
         </View>
@@ -78,7 +89,7 @@ export const Stats = ({
             <Pressable
             onPress={handleNFollowingOnPress}>
                 <Text style={nFollowingIsPressed ? styles.textFocused : styles.text}>Following</Text>
-                <Text style={nFollowingIsPressed ? styles.textFocused : styles.text}>{user.nFollowing}</Text>
+                <Text style={nFollowingIsPressed ? styles.textFocused : styles.text}>{user.followingCount}</Text>
             </Pressable>
         </View>
     </View>
