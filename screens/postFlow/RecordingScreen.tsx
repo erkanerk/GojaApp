@@ -82,7 +82,13 @@ export const RecordingScreen = ({
         />
         {recordingScreenType === PostType.POST && <OnlyPicture />}
         {recordingScreenType === PostType.REGISTER && <TextAndPictures />}
-        {recordingScreenType === PostType.ANSWER && <AnswerTo />}
+        {recordingScreenType === PostType.ANSWER && (
+          <AnswerTo
+            imageUrl={testPic.uri}
+            username={"TestUsernam"}
+            hashtags={["hej", "test", "testing"]}
+          />
+        )}
 
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}

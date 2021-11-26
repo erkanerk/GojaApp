@@ -53,16 +53,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  post: {
-    borderRadius: 19,
-    width: 100,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "red",
-    marginTop: 50,
-    marginBottom: 20,
-  },
 });
 
 interface PropTypes {

@@ -37,7 +37,7 @@ export default function App() {
     return (
       <AppContext.Provider value={globalCtx}>
         <SafeAreaProvider>
-          <RecordingScreen recordingScreenType={PostType.REGISTER} />
+          <RecordingScreen recordingScreenType={PostType.POST} />
         </SafeAreaProvider>
       </AppContext.Provider>
     );
