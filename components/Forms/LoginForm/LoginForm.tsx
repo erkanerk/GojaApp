@@ -33,6 +33,7 @@ export const LoginForm = () => {
                     token: response.data.token,
                 });
                 setIsLoading(false);
+                globalCtx.setUserInfo(response.data.user);
                 globalCtx.setLoggedIn(true);
             })
             .catch((error) => {

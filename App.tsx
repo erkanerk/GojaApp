@@ -9,8 +9,6 @@ import AppContext from "./shared/AppContext";
 import { clearUserSession } from "./shared/APIkit";
 
 export default function App() {
-    //clearUserSession();
-
     const defaultCtx = useContext(AppContext);
 
     const [loggedIn, setLoggedIn] = useState(defaultCtx.loggedIn);

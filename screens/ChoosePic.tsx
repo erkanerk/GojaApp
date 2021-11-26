@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
     Platform,
     Image,
@@ -7,29 +7,24 @@ import {
     KeyboardAvoidingView,
     Keyboard,
     TouchableWithoutFeedback,
-} from "react-native";
+} from 'react-native';
 
 import { RegisterForm } from '../components/Forms/RegisterForm/RegisterForm';
 import { LoginForm } from '../components/Forms/LoginForm/LoginForm';
 import { Text, View } from '../components/Themed';
 
-export default function AuthScreen({ navigation }) {
+export default function ChoosePic({ navigation }) {
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.container}
-            >
-                <Image
-                    style={styles.bigLogo}
-                    source={require('../assets/images/parrot.png')}
-                />
-                <View style={styles.titleBox}>
-                    <Text style={styles.title}>Goja</Text>
-                </View>
-                <FormTypeSwitcher navigation={navigation} />
-            </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+        <View style={styles.container}>
+            <Image
+                style={styles.bigLogo}
+                source={require('../assets/images/parrot.png')}
+            />
+            <View style={styles.titleBox}>
+                <Text style={styles.title}>Goja</Text>
+            </View>
+            <FormTypeSwitcher navigation={navigation} />
+        </View>
     );
 }
 
@@ -65,18 +60,18 @@ function FormTypeSwitcher({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#BA0505",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#BA0505',
     },
     titleBox: {
-        backgroundColor: "rgba(0, 0, 0, 0)",
+        backgroundColor: 'rgba(0, 0, 0, 0)',
     },
     title: {
         fontSize: 40,
-        fontWeight: "bold",
+        fontWeight: 'bold',
         marginBottom: 35,
-        color: "white",
+        color: 'white',
     },
     bigLogo: {
         height: 100,
@@ -85,15 +80,15 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 20,
-        backgroundColor: "rgba(0, 0, 0, 0)",
+        backgroundColor: 'rgba(0, 0, 0, 0)',
         width: 100,
         height: 40,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     buttonText: {
         fontSize: 15,
-        fontWeight: "bold",
-        color: "white",
+        fontWeight: 'bold',
+        color: 'white',
     },
 });
