@@ -9,41 +9,39 @@ import AppContext from "./shared/AppContext";
 import { clearUserSession } from "./shared/APIkit";
 
 import { RegisterSoundScreen } from "./screens/postFlow/RegisterSoundScreen";
-import { RecordingScreen } from "./screens/postFlow/RecordingScreen";
+import { RecordingScreen, PostType } from "./screens/postFlow/RecordingScreen";
 
 export default function App() {
-    //clearUserSession();
+  //clearUserSession();
 
-    const defaultCtx = useContext(AppContext);
+  const defaultCtx = useContext(AppContext);
 
-    const [loggedIn, setLoggedIn] = useState(defaultCtx.loggedIn);
-    const [userInfo, setUserInfo] = useState(defaultCtx.userInfo);
-    const [mainFeedPosts, setMainFeedPosts] = useState(
-        defaultCtx.mainFeedPosts
+  const [loggedIn, setLoggedIn] = useState(defaultCtx.loggedIn);
+  const [userInfo, setUserInfo] = useState(defaultCtx.userInfo);
+  const [mainFeedPosts, setMainFeedPosts] = useState(defaultCtx.mainFeedPosts);
+  const globalCtx = {
+    loggedIn,
+    setLoggedIn,
+    userInfo,
+    setUserInfo,
+    mainFeedPosts,
+    setMainFeedPosts,
+  };
+
+  const [loadingDataDone, loggedInDone] = preloadData(globalCtx);
+  const colorScheme = useColorScheme();
+
+  if (!loadingDataDone || !loggedInDone) {
+    return null;
+  } else {
+    return (
+      <AppContext.Provider value={globalCtx}>
+        <SafeAreaProvider>
+          <RecordingScreen recordingScreenType={PostType.REGISTER} />
+        </SafeAreaProvider>
+      </AppContext.Provider>
     );
-    const globalCtx = {
-        loggedIn,
-        setLoggedIn,
-        userInfo,
-        setUserInfo,
-        mainFeedPosts,
-        setMainFeedPosts,
-    };
-
-    const [loadingDataDone, loggedInDone] = preloadData(globalCtx);
-    const colorScheme = useColorScheme();
-
-    if (!loadingDataDone || !loggedInDone) {
-        return null;
-    } else {
-        return (
-            <AppContext.Provider value={globalCtx}>
-                <SafeAreaProvider>
-                <RecordingScreen />
-                </SafeAreaProvider>
-            </AppContext.Provider>
-        );
-    }
+  }
 }
 
 /** <Navigation colorScheme={colorScheme} />

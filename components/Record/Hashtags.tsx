@@ -1,5 +1,10 @@
 import React from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  KeyboardAvoidingView,
+} from "react-native";
 
 interface PropTypes {
   hashtagSetter: React.Dispatch<React.SetStateAction<string>>;
@@ -8,7 +13,13 @@ interface PropTypes {
 
 export const Hashtags = ({ hashtagSetter, hashtags }: PropTypes) => {
   return (
-    <View style={{ justifyContent: "center", alignSelf: "center" }}>
+    <View
+      style={{
+        justifyContent: "center",
+        alignSelf: "center",
+        marginBottom: 15,
+      }}
+    >
       <TextInput
         style={{
           height: 40,

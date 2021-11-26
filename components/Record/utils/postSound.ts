@@ -6,7 +6,7 @@ const { manifest } = Constants;
 
 
 
-async function postSound(recordingURIP: any, hashtags: string[], endPoint: string) {
+async function postSound(recordingURIP: any, hashtags: string[], endPoint: string, answerToId: string | null = null) {
     let apiUrl =
       `http://${manifest?.debuggerHost?.split(":").shift()}:3000` +
       "/posts/upload-audio/";
@@ -31,6 +31,7 @@ async function postSound(recordingURIP: any, hashtags: string[], endPoint: strin
           hashtags: hashtags,
           audio: urlNoQuotes,
           audioFileType: fileType,
+          inReplpyToPostId: answerToId,
           user: {
             profileAudio: "url",
             profilePicture: "url",
@@ -52,12 +53,3 @@ async function postSound(recordingURIP: any, hashtags: string[], endPoint: strin
       });
   }
   export {postSound}
-
-  /** 
-   * user: {
-            profileAudio: "url",
-            profilePicture: "url",
-            userName: "test",
-            email: "test@erk.com",
-          },
-  */

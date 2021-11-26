@@ -12,6 +12,7 @@ import {
 interface PropTypes {
   postToBackend: () => Promise<void>;
   canPost: boolean;
+  buttonText: string;
 }
 
 const styles = StyleSheet.create({
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const TopBar = ({ postToBackend, canPost }: PropTypes) => {
+export const TopBar = ({ postToBackend, canPost, buttonText }: PropTypes) => {
   return (
     <View
       style={{
@@ -60,7 +61,7 @@ export const TopBar = ({ postToBackend, canPost }: PropTypes) => {
         onPress={postToBackend}
       >
         <Text style={canPost ? { color: "#FFFFFF" } : { color: "#FF0000" }}>
-          Post
+          {buttonText}
         </Text>
       </Pressable>
     </View>
