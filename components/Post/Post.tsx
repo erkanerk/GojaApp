@@ -114,12 +114,13 @@ export const Post = ({
                 </View>
                 <View style={styles.textView}>
                     <Text style={isFocused ? styles.focused_userName : styles.userName}>{post.user.userName}</Text>
-        
-                    <View style={styles.hashtagView}>
-                        {post.hashtags.map(hashtag => 
-                            <Text key={hashtag} style={isFocused ? styles.focused_hashtag : styles.hashtag}>#{hashtag}</Text>
+                    {post.hashtags && 
+                        <View style={styles.hashtagView}>
+                        {post.hashtags.map((hashtag, index) => 
+                            <Text key={index} style={isFocused ? styles.focused_hashtag : styles.hashtag}>#{hashtag}</Text>
                         )}
                     </View>
+                    }
                 </View>
                 <View style={styles.commentsView}>
                     <Comments 
