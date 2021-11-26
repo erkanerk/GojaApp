@@ -46,9 +46,13 @@ export const clearUserSession = async () => {
 
 // Use when logging user out
 export const onFailure = (error, globalCtx) => {
-    let errorCode = error.response.status;
-    if (errorCode == 400 || errorCode == 401) {
-        clearUserSession();
-        globalCtx.setLoggedIn(false);
+    try {
+        let errorCode = error.response.status;
+        if (errorCode == 400 || errorCode == 401) {
+            clearUserSession();
+            globalCtx.setLoggedIn(false);
+        }
+    } catch (e) {
+        console.log(e);
     }
 };

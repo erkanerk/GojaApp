@@ -41,8 +41,8 @@ export default function preloadData(globalCtx) {
     const getUser = async () => {
         APIKit.get("/users/profile/me")
             .then((response) => {
-                globalCtx.setLoggedIn(true, setLoggedInDone(true));
                 globalCtx.setUserInfo(response.data);
+                globalCtx.setLoggedIn(true, setLoggedInDone(true));
             })
             .catch((error) => {
                 console.log(error && error);
@@ -54,7 +54,6 @@ export default function preloadData(globalCtx) {
     const getPosts = async () => {
         APIKit.get("/posts/all")
             .then((response) => {
-                console.log("here");
                 globalCtx.setMainFeedPosts(response.data);
             })
             .catch((error) => {

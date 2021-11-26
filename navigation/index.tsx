@@ -33,9 +33,9 @@ import ProfilePage from "../screens/ProfilePage";
 import AppContext from "../shared/AppContext";
 
 export default function Navigation({
-  colorScheme,
+    colorScheme,
 }: {
-  colorScheme: ColorSchemeName;
+    colorScheme: ColorSchemeName;
 }) {
     const globalCtx = useContext(AppContext);
     if (globalCtx.loggedIn) {
@@ -53,10 +53,21 @@ export default function Navigation({
             <NavigationContainer
                 theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
             >
-                <AuthScreen />
+                <AuthNavigator />
             </NavigationContainer>
         );
     }
+}
+
+const AuthStack = createNativeStackNavigator<RootStackParamList>();
+
+function AuthNavigator() {
+    return (
+        <AuthStack.Navigator>
+            <AuthStack.Screen name="Auth" component={AuthScreen} />
+            <AuthStack.Screen name="ChoosePic" component={NotFoundScreen} />
+        </AuthStack.Navigator>
+    );
 }
 
 /**
