@@ -37,7 +37,10 @@ export default function App() {
     return (
       <AppContext.Provider value={globalCtx}>
         <SafeAreaProvider>
-          <RecordingScreen recordingScreenType={PostType.POST} />
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+
+          <RegisterSoundScreen />
         </SafeAreaProvider>
       </AppContext.Provider>
     );

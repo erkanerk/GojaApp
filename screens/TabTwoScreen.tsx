@@ -1,15 +1,17 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { RecordButton } from '../components/Record/RecordButton';
+import * as React from "react";
+import { StyleSheet } from "react-native";
+import { RecordButton } from "../components/Record/RecordButton";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
+import { RecordingScreen } from "./postFlow/RecordingScreen";
+import { PostType } from "./postFlow/RecordingScreen";
 
 export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
-        <RecordButton></RecordButton>
+      <RecordingScreen recordingScreenType={PostType.POST} />
     </View>
   );
 }
@@ -17,9 +19,9 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
   },
   title: {
     fontSize: 20,

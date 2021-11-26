@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -17,6 +17,7 @@ import { Hashtags } from "../../components/Record/Hashtags";
 import { TextAndPictures } from "../../components/Record/TextAndPictures";
 import { OnlyPicture } from "../../components/Record/OnlyPicture";
 import { AnswerTo } from "../../components/Record/AnswerTo";
+import AppContext from "../../shared/AppContext";
 
 export enum PostType {
   REGISTER,
@@ -36,6 +37,8 @@ export const RecordingScreen = ({
   const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
   const [canPost, setCanPost] = useState<boolean>(false);
 
+  const globalCtx = useContext(AppContext);
+
   let postButtonText = "Post";
   if (recordingScreenType === PostType.REGISTER) {
     postButtonText = "Done";
@@ -48,7 +51,17 @@ export const RecordingScreen = ({
     }
     const arrayHashtags = hashtags.split(" ");
 
-    postSound(recordingURI, arrayHashtags, "/posts");
+    const userToPostTemp = await globalCtx.userInfo;
+    console.log("USERTOPOST", userToPostTemp);
+    console.log(userToPostTemp.profileAudio);
+    const userToPost = {
+      profileAudio: userToPostTemp.profileAudio,
+      profilePicture: userToPostTemp.profilePicture,
+      userName: userToPostTemp.userName,
+      email: userToPostTemp.email,
+    };
+
+    postSound(recordingURI, arrayHashtags, "/posts", userToPost);
     setHashtags("");
     setCanPost(false);
     setRecordingURI(null);

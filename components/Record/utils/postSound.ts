@@ -8,6 +8,12 @@ async function postSound(
   recordingURIP: any,
   hashtags: string[],
   endPoint: string,
+  user: {
+    profileAudio: string | null;
+    profilePicture: string | null;
+    userName: string | null;
+    email: string | null;
+  },
   answerToId: string | null = null
 ) {
   let apiUrl =
@@ -36,12 +42,7 @@ async function postSound(
         audio: urlNoQuotes,
         audioFileType: fileType,
         inReplpyToPostId: answerToId,
-        user: {
-          profileAudio: "url",
-          profilePicture: "url",
-          userName: "test",
-          email: "test@erk.com",
-        },
+        user: user,
       };
       APIKit.post(endPoint, payload)
         .then((response) => {
