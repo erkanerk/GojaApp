@@ -1,11 +1,13 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
+
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { Audio } from 'expo-av';
-import { APIKit, getToken } from '../../shared/APIkit';
+import { APIKit, getToken, onFailure } from '../../shared/APIkit';
 import Constants from "expo-constants";
 const { manifest } = Constants;
 import * as FileSystem from 'expo-file-system';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AppContext from "../../shared/AppContext";
 
 
 const styles = StyleSheet.create({
@@ -65,6 +67,7 @@ const styles = StyleSheet.create({
 });
 
 export const RecordButton = () => {
+  const globalCtx = useContext(AppContext);
   const [recording, setRecording] = React.useState<any | null>(null);
   const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
   const [sound, setSound] = React.useState<any | null>(null);
@@ -153,10 +156,12 @@ export const RecordButton = () => {
             })
             .catch((error) => {
               console.log(error);
+              onFailure(error, globalCtx);
             });
 
         }).catch((error) => {
           console.log(error);
+          onFailure(error, globalCtx);
         }) 
     }
 

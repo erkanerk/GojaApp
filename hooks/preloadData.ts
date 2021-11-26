@@ -39,7 +39,7 @@ export default function preloadData(globalCtx) {
     }, []);
 
     const getUser = async () => {
-        APIKit.get("/users/my-profile")
+        APIKit.get("/users/profile/me")
             .then((response) => {
                 globalCtx.setLoggedIn(true, setLoggedInDone(true));
                 globalCtx.setUserInfo(response.data);
