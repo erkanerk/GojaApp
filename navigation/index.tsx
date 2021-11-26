@@ -33,29 +33,41 @@ import ProfilePage from "../screens/ProfilePage";
 import AppContext from "../shared/AppContext";
 
 export default function Navigation({
-  colorScheme,
+    colorScheme,
 }: {
-  colorScheme: ColorSchemeName;
+    colorScheme: ColorSchemeName;
 }) {
-  const globalCtx = useContext(AppContext);
-  if (globalCtx.loggedIn) {
+    const globalCtx = useContext(AppContext);
+    if (globalCtx.loggedIn) {
+        return (
+            <NavigationContainer
+                linking={LinkingConfiguration}
+                theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+                <RootNavigator />
+            </NavigationContainer>
+        );
+    } else {
+        //use a stack navigator here!?
+        return (
+            <NavigationContainer
+                theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+                <AuthNavigator />
+            </NavigationContainer>
+        );
+    }
+}
+
+const AuthStack = createNativeStackNavigator<RootStackParamList>();
+
+function AuthNavigator() {
     return (
-      <NavigationContainer
-        linking={LinkingConfiguration}
-        theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-      >
-        <RootNavigator />
-      </NavigationContainer>
+        <AuthStack.Navigator>
+            <AuthStack.Screen name="Auth" component={AuthScreen} />
+            <AuthStack.Screen name="ChoosePic" component={NotFoundScreen} />
+        </AuthStack.Navigator>
     );
-  } else {
-    return (
-      <NavigationContainer
-        theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-      >
-        <AuthScreen />
-      </NavigationContainer>
-    );
-  }
 }
 
 /**
