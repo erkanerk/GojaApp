@@ -35,7 +35,7 @@ export const RegisterForm = ({ navigation }) => {
                 });
                 globalCtx.setUserInfo(response.data.user);
                 setIsLoading(false);
-                navigation.navigate('ChoosePic');
+                globalCtx.setLoggedIn(true);
             })
             .catch((error) => {
                 console.log(error && error);
