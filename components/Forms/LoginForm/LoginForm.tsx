@@ -44,7 +44,6 @@ export const LoginForm = () => {
 
     return (
         <View style={styles.wrapper}>
-            <Text style={styles.errorMessage}>{globalCtx.userInfo.email}</Text>
             <Spinner visible={isLoading} />
             <View style={styles.formWrapper}>
                 <View style={styles.inputField}>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as React from "react";
 import { View, StyleSheet, Pressable, Text } from "react-native";
 import { Audio } from "expo-av";
@@ -6,6 +7,18 @@ import Constants from "expo-constants";
 const { manifest } = Constants;
 import * as FileSystem from "expo-file-system";
 import Icon from "react-native-vector-icons/FontAwesome";
+=======
+import React, { useContext } from 'react';
+
+import { View, StyleSheet, Pressable, Text } from 'react-native';
+import { Audio } from 'expo-av';
+import { APIKit, getToken, onFailure } from '../../shared/APIkit';
+import Constants from "expo-constants";
+const { manifest } = Constants;
+import * as FileSystem from 'expo-file-system';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import AppContext from "../../shared/AppContext";
+>>>>>>> main
 
 import { postSound } from "./utils/postSound";
 
