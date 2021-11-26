@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
 import axios from 'axios';
-import { APIKit, saveUserSession, onFailure } from "../../shared/APIkit";
+import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
 
 const styles = StyleSheet.create({
