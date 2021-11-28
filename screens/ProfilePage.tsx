@@ -62,6 +62,7 @@ export default function ProfilePage({
         }
     }
     
+    // TODO: Build the user item component
     return (
     <View style={styles.container}>
         <View style={styles.logout}>

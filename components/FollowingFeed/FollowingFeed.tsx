@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native";
 import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
 import { useIsFocused } from "@react-navigation/native";
+import { FadeText } from "../FadeText/FadeText";
 
 export const styles = StyleSheet.create({
     container: {
@@ -49,17 +50,13 @@ export const FollowingFeed = ({}: Props) => {
         if (isFocused) {
             getUserFollowing()    
         }
-      }, [isFocused]);
+    }, [isFocused]);
 
+    // TODO: Build the user item component
     const renderItem = ({ item, index, separators }: any) => (
         <Text>User Item</Text>
     );
 
-    if (isLoading) {
-        return(
-            <ActivityIndicator size="large" color={'lightgray'} />
-        )
-    }
     return (
         <View style={styles.container}>
             {users 
@@ -72,7 +69,7 @@ export const FollowingFeed = ({}: Props) => {
             </View>
             :
             <View style={styles.textView}>
-                <Text style={styles.text}>When you follow your friends they will show up here!</Text>
+                <FadeText style={styles.text} text={'When you follow your friends they will show up here!'} />
             </View>
             }
         </View>
