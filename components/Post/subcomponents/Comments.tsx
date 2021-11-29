@@ -1,5 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
+import { MessageCircle } from "react-native-feather";
+
 
 const styles = StyleSheet.create({
   container: {
@@ -11,13 +13,9 @@ const styles = StyleSheet.create({
   pressable: {
     flexDirection: 'row'
   },
-  image: {
-    width: 20,
-    height: 20,
-  },
   text: {   
     marginLeft: 5,
-    fontSize: 12,
+    fontSize: 15,
   }
 }); 
 
@@ -42,9 +40,7 @@ export const Comments = ({
         onPress={handleOnPress}
         >
         <View>
-            <Image 
-                style={styles.image}
-                source={require('../../../assets/images/speech_bubble_icon.png')}/>
+            <MessageCircle stroke="black" fill="white" width={25} height={25} strokeWidth={1} />
         </View>
         <View>
             <Text style={styles.text}>{count}</Text>

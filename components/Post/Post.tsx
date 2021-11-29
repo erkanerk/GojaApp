@@ -8,32 +8,37 @@ export const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
         padding: 5,
-        margin: 10,
         borderRadius: 5,
         flexDirection: 'column',
     },
     userName: {
-        fontSize: 12,
+        fontSize: 17,
+        color: 'black'
     },
     focused_userName: {
-        fontSize: 12,
+        fontSize: 17,
+        color: '#059336',
         fontWeight: 'bold'
     },
     profilePicture: {
         width: 50,
         height: 50,
+        borderRadius: 15
     },
     pressableView: {
-        flexDirection: "row",    
+        flexDirection: "row",   
+        marginBottom: 15,
     },
     hashtagView: {
         flexDirection: "row",
     },
     hashtag: {
-        fontSize: 10,
+        fontSize: 15,
+        color: 'black'
     },
     focused_hashtag: {
-        fontSize: 10,
+        fontSize: 15,
+        color: '#059336',
         fontWeight: 'bold'
     },
     pictureView: {
@@ -42,18 +47,22 @@ export const styles = StyleSheet.create({
     textView: {
         flexDirection: "column",
         flex: 7,
-        margin: 5,
+        marginLeft: 15,
+        justifyContent: 'center',
     },
     commentsView: {
         flex: 2,
         margin: 5,
+        justifyContent: 'center'
     },
     likesView: {
         flex: 2,
         margin: 5,
+        justifyContent: 'center'
     },
     line: {
         borderBottomColor: 'lightgray',
+        opacity: 0.3,
         borderBottomWidth: 1,
     }
   }); 
