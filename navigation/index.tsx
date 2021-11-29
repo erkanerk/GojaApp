@@ -13,24 +13,25 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { useContext } from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, Pressable, Image } from 'react-native';
 
-import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
-import ModalScreen from "../screens/ModalScreen";
-import NotFoundScreen from "../screens/NotFoundScreen";
-import HomeFeed from "../screens/HomeFeed";
-import TabTwoScreen from "../screens/TabTwoScreen";
-import TabThreeScreen from "../screens/TabThreeScreen";
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
+import ModalScreen from '../screens/ModalScreen';
+import NotFoundScreen from '../screens/NotFoundScreen';
+import HomeFeed from '../screens/HomeFeed';
+import TabTwoScreen from '../screens/TabTwoScreen';
+import TabThreeScreen from '../screens/TabThreeScreen';
 import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-} from "../types";
-import LinkingConfiguration from "./LinkingConfiguration";
-import AuthScreen from "../screens/AuthScreen";
-import ProfilePage from "../screens/ProfilePage";
-import AppContext from "../shared/AppContext";
+    RootStackParamList,
+    RootTabParamList,
+    RootTabScreenProps,
+} from '../types';
+import LinkingConfiguration from './LinkingConfiguration';
+import AuthScreen from '../screens/AuthScreen';
+import ChoosePic from '../screens/ChoosePic';
+import ProfilePage from '../screens/ProfilePage';
+import AppContext from '../shared/AppContext';
 
 export default function Navigation({
     colorScheme,
@@ -42,7 +43,7 @@ export default function Navigation({
         return (
             <NavigationContainer
                 linking={LinkingConfiguration}
-                theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+                theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
             >
                 <RootNavigator />
             </NavigationContainer>
@@ -51,7 +52,7 @@ export default function Navigation({
         //use a stack navigator here!?
         return (
             <NavigationContainer
-                theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+                theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
             >
                 <AuthNavigator />
             </NavigationContainer>
@@ -64,8 +65,24 @@ const AuthStack = createNativeStackNavigator<RootStackParamList>();
 function AuthNavigator() {
     return (
         <AuthStack.Navigator>
-            <AuthStack.Screen name="Auth" component={AuthScreen} />
-            <AuthStack.Screen name="ChoosePic" component={NotFoundScreen} />
+            <AuthStack.Screen
+                name="Auth"
+                component={AuthScreen}
+                options={{ headerShown: false }}
+            />
+            <AuthStack.Screen
+                name="ChoosePic"
+                component={ChoosePic}
+                options={{
+                    headerTitle: (props) => (
+                        <Image
+                            style={{ width: 200, height: 50, flex: 1 }}
+                            source={require('../assets/images/parrot.png')}
+                            resizeMode="contain"
+                        />
+                    ),
+                }}
+            />
         </AuthStack.Navigator>
     );
 }
