@@ -95,7 +95,7 @@ export const Likes = ({
                 ? 
                 <Heart stroke="red" fill="red" width={25} height={25} />
                 : 
-                <Heart stroke="black" fill="#fff" width={25} height={25} strokeWidth={1} />
+                <Heart stroke="black" fill="transparent" width={25} height={25} strokeWidth={1} />
                 }
             </View>
             <View>

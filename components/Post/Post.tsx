@@ -13,16 +13,16 @@ export const styles = StyleSheet.create({
     },
     userName: {
         fontSize: 17,
-        color: 'black'
+        color: 'black',
     },
     focused_userName: {
         fontSize: 17,
         color: '#059336',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     profilePicture: {
-        width: 50,
-        height: 50,
+        width: 55,
+        height: 55,
         borderRadius: 15
     },
     pressableView: {
@@ -31,15 +31,16 @@ export const styles = StyleSheet.create({
     },
     hashtagView: {
         flexDirection: "row",
+        flex:1
     },
     hashtag: {
         fontSize: 15,
-        color: 'black'
+        color: 'black',
     },
     focused_hashtag: {
         fontSize: 15,
         color: '#059336',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     pictureView: {
         flex: 2,
@@ -47,18 +48,18 @@ export const styles = StyleSheet.create({
     textView: {
         flexDirection: "column",
         flex: 7,
-        marginLeft: 15,
+        marginLeft: 20,
         justifyContent: 'center',
     },
     commentsView: {
         flex: 2,
         margin: 5,
-        justifyContent: 'center'
+        justifyContent: 'flex-end'
     },
     likesView: {
         flex: 2,
         margin: 5,
-        justifyContent: 'center'
+        justifyContent: 'flex-end'
     },
     line: {
         borderBottomColor: 'lightgray',
@@ -125,9 +126,12 @@ export const Post = ({
                     <Text style={isFocused ? styles.focused_userName : styles.userName}>{post.user.userName}</Text>
                     {post.hashtags && 
                         <View style={styles.hashtagView}>
-                        {post.hashtags.map((hashtag, index) => 
-                            <Text key={index} style={isFocused ? styles.focused_hashtag : styles.hashtag}>#{hashtag}</Text>
-                        )}
+                            <Text numberOfLines={1}> 
+                                {post.hashtags.map((hashtag, index) => 
+                                    <Text key={index} style={isFocused ? styles.focused_hashtag : styles.hashtag} numberOfLines={1}>#{hashtag}</Text>
+                                )}
+                            </Text>
+                        
                     </View>
                     }
                 </View>
