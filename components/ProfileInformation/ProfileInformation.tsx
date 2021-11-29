@@ -10,8 +10,8 @@ import { StyleSheet } from 'react-native';
 import { APIKit, onFailure } from '../../shared/APIkit';
 import AppContext from '../../shared/AppContext';
 import { useIsFocused } from '@react-navigation/native';
-import { FollowButton } from './subComponents/FollowButton';
-import { Stats } from './subComponents/Stats';
+import { FollowButton } from './subcomponents/FollowButton';
+import { Stats } from './subcomponents/Stats';
 
 export const styles = StyleSheet.create({
     container: {
