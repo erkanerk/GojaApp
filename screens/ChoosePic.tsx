@@ -1,25 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as Icon from 'react-native-feather';
 import { StatusBar } from 'expo-status-bar';
-import {
-    Platform,
-    Image,
-    StyleSheet,
-    Pressable,
-    KeyboardAvoidingView,
-    Keyboard,
-    TouchableWithoutFeedback,
-    Button,
-    Alert,
-} from 'react-native';
+import { Platform, Image, StyleSheet, Pressable, Alert } from 'react-native';
 
-import { RegisterForm } from '../components/Forms/RegisterForm/RegisterForm';
-import { LoginForm } from '../components/Forms/LoginForm/LoginForm';
 import { Text, View } from '../components/Themed';
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import * as Constants from 'expo-Constants';
-import { ScreenHeight } from 'react-native-elements/dist/helpers';
+
 
 export default function ChoosePic({ navigation }) {
     const [image, setImage] = useState<string>('');
