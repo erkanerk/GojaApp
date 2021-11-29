@@ -30,7 +30,7 @@ export default function ChoosePic({ navigation }) {
                 await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
                 Alert.alert(
-                    'Sorry, we need camera roll permissions to make this work!'
+                    'Sorry, we need camera roll permissions to make this work. Navigate to your settings on your device and allow camera roll permission for the app.'
                 );
                 return false;
             } else {
