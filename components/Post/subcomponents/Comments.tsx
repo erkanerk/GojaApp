@@ -25,10 +25,7 @@ interface Props {
 
 export const Comments = ({ 
     post
-}: Props) => {
-    // TODO: Temporary count
-    const count = 4
-    
+}: Props) => {    
     function handleOnPress() {
         console.log("comment button pressed")
     }
@@ -43,7 +40,7 @@ export const Comments = ({
             <MessageCircle stroke="black" fill="white" width={25} height={25} strokeWidth={1} />
         </View>
         <View>
-            <Text style={styles.text}>{count}</Text>
+            <Text style={styles.text}>{post.commentCount}</Text>
         </View>
       </Pressable>
     </View>
