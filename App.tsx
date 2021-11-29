@@ -8,9 +8,6 @@ import Navigation from './navigation';
 import AppContext from './shared/AppContext';
 import { clearUserSession } from './shared/APIkit';
 
-import { RegisterSoundScreen } from './screens/postFlow/RegisterSoundScreen';
-import { RecordingScreen, PostType } from './screens/postFlow/RecordingScreen';
-
 export default function App() {
     //clearUserSession();
 
@@ -41,8 +38,6 @@ export default function App() {
                 <SafeAreaProvider>
                     <Navigation colorScheme={colorScheme} />
                     <StatusBar />
-
-                    <RegisterSoundScreen />
                 </SafeAreaProvider>
             </AppContext.Provider>
         );
