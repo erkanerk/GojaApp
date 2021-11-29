@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
 import { useIsFocused } from "@react-navigation/native";
-import { FollowButton } from "./subcomponents/FollowButton";
+import { FollowButton } from "../FollowButton/FollowButton";
 import { Stats } from "./subcomponents/Stats";
 
 export const styles = StyleSheet.create({
@@ -87,6 +87,7 @@ export const ProfileInformation = ({
         )
     }
 
+    // TODO: The FollowButton should not exists for the users personal profile page
     return (
     <View style={styles.container}>
         <View style={styles.imageView}>
@@ -100,7 +101,8 @@ export const ProfileInformation = ({
             <Text style={styles.UserNameText}>{user.userName}</Text>
         </View>
         <View style={styles.followButtonView}>
-            <FollowButton />
+            <FollowButton 
+            user={user} />
         </View>
         <View style={styles.statsView}>
             <Stats 

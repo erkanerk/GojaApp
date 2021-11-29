@@ -5,6 +5,7 @@ import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
 import { useIsFocused } from "@react-navigation/native";
 import { FadeText } from "../FadeText/FadeText";
+import { User } from "../User/User";
 
 export const styles = StyleSheet.create({
     container: {
@@ -15,7 +16,9 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    feedView: {},
+    feedView: {
+
+    },
     text: {
         fontSize: 12,
         color: 'gray',
@@ -27,7 +30,7 @@ interface Props {}
 export const FollowersFeed = ({}: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const isFocused = useIsFocused();
-    const [users, setUsers] = useState<any | undefined>(undefined);
+    const [users, setUsers] = useState<Follower[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
     
     async function getUserFollowers() {
@@ -36,7 +39,7 @@ export const FollowersFeed = ({}: Props) => {
         .then((response) => {
             console.log("Successful /users/followers/me response: ")
             console.log(response.data)
-            setUsers(response.data);
+            setUsers(response.data.followers);
             setIsLoading(false);
         })
         .catch((error) => {
@@ -55,7 +58,8 @@ export const FollowersFeed = ({}: Props) => {
 
     // TODO: Build the user item component
     const renderItem = ({ item, index, separators }: any) => (
-        <Text>User Item</Text>
+        <User 
+        user={item} />
     );
 
     return (

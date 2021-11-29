@@ -5,6 +5,7 @@ import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
 import { useIsFocused } from "@react-navigation/native";
 import { FadeText } from "../FadeText/FadeText";
+import { User } from "../User/User";
 
 export const styles = StyleSheet.create({
     container: {
@@ -36,7 +37,7 @@ export const FollowingFeed = ({}: Props) => {
         .then((response) => {
             console.log("Successful /users/following/me response: ")
             console.log(response.data)
-            setUsers(response.data);
+            setUsers(response.data.following);
             setIsLoading(false);
         })
         .catch((error) => {
@@ -52,9 +53,9 @@ export const FollowingFeed = ({}: Props) => {
         }
     }, [isFocused]);
 
-    // TODO: Build the user item component
     const renderItem = ({ item, index, separators }: any) => (
-        <Text>User Item</Text>
+        <User 
+        user={item} />
     );
 
     return (
