@@ -3,6 +3,7 @@ import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
 import axios from 'axios';
 import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
+import { Heart } from "react-native-feather";
 
 const styles = StyleSheet.create({
     container: {
@@ -14,13 +15,9 @@ const styles = StyleSheet.create({
     pressable: {
         flexDirection: 'row'
       },
-    image: {
-        width: 20,
-        height: 20,
-    },
     text: {
         marginLeft: 5,
-        fontSize: 12,
+        fontSize: 15,
     }
 }); 
 
@@ -96,13 +93,9 @@ export const Likes = ({
             <View>
                 {isLiked 
                 ? 
-                <Image
-                    style={styles.image}
-                    source={require('../../assets/images/liked_icon.png')}/>
+                <Heart stroke="red" fill="red" width={25} height={25} />
                 : 
-                <Image
-                    style={styles.image}
-                    source={require('../../assets/images/not_liked_icon.png')}/>
+                <Heart stroke="black" fill="transparent" width={25} height={25} strokeWidth={1} />
                 }
             </View>
             <View>
