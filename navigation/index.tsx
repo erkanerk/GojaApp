@@ -13,7 +13,7 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { useContext } from "react";
-import { ColorSchemeName, Pressable, Image } from 'react-native';
+import { ColorSchemeName, Pressable, Image, Text } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -49,7 +49,6 @@ export default function Navigation({
             </NavigationContainer>
         );
     } else {
-        //use a stack navigator here!?
         return (
             <NavigationContainer
                 theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
@@ -63,25 +62,54 @@ export default function Navigation({
 const AuthStack = createNativeStackNavigator<RootStackParamList>();
 
 function AuthNavigator() {
+    const globalCtx = useContext(AppContext);
     return (
         <AuthStack.Navigator>
-            <AuthStack.Screen
-                name="Auth"
-                component={AuthScreen}
-                options={{ headerShown: false }}
-            />
             <AuthStack.Screen
                 name="ChoosePic"
                 component={ChoosePic}
                 options={{
                     headerTitle: (props) => (
                         <Image
-                            style={{ width: 200, height: 50, flex: 1 }}
+                            style={{
+                                width: 50,
+                                height: 50,
+                            }}
                             source={require('../assets/images/parrot.png')}
                             resizeMode="contain"
                         />
                     ),
+                    headerLeft: () => (
+                        <Pressable
+                            onPress={() => globalCtx.setLoggedIn(true)}
+                            style={({ pressed }) => ({
+                                opacity: pressed ? 0.5 : 1,
+                            })}
+                        >
+                            <Text
+                                style={{
+                                    fontWeight: 'bold',
+                                    fontSize: 15,
+                                    color: 'grey',
+                                }}
+                            >
+                                Cancel
+                            </Text>
+                        </Pressable>
+                    ),
+                    headerStyle: {
+                        backgroundColor: 'white',
+                    },
                 }}
+            />
+            <AuthStack.Screen
+                name="Auth"
+                component={AuthScreen}
+                options={{ headerShown: false }}
+            />
+            <AuthStack.Screen
+                name="RecordProfileSound"
+                component={AuthScreen}
             />
         </AuthStack.Navigator>
     );
