@@ -8,7 +8,6 @@ import * as FileSystem from "expo-file-system";
 
 export const styles = StyleSheet.create({
   container: {
-    padding: 10,
     backgroundColor: "white",
     flex: 1,
   },

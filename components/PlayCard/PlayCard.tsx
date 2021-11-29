@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#F2F2F2',
         flexDirection: 'column',
         padding: 7,
+        borderRadius: 20,
     }
   }); 
 

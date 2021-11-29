@@ -1,5 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet, View, Pressable } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faReply } from '@fortawesome/free-solid-svg-icons'
 
 const styles = StyleSheet.create({
   container: {
@@ -33,9 +35,7 @@ export const Reply = ({
       <Pressable
         onPress={handleOnPress}
         >
-        <Image 
-            style={styles.image}
-            source={require('../../../assets/images/reply_icon.png')}/>
+        <FontAwesomeIcon icon={ faReply } size={ 25 } color="#6D6D6D"/>
       </Pressable>
     </View>
     );

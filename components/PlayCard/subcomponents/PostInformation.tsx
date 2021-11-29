@@ -8,33 +8,37 @@ import { Likes } from '../../Likes/Likes';
 export const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     pictureView: {
         flex: 1,
     },
     textView: {
-        flex: 1,
+        flex: 2,
         flexDirection: "column",
     },
     replyView: {
+        marginTop: 5,
         flex: 1,
     },
     likesView: {
+        marginTop: 5,
         flex: 1,
     },
     userName: {
-        fontSize: 12,
+        fontSize: 18,
     },
     profilePicture: {
-        width: 50,
-        height: 50,
+        width: 52,
+        height: 52,
+        borderRadius: 15
     },
     hashtagView: {
         flexDirection: "row",
+        flexWrap: 'wrap'
     },
     hashtag: {
-        fontSize: 10,
+        fontSize: 15,
     },
   }); 
 
@@ -60,9 +64,9 @@ export const PostInformation = ({
             <View>
                 <Text style={styles.userName}>{post.user.userName}</Text>
             </View>
-            <View style={styles.hashtagView}>
+            <View style={styles.hashtagView}>  
                 {post.hashtags.map(hashtag => 
-                    <Text key={hashtag} style={styles.hashtag}>#{hashtag}</Text>
+                    <Text key={hashtag} style={styles.hashtag}>#{hashtag} </Text>
                 )}
             </View>
         </View>
