@@ -12,17 +12,17 @@ export const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     userName: {
-        fontSize: 17,
+        fontSize: 18,
         color: 'black',
     },
     focused_userName: {
-        fontSize: 17,
+        fontSize: 18,
         color: '#059336',
         fontWeight: 'bold',
     },
     profilePicture: {
-        width: 55,
-        height: 55,
+        width: 52,
+        height: 52,
         borderRadius: 15
     },
     pressableView: {
@@ -31,7 +31,8 @@ export const styles = StyleSheet.create({
     },
     hashtagView: {
         flexDirection: "row",
-        flex:1
+        flex: 1,
+        alignItems: 'flex-end'
     },
     hashtag: {
         fontSize: 15,
@@ -49,7 +50,6 @@ export const styles = StyleSheet.create({
         flexDirection: "column",
         flex: 7,
         marginLeft: 20,
-        justifyContent: 'center',
     },
     commentsView: {
         flex: 2,
