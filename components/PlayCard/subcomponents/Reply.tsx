@@ -35,7 +35,7 @@ export const Reply = ({
       <Pressable
         onPress={handleOnPress}
         >
-        <FontAwesomeIcon icon={ faReply } size={ 25 } color="#6D6D6D"/>
+        <FontAwesomeIcon icon={ faReply } size={ 25 } color="black"/>
       </Pressable>
     </View>
     );

@@ -7,10 +7,10 @@ import { SoundController } from "./subcomponents/SoundController";
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F2F2F2',
+        backgroundColor: '#FDF6ED',
         flexDirection: 'column',
         padding: 7,
-        borderRadius: 20,
+        borderRadius: 13,
     }
   }); 
 

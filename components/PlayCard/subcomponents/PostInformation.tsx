@@ -74,10 +74,6 @@ export const PostInformation = ({
             <Reply 
             post={post}/>
         </View>
-        <View style={styles.likesView}>
-            <Likes 
-            post={post}/>
-        </View>
     </View>
     );
 }; 

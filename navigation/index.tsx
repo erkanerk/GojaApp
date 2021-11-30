@@ -43,7 +43,7 @@ export default function Navigation({
         return (
             <NavigationContainer
                 linking={LinkingConfiguration}
-                theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+                theme={DefaultTheme}
             >
                 <RootNavigator />
             </NavigationContainer>
@@ -52,7 +52,7 @@ export default function Navigation({
         //use a stack navigator here!?
         return (
             <NavigationContainer
-                theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+                theme={DefaultTheme}
             >
                 <AuthNavigator />
             </NavigationContainer>
@@ -126,7 +126,7 @@ function BottomTabNavigator() {
         <BottomTab.Navigator
             initialRouteName="FeedTab"
             screenOptions={{
-                tabBarActiveTintColor: Colors[colorScheme].tint,
+                tabBarActiveTintColor: 'black',
                 tabBarShowLabel: false,
             }}
         >

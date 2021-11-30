@@ -63,7 +63,7 @@ export const SoundController = ({
             <Pressable
             onPress={handlePlayPrevious}
             disabled={isLoading}>
-                <Rewind stroke="#6D6D6D" fill="#6D6D6D" width={40} height={40} />
+                <Rewind stroke="black" fill="black" width={40} height={40} />
             </Pressable>
         </View>
         <View style={styles.playPauseView}>
@@ -72,9 +72,9 @@ export const SoundController = ({
             disabled={isLoading}>
                 {isPlaying
                     ? 
-                    <Pause stroke="#6D6D6D" fill="#6D6D6D" width={40} height={40} />
+                    <Pause stroke="black" fill="black" width={40} height={40} />
                     : 
-                    <Play stroke="#6D6D6D" fill="#6D6D6D" width={40} height={40} />
+                    <Play stroke="black" fill="black" width={40} height={40} />
                 }
             </Pressable>
         </View>
@@ -82,7 +82,7 @@ export const SoundController = ({
             <Pressable
             onPress={handlePlayNext}
             disabled={isLoading}>
-                <FastForward stroke="#6D6D6D" fill="#6D6D6D" width={40} height={40} />
+                <FastForward stroke="black" fill="black" width={40} height={40} />
             </Pressable>
         </View>
     </View>
