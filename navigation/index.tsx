@@ -91,6 +91,7 @@ function AuthNavigator() {
                                     fontWeight: 'bold',
                                     fontSize: 15,
                                     color: 'grey',
+                                    marginLeft: 7,
                                 }}
                             >
                                 Cancel

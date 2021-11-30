@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import * as Icon from 'react-native-feather';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, Image, StyleSheet, Pressable, Alert } from 'react-native';
-
+import { APIKit, getToken } from '../shared/APIkit';
 import { Text, View } from '../components/Themed';
+import Constants from 'expo-constants';
+const { manifest } = Constants;
+import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
-
+import AppContext from '../shared/AppContext';
 
 export default function ChoosePic({ navigation }) {
     const [image, setImage] = useState<string>('');
+    const [uploaded, setUploaded] = React.useState<true | false>(false);
+
+    const globalCtx = useContext(AppContext);
 
     const requestPermission = async () => {
         if (Platform.OS !== 'web') {
@@ -49,6 +55,50 @@ export default function ChoosePic({ navigation }) {
         }
     };
 
+    async function uploadImage() {
+        let apiUrl =
+            `http://${manifest?.debuggerHost?.split(':').shift()}:3000` +
+            '/users/upload-image/';
+        const token = await getToken();
+        const uriParts = image.split('.');
+        const fileType = '.' + uriParts[uriParts.length - 1];
+
+        FileSystem.uploadAsync(apiUrl, image, {
+            uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+            fieldName: 'file',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => {
+                var urlNoQuotes = res.body.split('"').join('');
+
+                // TODO: Change to real route
+                setImage(urlNoQuotes);
+                console.log(urlNoQuotes);
+                console.log('image set!');
+                /*
+                const payload = {
+                    image: urlNoQuotes,
+                    imageFileType: fileType,
+                };
+                APIKit.post('/users/add-picture', payload)
+                    .then((response) => {
+                        console.log(response.data);
+                        //globalCtx.setLoggedIn(true);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                    */
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     function PicPicker() {
         if (image == '') {
             return (
@@ -68,7 +118,7 @@ export default function ChoosePic({ navigation }) {
             return <View style={{ height: 40 }}></View>;
         } else {
             return (
-                <Pressable style={styles.button}>
+                <Pressable style={styles.button} onPress={uploadImage}>
                     <Text style={styles.buttonText}>Continue</Text>
                 </Pressable>
             );
