@@ -21,7 +21,6 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeFeed from '../screens/HomeFeed';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import TabThreeScreen from '../screens/TabThreeScreen';
 import {
     RootStackParamList,
     RootTabParamList,
@@ -32,6 +31,7 @@ import AuthScreen from '../screens/AuthScreen';
 import ChoosePic from '../screens/ChoosePic';
 import ProfilePage from '../screens/ProfilePage';
 import AppContext from '../shared/AppContext';
+import { Feather } from '@expo/vector-icons';
 
 export default function Navigation({
     colorScheme,
@@ -124,27 +124,30 @@ function BottomTabNavigator() {
 
     return (
         <BottomTab.Navigator
-            initialRouteName="Feed"
+            initialRouteName="FeedTab"
             screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme].tint,
+                tabBarShowLabel: false,
             }}
         >
             <BottomTab.Screen
-                name="Feed"
+                name="FeedTab"
                 component={HomeFeed}
                 options={{
-                  title: "Feed",
-                  tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                    tabBarIcon: ({ focused, color, size }) => {
+                        return <Feather name={'home'} size={size} color={color} />
+                    },
                 }}
               />
               <BottomTab.Screen
-                name="TabTwo"
+                name="RecordTab"
                 component={TabTwoScreen}
-                options={({ navigation }: RootTabScreenProps<"TabTwo">) => ({
-                  title: "Tab Two",
-                    tabBarIcon: ({ color }) => (
-                        <TabBarIcon name="code" color={color} />
-                    ),
+                options={({ navigation }: RootTabScreenProps<"RecordTab">) => ({
+                  title: "",
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let sizeL = size*1.5
+                        return <Feather name={'circle'} size={sizeL} color={'red'} style={{backgroundColor:'red',borderRadius:sizeL/2}}/>
+                    },
                     headerRight: () => (
                         <Pressable
                             onPress={() => navigation.navigate("Modal")}
@@ -163,23 +166,13 @@ function BottomTabNavigator() {
                 })}
             />
             <BottomTab.Screen
-                name="TabThree"
-                component={TabThreeScreen}
-                options={{
-                    title: "Tab three",
-                    tabBarIcon: ({ color }) => (
-                        <TabBarIcon name="code" color={color} />
-                    ),
-                }}
-            />
-                <BottomTab.Screen
-                name="TabFour"
+                name="SearchTab"
                 component={ProfilePage}
                 options={{
                     title: "ProfilePage",
-                    tabBarIcon: ({ color }) => (
-                        <TabBarIcon name="code" color={color} />
-                    ),
+                    tabBarIcon: ({ focused, color, size }) => {
+                        return <Feather name={'search'} size={size} color={color} />
+                    },
                 }}
             />
     </BottomTab.Navigator>
@@ -188,7 +181,7 @@ function BottomTabNavigator() {
 }
 
 /**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
+ * You can explore the built-in icon families and icons on the web at https:/home/icons.expo.fyi/
  */
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
