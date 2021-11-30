@@ -14,7 +14,9 @@ export const styles = StyleSheet.create({
   feedView: {
     flex: 1,
   },
-  playCardView: {},
+  playCardView: {
+    
+  },
 });
 interface Props {
   posts: Post[] | undefined;
@@ -27,9 +29,7 @@ export const PostFeed = ({ posts }: Props) => {
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [soundDuration, setSoundDuration] = useState<number | undefined>(
-    undefined
-  );
+  const [soundDuration, setSoundDuration] = useState<number | undefined>(undefined);
   const [isSeeking, setIsSeeking] = useState<boolean>(false);
   const [isPlaybackAllowed, setIsPlaybackAllowed] = useState<boolean>(false);
   const [seekSliderPosition, setSeekSliderPosition] = useState<number>(0);
@@ -220,7 +220,6 @@ export const PostFeed = ({ posts }: Props) => {
 
   return (
     <View style={styles.container}>
-      {isLoading ? <Text>Loading...</Text> : null}
       <View style={styles.feedView}>
         <FlatList
           data={posts}
@@ -229,7 +228,7 @@ export const PostFeed = ({ posts }: Props) => {
         />
       </View>
       <View style={styles.playCardView}>
-        {posts && soundDuration && focusedPostIndex != undefined ? (
+        {posts && focusedPostIndex != undefined ? (
           <PlayCard
             post={posts[focusedPostIndex]}
             isPlaybackAllowed={isPlaybackAllowed}
