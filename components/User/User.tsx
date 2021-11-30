@@ -43,10 +43,12 @@ export const styles = StyleSheet.create({
 
 interface Props {
     user: Follower
+    following?: boolean
 }
 
 export const User = ({ 
     user,
+    following = false
 }: Props) => {
 
     function handleOnPress() {
@@ -70,7 +72,8 @@ export const User = ({
         </View>
         <View style={styles.buttonView}>
             <FollowButton 
-            user={user} />
+            user={user} 
+            following={following}/>
         </View>
         <View style={styles.line} />
     </View>

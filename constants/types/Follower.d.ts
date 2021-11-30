@@ -4,4 +4,5 @@ interface Follower {
     userName: string;
     profilePicture: string;
     profileAudio: string;
+    isMutualFollowers?: boolean;
 }

@@ -37,19 +37,22 @@ export const styles = StyleSheet.create({
 
 interface Props {
     user: Follower
+    following?: boolean
 }
+
 export const FollowButton = ({ 
     user,
+    following = false
 }: Props) => {
     const globalCtx = useContext(AppContext);
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    // const [isFollowing, setIsFollowing] = useState<boolean>(user.isFollowing) TODO: should be something like this instead
-    const [isFollowing, setIsFollowing] = useState<boolean>(false)
+    const [isFollowing, setIsFollowing] = useState<boolean>((following || user.isMutualFollowers) ? true : false)
     
     async function followUser() {
         setIsLoading(true)
         console.log('Following user')
-        APIKit.get("/users/profile/me")
+        const payload = { userToFollow: user._id }
+        APIKit.post("/users/follow", payload)
         .then((response) => {
             console.log("Successful /users/profile/me response: ")
             console.log(response.data)
@@ -66,7 +69,8 @@ export const FollowButton = ({
     async function unfollowUser() {
         setIsLoading(true)
         console.log('Unfollowing user')
-        APIKit.get("/users/profile/me")
+        const payload = { userToUnfollow: user._id }
+        APIKit.post("/users/unfollow", payload)
         .then((response) => {
             console.log("Successful /users/profile/me response: ")
             console.log(response.data)

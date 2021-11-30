@@ -37,7 +37,7 @@ export const FollowingFeed = ({}: Props) => {
         .then((response) => {
             console.log("Successful /users/following/me response: ")
             console.log(response.data)
-            setUsers(response.data.following);
+            setUsers(response.data);
             setIsLoading(false);
         })
         .catch((error) => {
@@ -55,7 +55,8 @@ export const FollowingFeed = ({}: Props) => {
 
     const renderItem = ({ item, index, separators }: any) => (
         <User 
-        user={item} />
+        user={item} 
+        following={true}/>
     );
 
     return (

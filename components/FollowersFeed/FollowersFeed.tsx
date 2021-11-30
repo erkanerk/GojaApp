@@ -39,7 +39,7 @@ export const FollowersFeed = ({}: Props) => {
         .then((response) => {
             console.log("Successful /users/followers/me response: ")
             console.log(response.data)
-            setUsers(response.data.followers);
+            setUsers(response.data);
             setIsLoading(false);
         })
         .catch((error) => {
