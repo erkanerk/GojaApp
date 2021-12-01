@@ -17,20 +17,18 @@ interface PropTypes {
 
 const styles = StyleSheet.create({
     postButtonContainer: {
-        width: 50,
-        height: 30,
-        marginTop: 15,
-        marginRight: 10,
+        width: 75,
+        height: 50,
+
         backgroundColor: '#FF0000',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 25,
     },
     disablePostButton: {
-        width: 50,
-        height: 30,
-        marginTop: 15,
-        marginRight: 10,
+        width: 75,
+        height: 50,
+
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
         alignItems: 'center',
@@ -38,7 +36,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export const TopBar = ({ postToBackend, canPost, buttonText }: PropTypes) => {
+export const PostButton = ({
+    postToBackend,
+    canPost,
+    buttonText,
+}: PropTypes) => {
     return (
         <View
             style={{
@@ -48,16 +50,6 @@ export const TopBar = ({ postToBackend, canPost, buttonText }: PropTypes) => {
                 alignItems: 'center',
             }}
         >
-            <Pressable style={{ marginLeft: 15, marginTop: 10 }}>
-                <Text style={{ color: '#FF0000', fontWeight: 'bold' }}>
-                    Cancel
-                </Text>
-            </Pressable>
-            <Image
-                style={{ width: 50, height: 50 }}
-                source={require('../../assets/images/parrot.png')}
-            />
-
             <Pressable
                 style={
                     canPost

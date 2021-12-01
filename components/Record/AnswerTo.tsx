@@ -22,11 +22,35 @@ export const AnswerTo = ({ imageUrl, username, hashtags }: PropTypes) => {
                 alignItems: 'center',
             }}
         >
-            <View>
-                <Image source={picObject} />
-                <Text>{username}</Text>
+            <Text
+                style={{ fontWeight: 'bold', fontSize: 24, marginBottom: 15 }}
+            >
+                Answer to
+            </Text>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <Image
+                    source={picObject}
+                    style={{
+                        height: 50,
+                        width: 50,
+                        borderRadius: 10,
+                    }}
+                />
+                <View style={{ marginLeft: 10 }}>
+                    <Text style={{ marginBottom: 10 }}>{username}</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        {hashtags.map((hashtag) => {
+                            return <Text key={hashtag}>#{hashtag} </Text>;
+                        })}
+                    </View>
+                </View>
             </View>
-            <Text style={{ fontWeight: 'bold', fontSize: 24 }}>Answer to</Text>
         </View>
     );
 };

@@ -6,7 +6,7 @@ import { PostType } from './postFlow/RecordingScreen';
 export default function TabTwoScreen() {
     return (
         <View>
-            <RecordingScreen recordingScreenType={PostType.POST} />
+            <RecordingScreen recordingScreenType={PostType.ANSWER} />
         </View>
     );
 }

@@ -11,7 +11,7 @@ import {
     Keyboard,
 } from 'react-native';
 import { RecordButton } from '../../components/Record/RecordButton';
-import { TopBar } from '../../components/Record/TopBar';
+import { PostButton } from '../../components/Record/PostButton';
 import { PostPost } from '../../components/Record/utils/postPost';
 import { Hashtags } from '../../components/Record/Hashtags';
 import { TextAndPictures } from '../../components/Record/TextAndPictures';
@@ -76,24 +76,21 @@ export const RecordingScreen = ({
                     justifyContent: 'space-between',
                 }}
             >
-                <TopBar
-                    postToBackend={postPostToBackend}
-                    canPost={canPost}
-                    buttonText={postButtonText}
-                />
-                {recordingScreenType === PostType.POST && (
-                    <OnlyPicture pictureUrl={profilePic} />
-                )}
-                {recordingScreenType === PostType.REGISTER && (
-                    <TextAndPictures />
-                )}
-                {recordingScreenType === PostType.ANSWER && (
-                    <AnswerTo
-                        imageUrl={profilePic}
-                        username={'TestUsernam'}
-                        hashtags={['hej', 'test', 'testing']}
-                    />
-                )}
+                <View style={{ marginTop: 50 }}>
+                    {recordingScreenType === PostType.POST && (
+                        <OnlyPicture pictureUrl={profilePic} />
+                    )}
+                    {recordingScreenType === PostType.REGISTER && (
+                        <TextAndPictures />
+                    )}
+                    {recordingScreenType === PostType.ANSWER && (
+                        <AnswerTo
+                            imageUrl={profilePic}
+                            username={'TestUsernam'}
+                            hashtags={['hej', 'test', 'testing']}
+                        />
+                    )}
+                </View>
 
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -106,12 +103,21 @@ export const RecordingScreen = ({
                         marginBottom: 75,
                         justifyContent: 'center',
                         alignSelf: 'center',
+                        flexDirection: 'row',
+                        backgroundColor: 'green',
                     }}
                 >
                     <RecordButton
                         recordingURISetter={setRecordingURI}
                         recordingURIP={recordingURI}
                     />
+                    <View style={{ marginLeft: 50, justifyContent: 'center' }}>
+                        <PostButton
+                            postToBackend={postPostToBackend}
+                            canPost={canPost}
+                            buttonText={postButtonText}
+                        />
+                    </View>
                 </View>
             </View>
         </TouchableWithoutFeedback>

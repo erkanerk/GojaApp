@@ -13,8 +13,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     wrapper: {
-        width: 300,
+        width: '100%',
         flexDirection: 'row',
+        backgroundColor: 'yellow',
     },
     buttonAndText: {
         alignItems: 'center',
