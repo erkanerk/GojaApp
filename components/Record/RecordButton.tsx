@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     wrapper: {
         width: '100%',
         flexDirection: 'row',
-        backgroundColor: 'yellow',
     },
     buttonAndText: {
         alignItems: 'center',

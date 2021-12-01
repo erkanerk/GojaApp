@@ -106,22 +106,30 @@ export const RecordingScreen = ({
 
                 <View
                     style={{
-                        marginBottom: 75,
                         justifyContent: 'center',
                         alignSelf: 'center',
+                        borderColor: 'red',
+                    }}
+                >
+                    <PostButton
+                        postToBackend={postPostToBackend}
+                        canPost={canPost}
+                        buttonText={postButtonText}
+                    />
+                </View>
+                <View
+                    style={{
+                        marginBottom: 75,
+                        justifyContent: 'center',
+                        //alignSelf: 'center',
                         flexDirection: 'row',
                         backgroundColor: 'white',
                     }}
                 >
-                    <RecordButton
-                        recordingURISetter={setRecordingURI}
-                        recordingURIP={recordingURI}
-                    />
-                    <View style={{ marginLeft: 50, justifyContent: 'center' }}>
-                        <PostButton
-                            postToBackend={postPostToBackend}
-                            canPost={canPost}
-                            buttonText={postButtonText}
+                    <View style={{ bottom: -20 }}>
+                        <RecordButton
+                            recordingURISetter={setRecordingURI}
+                            recordingURIP={recordingURI}
                         />
                     </View>
                 </View>

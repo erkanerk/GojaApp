@@ -8,8 +8,8 @@ export default function TabTwoScreen() {
         answerId: 'TestID',
         imageUrl:
             'https://i.pinimg.com/236x/20/1f/01/201f016bd3a8576fc6cfc872ecac648e--dwight-schrute-hero-.jpg',
-        username: 'TestUsername',
-        hashtags: ['test', 'hashtags', 'hej'],
+        username: 'TestU',
+        hashtags: ['hashtags'],
     };
     return (
         <View>
