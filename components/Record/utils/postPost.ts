@@ -1,26 +1,21 @@
-import { APIKit, getToken } from '../../../shared/APIkit';
+import React from 'react';
+import { APIKit, getToken, onFailure } from '../../../shared/APIkit';
 import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
-
 const { manifest } = Constants;
 
-async function postSound(
+async function PostPost(
     recordingURIP: any,
     hashtags: string[],
     endPoint: string,
-    user: {
-        profileAudio: string | null;
-        profilePicture: string | null;
-        userName: string | null;
-        email: string | null;
-    },
+    c: any,
     answerToId: string | null = null
 ) {
+    console.log(c);
     let apiUrl =
         `http://${manifest?.debuggerHost?.split(':').shift()}:3000` +
         '/posts/upload-audio/';
     const token = await getToken();
-    //const globalCtx = useContext(AppContext);
 
     const uriParts = recordingURIP.split('.');
     const fileType = '.' + uriParts[uriParts.length - 1];
@@ -41,20 +36,26 @@ async function postSound(
                 audio: urlNoQuotes,
                 audioFileType: fileType,
                 inReplpyToPostId: answerToId,
-                user: user,
+                user: {
+                    id: c.userInfo._id,
+                    profileAudio: c.userInfo.profileAudio,
+                    profilePicture: c.userInfo.profilePicture,
+                    userName: c.userInfo.userName,
+                    email: c.userInfo.email,
+                },
             };
             APIKit.post(endPoint, payload)
                 .then((response) => {
                     console.log(response.data);
                 })
                 .catch((error) => {
-                    //onFailure(error, globalCtx);
+                    onFailure(error, c);
                     console.log(error);
                 });
         })
         .catch((error) => {
-            //onFailure(error, globalCtx);
+            onFailure(error, c);
             console.log(error);
         });
 }
-export { postSound };
+export { PostPost };

@@ -1,10 +1,17 @@
 import React from 'react';
 import { View, StyleSheet, Pressable, Text, Image } from 'react-native';
 
-export const OnlyPicture = () => {
-    //TODO Should take the picture link as a prop
-    const testPic = {
-        uri: 'https://i.pinimg.com/236x/20/1f/01/201f016bd3a8576fc6cfc872ecac648e--dwight-schrute-hero-.jpg',
+interface PropTypes {
+    pictureUrl: string | null;
+}
+
+export const OnlyPicture = ({ pictureUrl }: PropTypes) => {
+    if (pictureUrl === null) {
+        pictureUrl =
+            'https://i.pinimg.com/236x/20/1f/01/201f016bd3a8576fc6cfc872ecac648e--dwight-schrute-hero-.jpg';
+    }
+    const picObject = {
+        uri: pictureUrl,
     };
     return (
         <View
@@ -19,7 +26,7 @@ export const OnlyPicture = () => {
                     width: 150,
                     borderRadius: 75,
                 }}
-                source={testPic}
+                source={picObject}
             />
         </View>
     );
