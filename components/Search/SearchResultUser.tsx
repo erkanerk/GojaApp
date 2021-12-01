@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Pressable, FlatList } from 'react-native'
+import { User } from '../User/User';
 import {UserFromSearch} from './data_models/User'
 
 
@@ -11,11 +13,24 @@ interface PropTypes {
 }
 
 export const SearchResultUser = ({UsersToRender}: PropTypes) => {
+
+
+    const renderItem = ({ item, index, separators }: any) => (
+        <User 
+        user={item} />
+    );
+
     return (
         <View>
-            {UsersToRender.length > 0 ? (UsersToRender.map((oneUser)=>{
-               return <Text key={oneUser._id}>{oneUser.userName}</Text>
-            })): (<Text>NO Search results</Text>)}
+            {UsersToRender
+            ?
+            <FlatList
+                data={UsersToRender}
+                keyExtractor={user => user._id}
+                renderItem={renderItem} />
+            :
+            <Text>NO Search results</Text>
+            }
         </View>
     )
 }

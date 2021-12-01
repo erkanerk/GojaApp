@@ -38,6 +38,7 @@ import ChoosePic from '../screens/ChoosePic';
 import ProfilePage from '../screens/ProfilePage';
 import AppContext from '../shared/AppContext';
 import { Feather } from '@expo/vector-icons';
+import SearchScreen from "../screens/SearchScreen";
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -146,6 +147,10 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
+      <Stack.Screen
+      name={'ProfileScreen'}
+      component={ProfilePage} 
+      initialParams={{ userId: undefined}}/>
     </Stack.Navigator>
   );
 }
@@ -204,9 +209,8 @@ function BottomTabNavigator() {
             />
             <BottomTab.Screen
                 name="SearchTab"
-                component={ProfilePage}
+                component={SearchScreen}
                 options={{
-                    title: "ProfilePage",
                     tabBarIcon: ({ focused, color, size }) => {
                         return <Feather name={'search'} size={size} color={color} />
                     },

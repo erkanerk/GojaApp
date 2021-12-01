@@ -24,34 +24,53 @@ export const styles = StyleSheet.create({
         color: 'gray',
     },
 });
-interface Props {}
+interface Props {
+    userId: string | undefined
+}
 
-export const MyFeed = ({}: Props) => {
+export const MyFeed = ({
+    userId
+}: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const isFocused = useIsFocused();
     const [posts, setPosts] = useState<Post[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
     
-    // TODO: It is possible to change to /posts/all for testing purposes
-    async function getUserPosts() {
+    async function getPosts() {
         setIsLoading(true)
-        APIKit.get("/posts/by-user/me")
-        .then((response) => {
-            console.log("Successful /posts/by-user/me response: ")
-            console.log(response.data)
-            setPosts(response.data);
-            setIsLoading(false);
-        })
-        .catch((error) => {
-            onFailure(error, globalCtx);
-            console.log(error && error);
-            setIsLoading(false);
-        });
+        if (userId) {
+            APIKit.get(`/posts/by-user/${userId}`)
+            .then((response) => {
+                console.log("Successful /posts/by-user/:id response: ")
+                console.log(response.data)
+                setPosts(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
+        } else {
+            APIKit.get("/posts/by-user/me")
+            .then((response) => {
+                console.log("Successful /posts/by-user/me response: ")
+                console.log(response.data)
+                setPosts(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
+        }
+
     }
 
     useEffect(() => {
         if (isFocused) {
-            getUserPosts()
+            getPosts()
         }
     }, [isFocused]);
 
