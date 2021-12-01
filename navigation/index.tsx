@@ -113,7 +113,7 @@ function RootNavigator() {
       <Stack.Screen
       name={'ProfileScreen'}
       component={ProfilePage} 
-      initialParams={{ userId: undefined, isFollowing: false}}/>
+      initialParams={{ userId: undefined}}/>
     </Stack.Navigator>
   );
 }
