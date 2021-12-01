@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
@@ -82,8 +83,14 @@ export const Post = ({
     setFocusedPostIndex,
 }: Props) => {
     const [isFocused, setIsFocused] = useState<boolean>(false)
+    const navigation = useNavigation();
+    
+    function handleOnPressPicture() {
+        console.log('Picture pressed, redirecting to profile')
+        navigation.navigate('ProfileScreen', {userId: post.user.id})
+    }
 
-    function handleOnPress() {
+    function handleOnPressPost() {
         if (isFocused) {
             console.log("Post pressed again, pausing sound")
             setIsFocused(false)
@@ -105,23 +112,26 @@ export const Post = ({
     }, [focusedPostIndex]);
 
     return (
-    <View style={styles.container}>
+    <View style={styles.container}>            
         <Pressable
-        onPress={handleOnPress}
+        onPress={handleOnPressPost}
         style={({ pressed }) => [
             {backgroundColor: pressed
                 ? '#edf7fd'
                 : 'white'
                 }]}>
             <View style={styles.pressableView}>
-                <View style={styles.pictureView}>
-                    <Image
-                    style={styles.profilePicture}
-                    source={{
-                        uri: post.user.profilePicture,
-                    }} 
-                    /> 
-                </View>
+                <Pressable
+                onPress={handleOnPressPicture}>
+                    <View style={styles.pictureView}>
+                        <Image
+                        style={styles.profilePicture}
+                        source={{
+                            uri: post.user.profilePicture,
+                        }} 
+                        /> 
+                    </View>
+                </Pressable>
                 <View style={styles.textView}>
                     <Text style={isFocused ? styles.focused_userName : styles.userName}>{post.user.userName}</Text>
                     {post.hashtags && 
