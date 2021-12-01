@@ -77,7 +77,8 @@ export const FollowersFeed = ({
 
     const renderItem = ({ item, index, separators }: any) => (
         <User 
-        user={item} />
+        user={item} 
+        following={item.isMutualFollowers}/>
     );
 
     return (
@@ -87,7 +88,7 @@ export const FollowersFeed = ({
             <View style={styles.feedView}>
                 <FlatList
                 data={users}
-                keyExtractor={user => user._id}
+                keyExtractor={user => user.userId}
                 renderItem={renderItem} />
             </View>
             :

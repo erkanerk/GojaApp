@@ -86,7 +86,7 @@ export const FollowingFeed = ({
             <View style={styles.feedView}>
                 <FlatList
                 data={users}
-                keyExtractor={user => user._id}
+                keyExtractor={user => user.userId}
                 renderItem={renderItem} />
             </View>
             :
