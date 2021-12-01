@@ -18,6 +18,7 @@ import { TextAndPictures } from '../../components/Record/TextAndPictures';
 import { OnlyPicture } from '../../components/Record/OnlyPicture';
 import { AnswerTo } from '../../components/Record/AnswerTo';
 import AppContext from '../../shared/AppContext';
+import { hashtagHandler } from '../../components/Record/utils/hashtagHandler';
 
 export enum PostType {
     REGISTER,
@@ -43,7 +44,6 @@ export const RecordingScreen = ({
     if (recordingScreenType === PostType.REGISTER) {
         postButtonText = 'Done';
     }
-    const userToPostTemp = globalCtx.userInfo;
     const profilePic = globalCtx.userInfo.profilePicture;
 
     const postPostToBackend = async () => {
@@ -51,8 +51,7 @@ export const RecordingScreen = ({
             console.log('Can not post');
             return;
         }
-        const arrayHashtags = hashtags.split(' ');
-
+        const arrayHashtags = hashtagHandler(hashtags);
         PostPost(recordingURI, arrayHashtags, '/posts', globalCtx);
         setHashtags('');
         setCanPost(false);
