@@ -48,7 +48,6 @@ export default function HomeFeed({
 
   return (
     <View style={styles.container}>
-      {isLoading ? <Text>Loading...</Text> : null}
       <PostFeed posts={posts} />
     </View>
   );
