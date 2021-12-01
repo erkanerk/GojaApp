@@ -51,7 +51,8 @@ export default function ProfilePage({
             console.log("Showing posts")
             return (
             <View style={styles.postsView}>
-                <MyFeed />
+                <MyFeed 
+                userId={userId} />
             </View>
             )
         } else if (tab == 1) {
