@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     pictureView: {
-        flex: 1,
+        marginRight: 10,
     },
     textView: {
         flex: 2,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     },
     replyView: {
         marginTop: 5,
-        flex: 1,
+        marginRight: 15
     },
     likesView: {
         marginTop: 5,
