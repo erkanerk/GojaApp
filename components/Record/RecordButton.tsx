@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useContext} from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { Audio } from 'expo-av';
 import { APIKit, getToken } from '../../shared/APIkit';
@@ -6,6 +7,7 @@ import Constants from "expo-constants";
 const { manifest } = Constants;
 import * as FileSystem from 'expo-file-system';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AppContext from '../../shared/AppContext';
 
 
 const styles = StyleSheet.create({
@@ -69,6 +71,8 @@ export const RecordButton = () => {
   const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
   const [sound, setSound] = React.useState<any | null>(null);
   const [posted, setPosted] = React.useState<true | false>(false);
+
+  const globalCtx = useContext(AppContext);
 
   async function startRecording() {
     setPosted(false);
@@ -135,16 +139,11 @@ export const RecordButton = () => {
           }
         }).then((res) => {
           var urlNoQuotes = res.body.split('"').join('');
-          // TODO: Change from mockup data to real user data
+            
           const payload = {
             audio: urlNoQuotes,
             audioFileType: fileType,
-            user: {
-              profileAudio: "url",
-              profilePicture: "url",
-              userName: "test",
-              email: "test@erk.com"
-            }
+            user: globalCtx.userInfo,
           }
           APIKit.post("/posts", payload)
             .then((response) => {

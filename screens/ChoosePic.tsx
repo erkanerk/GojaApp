@@ -9,10 +9,11 @@ const { manifest } = Constants;
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import AppContext from '../shared/AppContext';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function ChoosePic({ navigation }) {
     const [image, setImage] = useState<string>('');
-    const [uploaded, setUploaded] = React.useState<true | false>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const globalCtx = useContext(AppContext);
 
@@ -56,12 +57,11 @@ export default function ChoosePic({ navigation }) {
     };
 
     async function uploadImage() {
+        setIsLoading(true);
         let apiUrl =
             `http://${manifest?.debuggerHost?.split(':').shift()}:3000` +
             '/users/upload-image/';
         const token = await getToken();
-        const uriParts = image.split('.');
-        const fileType = '.' + uriParts[uriParts.length - 1];
 
         FileSystem.uploadAsync(apiUrl, image, {
             uploadType: FileSystem.FileSystemUploadType.MULTIPART,
@@ -74,28 +74,26 @@ export default function ChoosePic({ navigation }) {
         })
             .then((res) => {
                 var urlNoQuotes = res.body.split('"').join('');
-
-                // TODO: Change to real route
-                setImage(urlNoQuotes);
-                console.log(urlNoQuotes);
-                console.log('image set!');
-                /*
                 const payload = {
-                    image: urlNoQuotes,
-                    imageFileType: fileType,
+                    url: urlNoQuotes,
                 };
-                APIKit.post('/users/add-picture', payload)
+                console.log("payload: ");
+                console.log(payload);
+                APIKit.post('/users/add-profile-picture', payload)
                     .then((response) => {
-                        console.log(response.data);
-                        //globalCtx.setLoggedIn(true);
+                        globalCtx.setUserInfo({...globalCtx.userInfo, profilePicture: urlNoQuotes });
+                        setIsLoading(false);
+                        //change to navigation.navigate record sound
+                        globalCtx.setLoggedIn(true);
                     })
                     .catch((error) => {
                         console.log(error);
+                        setIsLoading(false);
                     });
-                    */
             })
             .catch((error) => {
                 console.log(error);
+                setIsLoading(false);
             });
     }
 
@@ -127,6 +125,7 @@ export default function ChoosePic({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <Spinner visible={isLoading} />
             <Text style={styles.title}>Choose a profile picture</Text>
             <Pressable onPress={pickImage} style={styles.imageCirle}>
                 <PicPicker />

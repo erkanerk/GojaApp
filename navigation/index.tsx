@@ -66,6 +66,11 @@ function AuthNavigator() {
     return (
         <AuthStack.Navigator>
             <AuthStack.Screen
+                name="Auth"
+                component={AuthScreen}
+                options={{ headerShown: false }}
+            />
+            <AuthStack.Screen
                 name="ChoosePic"
                 component={ChoosePic}
                 options={{
@@ -102,11 +107,6 @@ function AuthNavigator() {
                         backgroundColor: 'white',
                     },
                 }}
-            />
-            <AuthStack.Screen
-                name="Auth"
-                component={AuthScreen}
-                options={{ headerShown: false }}
             />
             <AuthStack.Screen
                 name="RecordProfileSound"
