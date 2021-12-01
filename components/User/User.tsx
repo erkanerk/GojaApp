@@ -1,6 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
+import Navigation from '../../navigation';
 import { FollowButton } from '../FollowButton/FollowButton';
 export const styles = StyleSheet.create({
     container: {
@@ -42,7 +44,7 @@ export const styles = StyleSheet.create({
   }); 
 
 interface Props {
-    user: Follower
+    user: Follower | Following
     following?: boolean
 }
 
@@ -50,9 +52,10 @@ export const User = ({
     user,
     following = false
 }: Props) => {
-
+    const navigation = useNavigation();
     function handleOnPress() {
         console.log('Pressed profile picture')
+        navigation.navigate('ProfileScreen', {userId: user.userId})
     }
 
     return (
@@ -72,7 +75,7 @@ export const User = ({
         </View>
         <View style={styles.buttonView}>
             <FollowButton 
-            user={user} 
+            userId={user.userId} 
             following={following}/>
         </View>
         <View style={styles.line} />

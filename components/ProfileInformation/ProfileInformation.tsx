@@ -45,24 +45,30 @@ export const styles = StyleSheet.create({
 });
 
 interface Props {
-    tab: number;
-    setTab: Dispatch<SetStateAction<number>>;
+    userId: string | undefined
+    tab: number
+    setTab: Dispatch<SetStateAction<number>>
 }
 
-export const ProfileInformation = ({ tab, setTab }: Props) => {
+export const ProfileInformation = ({ 
+    tab, 
+    userId,
+    setTab
+ }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const isFocused = useIsFocused();
-    const [user, setUser] = useState<UserInfo | undefined>(undefined);
+    const [profile, setProfile] = useState<Profile | undefined>(undefined);
     const globalCtx = useContext(AppContext);
 
-    async function getUserInformation() {
+    async function getProfileInformation() {
         setIsLoading(true);
         console.log('Fetching user information');
-        APIKit.get('/users/profile/me')
+        if (userId) {
+            APIKit.get(`/users/profile/${userId}`)
             .then((response) => {
-                console.log('Successful /users/profile/me response: ');
+                console.log('Successful /users/profile/:id response: ');
                 console.log(response.data);
-                setUser(response.data);
+                setProfile(response.data);
                 setIsLoading(false);
             })
             .catch((error) => {
@@ -70,37 +76,54 @@ export const ProfileInformation = ({ tab, setTab }: Props) => {
                 console.log(error && error);
                 setIsLoading(false);
             });
+        } else {
+            APIKit.get('/users/profile/me')
+            .then((response) => {
+                console.log('Successful /users/profile/me response: ');
+                console.log(response.data);
+                setProfile(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
+        }
     }
 
     useEffect(() => {
         if (isFocused) {
-            getUserInformation();
-        }
+            getProfileInformation()
+        } 
     }, [isFocused]);
 
-    if (!user) {
+    if (!profile) {
         return <ActivityIndicator size="large" color={'lightgray'} />;
     }
 
-    // TODO: The FollowButton should not exists for the users personal profile page
     return (
         <View style={styles.container}>
             <View style={styles.imageView}>
                 <Image
                     style={styles.image}
                     source={{
-                        uri: user.profilePicture,
+                        uri: profile.profilePicture,
                     }}
                 />
             </View>
             <View style={styles.textView}>
-                <Text style={styles.UserNameText}>{user.userName}</Text>
+                <Text style={styles.UserNameText}>{profile.userName}</Text>
             </View>
+            {userId
+            ?
             <View style={styles.followButtonView}>
-                <FollowButton user={user} />
+                <FollowButton userId={userId} following={false}/>
             </View>
+            :
+            null}
             <View style={styles.statsView}>
-                <Stats user={user} tab={tab} setTab={setTab} />
+                <Stats user={profile} tab={tab} setTab={setTab} />
             </View>
             <View style={styles.line} />
         </View>

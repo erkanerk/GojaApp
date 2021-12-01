@@ -25,38 +25,56 @@ export const styles = StyleSheet.create({
     },
 });
 
-interface Props {}
+interface Props {
+    userId: string | undefined
+}
 
-export const FollowersFeed = ({}: Props) => {
+export const FollowersFeed = ({
+    userId
+}: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const isFocused = useIsFocused();
     const [users, setUsers] = useState<Follower[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
     
-    async function getUserFollowers() {
+    async function getFollowers() {
         setIsLoading(true)
-        APIKit.get("/users/followers/me")
-        .then((response) => {
-            console.log("Successful /users/followers/me response: ")
-            console.log(response.data)
-            setUsers(response.data);
-            setIsLoading(false);
-        })
-        .catch((error) => {
-            onFailure(error, globalCtx);
-            console.log(error && error);
-            setIsLoading(false);
-        });
+        console.log('Fetching followers')
+        if (userId) {
+            APIKit.get(`/users/followers/${userId}`)
+            .then((response) => {
+                console.log("Successful /users/followers/:id response: ")
+                console.log(response.data)
+                setUsers(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
+        } else {
+            APIKit.get("/users/followers/me")
+            .then((response) => {
+                console.log("Successful /users/followers/me response: ")
+                console.log(response.data)
+                setUsers(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
+        }
     }
 
     useEffect(() => {
         if (isFocused) {
-            getUserFollowers()    
+            getFollowers()    
         }
     }, [isFocused]);
 
-
-    // TODO: Build the user item component
     const renderItem = ({ item, index, separators }: any) => (
         <User 
         user={item} />

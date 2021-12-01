@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
 });
 
 interface Props {
-    user: UserInfo
+    user: Profile
     tab: number
     setTab: Dispatch<SetStateAction<number>>
 }

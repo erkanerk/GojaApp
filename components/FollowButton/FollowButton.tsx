@@ -36,22 +36,22 @@ export const styles = StyleSheet.create({
 });
 
 interface Props {
-    user: Follower
-    following?: boolean
+    userId: string
+    following: boolean
 }
 
 export const FollowButton = ({ 
-    user,
+    userId,
     following = false
 }: Props) => {
     const globalCtx = useContext(AppContext);
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isFollowing, setIsFollowing] = useState<boolean>((following || user.isMutualFollowers) ? true : false)
+    const [isFollowing, setIsFollowing] = useState<boolean>(following)
     
     async function followUser() {
         setIsLoading(true)
         console.log('Following user')
-        const payload = { userToFollow: user._id }
+        const payload = { userToFollow: userId }
         APIKit.post("/users/follow", payload)
         .then((response) => {
             console.log("Successful /users/profile/me response: ")
@@ -69,7 +69,7 @@ export const FollowButton = ({
     async function unfollowUser() {
         setIsLoading(true)
         console.log('Unfollowing user')
-        const payload = { userToUnfollow: user._id }
+        const payload = { userToUnfollow: userId }
         APIKit.post("/users/unfollow", payload)
         .then((response) => {
             console.log("Successful /users/profile/me response: ")
