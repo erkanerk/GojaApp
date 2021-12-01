@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
 
 export default function ProfilePage({
     navigation,
-}: RootTabScreenProps<"TabFour">) {
+}: RootTabScreenProps<"SearchTab">) {
     const [tab, setTab] = useState<number>(0)
 
     function conditionalRender() {
