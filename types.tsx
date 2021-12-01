@@ -22,7 +22,8 @@ export type RootStackParamList = {
     NotFound: undefined;
     Auth: undefined;
     ChoosePic: undefined;
-    ProfileScreen: { userId: string | undefined};
+    RecordProfileSound: undefined;
+    ProfileScreen: { userId: string | undefined };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

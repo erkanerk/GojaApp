@@ -34,6 +34,7 @@ export const styles = StyleSheet.create({
     
 });
 
+
 interface Props {
     route: RouteProp<RootStackParamList, 'ProfileScreen'>;
     navigation: NativeStackNavigationProp<RootStackParamList, 'ProfileScreen'>
