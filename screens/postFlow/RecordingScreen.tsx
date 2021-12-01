@@ -25,14 +25,20 @@ export enum PostType {
     POST,
     ANSWER,
 }
+interface AnswerInfo {
+    answerId: string;
+    imageUrl: string;
+    username: string;
+    hashtags: string[];
+}
 interface PropTypes {
     recordingScreenType: PostType;
-    answerToId?: string | null;
+    answerInfo?: AnswerInfo | null;
 }
 
 export const RecordingScreen = ({
     recordingScreenType,
-    answerToId,
+    answerInfo,
 }: PropTypes) => {
     const [hashtags, setHashtags] = useState<string>('');
     const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
@@ -85,9 +91,9 @@ export const RecordingScreen = ({
                     )}
                     {recordingScreenType === PostType.ANSWER && (
                         <AnswerTo
-                            imageUrl={profilePic}
-                            username={'TestUsernam'}
-                            hashtags={['hej', 'test', 'testing']}
+                            imageUrl={answerInfo?.imageUrl}
+                            username={answerInfo?.username}
+                            hashtags={answerInfo?.hashtags}
                         />
                     )}
                 </View>
@@ -104,7 +110,7 @@ export const RecordingScreen = ({
                         justifyContent: 'center',
                         alignSelf: 'center',
                         flexDirection: 'row',
-                        backgroundColor: 'green',
+                        backgroundColor: 'white',
                     }}
                 >
                     <RecordButton
