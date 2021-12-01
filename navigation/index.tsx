@@ -13,7 +13,13 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { useContext } from "react";
-import { ColorSchemeName, Pressable, Image, Text } from 'react-native';
+import {
+    ColorSchemeName,
+    Pressable,
+    Image,
+    Text,
+    StyleSheet,
+} from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -32,6 +38,19 @@ import ChoosePic from '../screens/ChoosePic';
 import ProfilePage from '../screens/ProfilePage';
 import AppContext from '../shared/AppContext';
 import { Feather } from '@expo/vector-icons';
+
+const styles = StyleSheet.create({
+    headerImage: {
+        width: 50,
+        height: 50,
+    },
+    headerCancel: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        color: 'grey',
+        marginLeft: 7,
+    },
+});
 
 export default function Navigation({
     colorScheme,
@@ -76,10 +95,7 @@ function AuthNavigator() {
                 options={{
                     headerTitle: (props) => (
                         <Image
-                            style={{
-                                width: 50,
-                                height: 50,
-                            }}
+                            style={styles.headerImage}
                             source={require('../assets/images/parrot.png')}
                             resizeMode="contain"
                         />
@@ -87,17 +103,9 @@ function AuthNavigator() {
                     headerLeft: () => (
                         <Pressable
                             onPress={() => globalCtx.setLoggedIn(true)}
-                            style={({ pressed }) => ({
-                                opacity: pressed ? 0.5 : 1,
-                            })}
                         >
                             <Text
-                                style={{
-                                    fontWeight: 'bold',
-                                    fontSize: 15,
-                                    color: 'grey',
-                                    marginLeft: 7,
-                                }}
+                                style={styles.headerCancel}
                             >
                                 Cancel
                             </Text>

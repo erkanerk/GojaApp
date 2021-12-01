@@ -112,8 +112,8 @@ export default function ChoosePic({ navigation }) {
         }
     }
     function ContinueButton() {
-        if (image == '') {
-            return <View style={{ height: 40 }}></View>;
+        if (!image) {
+            return <></>;
         } else {
             return (
                 <Pressable style={styles.button} onPress={uploadImage}>
@@ -130,7 +130,9 @@ export default function ChoosePic({ navigation }) {
             <Pressable onPress={pickImage} style={styles.imageCirle}>
                 <PicPicker />
             </Pressable>
-            <ContinueButton />
+            <View style={styles.buttonContainer}>
+                <ContinueButton />
+            </View>
             <StatusBar style={Platform.OS === 'ios' ? 'dark' : 'auto'} />
         </View>
     );
@@ -142,6 +144,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
+    },
+    buttonContainer:{
+        height:40,
     },
     imageCirle: {
         alignItems: 'center',
