@@ -13,6 +13,7 @@ export const RegisterForm = ({ navigation }) => {
     const [userName, setUserName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [formErrors, setFormErrors] = useState<IFormErrors>(emptyFormErrors);
+    const [backendErrors, setBackendErrors] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const onSubmit = async () => {
@@ -38,7 +39,8 @@ export const RegisterForm = ({ navigation }) => {
                 navigation.navigate('ChoosePic');
             })
             .catch((error) => {
-                console.log(error && error);
+                console.log(error && error.response);
+                setBackendErrors(error.response.data);
                 setIsLoading(false);
                 onFailure(error, globalCtx);
             });
@@ -108,6 +110,9 @@ export const RegisterForm = ({ navigation }) => {
                         </Text>
                     ) : null}
                 </View>
+                <Text style={styles.errorMessage}>
+                    {backendErrors}
+                </Text>
             </View>
             <SubmitButton text={'Register'} onPress={onSubmit} />
         </View>

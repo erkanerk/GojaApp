@@ -1,28 +1,41 @@
-import React from 'react';
-import { View, Text, Pressable, Image } from 'react-native';
+import React, {
+    Dispatch,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
+import { View, Text, ActivityIndicator, Image } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { FollowButton } from "./subcomponents/FollowButton";
-import { Stats } from "./subcomponents/Stats";
+import { APIKit, onFailure } from '../../shared/APIkit';
+import AppContext from '../../shared/AppContext';
+import { useIsFocused } from '@react-navigation/native';
+import { FollowButton } from './subcomponents/FollowButton';
+import { Stats } from './subcomponents/Stats';
 
 export const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
     },
     image: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+        width: 120,
+        height: 120,
+        borderRadius: 60,
     },
     imageView: {
         alignItems: 'center',
-        margin:5,
+        margin: 2,
     },
     textView: {
         alignItems: 'center',
-        margin:5,
-    },    
+        margin: 5,
+    },
     text: {
-        color: 'black'
+        color: 'black',
+    },
+    UserNameText: {
+        fontSize: 20,
+        color: 'black',
     },
     line: {
         borderBottomColor: 'lightgray',
@@ -30,42 +43,71 @@ export const styles = StyleSheet.create({
     },
     followButtonView: {
         alignItems: 'center',
-        margin:5,
+        margin: 10,
     },
     statsView: {
-        margin:5,
-    }
+        margin: 10,
+    },
 });
 
 interface Props {
-    user: User
+    tab: number;
+    setTab: Dispatch<SetStateAction<number>>;
 }
-export const ProfileInformation = ({ 
-    user
-}: Props) => {
 
+export const ProfileInformation = ({ tab, setTab }: Props) => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const isFocused = useIsFocused();
+    const [user, setUser] = useState<UserInfo | undefined>(undefined);
+    const globalCtx = useContext(AppContext);
+
+    async function getUserInformation() {
+        setIsLoading(true);
+        console.log('Fetching user information');
+        APIKit.get('/users/profile/me')
+            .then((response) => {
+                console.log('Successful /users/profile/me response: ');
+                console.log(response.data);
+                setUser(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
+    }
+
+    useEffect(() => {
+        if (isFocused) {
+            getUserInformation();
+        }
+    }, [isFocused]);
+
+    if (!user) {
+        return <ActivityIndicator size="large" color={'lightgray'} />;
+    }
 
     return (
-    <View style={styles.container}>
-        <View style={styles.imageView}>
-            <Image
-            style={styles.image}
-            source={{
-                uri: user.profilePicture
-            }}/> 
+        <View style={styles.container}>
+            <View style={styles.imageView}>
+                <Image
+                    style={styles.image}
+                    source={{
+                        uri: user.profilePicture,
+                    }}
+                />
+            </View>
+            <View style={styles.textView}>
+                <Text style={styles.UserNameText}>{user.userName}</Text>
+            </View>
+            <View style={styles.followButtonView}>
+                <FollowButton />
+            </View>
+            <View style={styles.statsView}>
+                <Stats user={user} tab={tab} setTab={setTab} />
+            </View>
+            <View style={styles.line} />
         </View>
-        <View style={styles.textView}>
-            <Text style={styles.text}>{user.userName}</Text>
-        </View>
-        <View style={styles.followButtonView}>
-            <FollowButton />
-        </View>
-        <View style={styles.statsView}>
-            <Stats 
-            user={user}/>
-        </View>
-        <View style={styles.line} />
-    </View>
     );
-}
-
+};

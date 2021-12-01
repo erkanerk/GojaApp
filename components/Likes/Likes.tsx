@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
 import axios from 'axios';
+import { APIKit, onFailure } from "../../shared/APIkit";
+import AppContext from "../../shared/AppContext";
+import { Heart } from "react-native-feather";
 
 const styles = StyleSheet.create({
     container: {
@@ -12,13 +15,9 @@ const styles = StyleSheet.create({
     pressable: {
         flexDirection: 'row'
       },
-    image: {
-        width: 20,
-        height: 20,
-    },
     text: {
         marginLeft: 5,
-        fontSize: 12,
+        fontSize: 15,
     }
 }); 
 
@@ -31,6 +30,7 @@ export const Likes = ({
 }: Props) => {
     // TODO: isLiked and likes should change when liking the post using the PlayCard or Post.
     // TODO: isLiked should be based on if the user has liked the post before or not
+    const globalCtx = useContext(AppContext);
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const [likes, setLikes] = useState<number>(post.likes)
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -52,35 +52,21 @@ export const Likes = ({
     }, [])
 
     function handleLike(likeType: boolean) {
-      const url = 'http://localhost:3000/posts/like'
-      const data = JSON.stringify({
+      const payload = JSON.stringify({
         postId: post._id,
         likeType: likeType, //Liked the post: true, Unlike the post: false
         user: {
           userName: tempUserName,
        }});
-       // TODO: change this to use APIkit instead
-      const config = {
-        headers: {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MThiZDRmYjVmYThjNjQxNDNlYWE1NTMiLCJpYXQiOjE2MzcxNDYxNjh9.HdtsKrKNkpVFSqe6QzsRCCSAUIq8j_a4aazaV4RVaiM',
-            "content-type": "application/json",
-        }
-      }
-       axios
-          .post(url,data,config)
-          .then(function (response) {
-            // handle success
-            console.log("Successfull posts/like response: " + JSON.stringify(response.data))
-          })
-          .catch(function (error) {
-            // handle error
-            console.log("Something went wrong when using posts/like: " + error.message)
-          })
-          .finally(function () {
-            // always executed
-            console.log("finally")
-          });
 
+      APIKit.post("/posts/like", payload)
+        .then((response) => {
+          console.log("Successfull posts/like response: " + JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log("Something went wrong when using posts/like: " + error.message);
+          onFailure(error, globalCtx);
+        });
     }
 
     function handleOnPress() {
@@ -107,13 +93,9 @@ export const Likes = ({
             <View>
                 {isLiked 
                 ? 
-                <Image
-                    style={styles.image}
-                    source={require('../../assets/images/liked_icon.png')}/>
+                <Heart stroke="red" fill="red" width={25} height={25} />
                 : 
-                <Image
-                    style={styles.image}
-                    source={require('../../assets/images/not_liked_icon.png')}/>
+                <Heart stroke="black" fill="transparent" width={25} height={25} strokeWidth={1} />
                 }
             </View>
             <View>

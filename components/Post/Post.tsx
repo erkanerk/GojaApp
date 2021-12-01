@@ -8,33 +8,40 @@ export const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
         padding: 5,
-        margin: 10,
         borderRadius: 5,
         flexDirection: 'column',
     },
     userName: {
-        fontSize: 12,
+        fontSize: 18,
+        color: 'black',
     },
     focused_userName: {
-        fontSize: 12,
-        fontWeight: 'bold'
+        fontSize: 18,
+        color: '#059336',
+        fontWeight: 'bold',
     },
     profilePicture: {
-        width: 50,
-        height: 50,
+        width: 52,
+        height: 52,
+        borderRadius: 15
     },
     pressableView: {
-        flexDirection: "row",    
+        flexDirection: "row",   
+        marginBottom: 15,
     },
     hashtagView: {
         flexDirection: "row",
+        flex: 1,
+        alignItems: 'flex-end'
     },
     hashtag: {
-        fontSize: 10,
+        fontSize: 15,
+        color: 'black',
     },
     focused_hashtag: {
-        fontSize: 10,
-        fontWeight: 'bold'
+        fontSize: 15,
+        color: '#059336',
+        fontWeight: 'bold',
     },
     pictureView: {
         flex: 2,
@@ -42,18 +49,21 @@ export const styles = StyleSheet.create({
     textView: {
         flexDirection: "column",
         flex: 7,
-        margin: 5,
+        marginLeft: 20,
     },
     commentsView: {
         flex: 2,
         margin: 5,
+        justifyContent: 'flex-end'
     },
     likesView: {
         flex: 2,
         margin: 5,
+        justifyContent: 'flex-end'
     },
     line: {
         borderBottomColor: 'lightgray',
+        opacity: 0.3,
         borderBottomWidth: 1,
     }
   }); 
@@ -114,12 +124,16 @@ export const Post = ({
                 </View>
                 <View style={styles.textView}>
                     <Text style={isFocused ? styles.focused_userName : styles.userName}>{post.user.userName}</Text>
-        
-                    <View style={styles.hashtagView}>
-                        {post.hashtags.map(hashtag => 
-                            <Text key={hashtag} style={isFocused ? styles.focused_hashtag : styles.hashtag}>#{hashtag}</Text>
-                        )}
+                    {post.hashtags && 
+                        <View style={styles.hashtagView}>
+                            <Text numberOfLines={1}> 
+                                {post.hashtags.map((hashtag, index) => 
+                                    <Text key={index} style={isFocused ? styles.focused_hashtag : styles.hashtag} numberOfLines={1}>#{hashtag}</Text>
+                                )}
+                            </Text>
+                        
                     </View>
+                    }
                 </View>
                 <View style={styles.commentsView}>
                     <Comments 
