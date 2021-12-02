@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
     View,
-    StyleSheet,
-    Pressable,
-    Text,
-    Image,
     KeyboardAvoidingView,
     Platform,
     TouchableWithoutFeedback,
     Keyboard,
 } from 'react-native';
 import { RecordButton } from '../../components/Record/RecordButton';
-import { PostButton } from '../../components/Record/PostButton';
 import { PostPost } from '../../components/Record/utils/postPost';
 import { Hashtags } from '../../components/Record/Hashtags';
 import { TextAndPictures } from '../../components/Record/TextAndPictures';
