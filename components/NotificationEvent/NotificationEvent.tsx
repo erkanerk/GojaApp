@@ -5,30 +5,26 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
-        justifyContent: "center",
-        padding: 5,
-        borderRadius: 5,
-        flexDirection: 'column',
+        flex: 1,
+        flexDirection: 'row',
+        marginHorizontal: 20,
+        marginVertical: 10,
     },
     profilePicture: {
-        width: 52,
-        height: 52,
+        width: 50,
+        height: 50,
         borderRadius: 15
     },
     pressableView: {
-        flexDirection: "row",   
-        marginBottom: 15,
     },
     pictureView: {
-        flex: 2,
     },
     textView: {
-        flexDirection: "column",
-        flex: 7,
-        marginLeft: 20,
+        marginLeft: 15,
+        alignSelf: 'center',
     },
     text: {
-        fontSize: 15,
+        fontSize: 20,
         color: 'black',
     },    
   }); 
@@ -42,28 +38,33 @@ export const NotificationEvent = ({
 }: Props) => {
     const navigation = useNavigation();
     
-    function handleOnPress() {
+    function handleOnPressImage() {
         console.log('Picture pressed, redirecting to profile')
         navigation.navigate('ProfileScreen', {userId: event.userId})
     }
 
+    function handleOnPressText() {
+        console.log('Text pressed')
+    }
+
     return (
     <View style={styles.container}>            
-        <View style={styles.pressableView}>
+        <View style={styles.pictureView}>
             <Pressable
-            onPress={handleOnPress}>
-                <View style={styles.pictureView}>
-                    <Image
-                    style={styles.profilePicture}
-                    source={{
-                        uri: event.profilePicture,
-                    }} 
-                    /> 
-                </View>
+            onPress={handleOnPressImage}>
+                <Image
+                style={styles.profilePicture}
+                source={{
+                    uri: event.profilePicture,
+                }} 
+                /> 
             </Pressable>
         </View>
         <View style={styles.textView}>
-            <Text style={styles.text}>{event.userName} {event.event}</Text>
+            <Pressable
+            onPress={handleOnPressText}>
+                    <Text style={styles.text}>{event.userName} {event.event}</Text>
+            </Pressable>
         </View>
     </View>
     );

@@ -23,6 +23,7 @@ export type RootStackParamList = {
     Auth: undefined;
     ChoosePic: undefined;
     RecordProfileSound: undefined;
+    NotificationScreen: undefined;
     ProfileScreen: { userId: string | undefined };
 };
 

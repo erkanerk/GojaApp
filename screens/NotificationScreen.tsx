@@ -7,6 +7,7 @@ import { RouteProp, useIsFocused } from "@react-navigation/native";
 import AppContext from "../shared/AppContext";
 import { APIKit, onFailure } from "../shared/APIkit";
 import { NotificationEvent } from "../components/NotificationEvent/NotificationEvent";
+import { SampleNotifications } from "../assets/sampleData/Notifications";
 
 export const styles = StyleSheet.create({
     container: {
@@ -15,7 +16,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     feedView: {
-
+        marginTop: 10,
     }
 });
 
@@ -24,14 +25,15 @@ interface Props {
     navigation: NativeStackNavigationProp<RootStackParamList, 'ProfileScreen'>
 }
 
-export default function ProfilePage({ 
+export default function NotificationScreen({ 
     route,
     navigation 
 }: Props){
     const globalCtx = useContext(AppContext);
     const isFocused = useIsFocused();
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [notifications, setNotifications] = useState<Notification[] | undefined>(undefined);
+    // TODO: rm SampleNotifications 
+    const [notifications, setNotifications] = useState<Notification[] | undefined>(SampleNotifications);
     
     // TODO: change to a real endpoint
     async function getNotifications() {
@@ -53,7 +55,7 @@ export default function ProfilePage({
 
     useEffect(() => {
         if (isFocused) {
-            getNotifications()    
+            // getNotifications()    
         }
     }, [isFocused]);
 
