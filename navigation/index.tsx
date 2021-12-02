@@ -36,11 +36,12 @@ import {
 import LinkingConfiguration from './LinkingConfiguration';
 import AuthScreen from '../screens/AuthScreen';
 import ChoosePic from '../screens/ChoosePic';
-import ProfilePage from '../screens/ProfilePage';
 import AppContext from '../shared/AppContext';
 import { Feather } from '@expo/vector-icons';
 import SearchScreen from "../screens/SearchScreen";
 import NotificationScreen from "../screens/NotificationScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import { LogoutButton } from "../components/Logout/LogoutButton";
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -156,19 +157,29 @@ function RootNavigator() {
       />
       <Stack.Screen
       name={'ProfileScreen'}
-      component={ProfilePage} 
+      component={ProfileScreen} 
       initialParams={{ userId: undefined}}
       options={({ route, navigation }) => ({
         title: '',
         // TODO: HeaderRight is a temporary implementation to test the notification screen. 
-        headerRight: () => (
-            <View>
-                <Pressable
-                onPress={() => navigation.navigate('NotificationScreen')}>
-                    <Text>Notifications</Text>
-                </Pressable>
-            </View>
-        ),
+        headerRight: () => {
+            if (route.params.userId) {
+                return (
+                    <View>
+                        <Pressable
+                        onPress={() => navigation.navigate('NotificationScreen')}>
+                            <Text>Notifications</Text>
+                        </Pressable>
+                    </View>
+                    )        
+            } else {
+                return (
+                <View>
+                    <LogoutButton/>
+                </View>
+                )        
+            }
+        }
       })}
     />
     </Stack.Navigator>
@@ -186,20 +197,31 @@ function BottomTabNavigator() {
 
     return (
         <BottomTab.Navigator
-            initialRouteName="FeedTab"
+            initialRouteName={'FeedTab'}
             screenOptions={{
                 tabBarActiveTintColor: 'black',
                 tabBarShowLabel: false,
+                tabBarStyle: {
+                    height: 65,
+                },
             }}
         >
             <BottomTab.Screen
-                name="FeedTab"
+                name={'FeedTab'}
                 component={HomeFeed}
-                options={{
+                options={({ route, navigation }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                         return <Feather name={'home'} size={size} color={color} />
                     },
-                }}
+                    headerLeft: () => (
+                        <View>
+                            <Pressable
+                            onPress={() => navigation.navigate('ProfileScreen', {userId: undefined})}>
+                                <Text>Profile page</Text>
+                            </Pressable>
+                        </View>
+                    ),
+                })}
               />
               <BottomTab.Screen
                 name="RecordTab"
