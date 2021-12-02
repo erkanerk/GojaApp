@@ -19,10 +19,12 @@ export const styles = StyleSheet.create({
   },
 });
 interface Props {
-  posts: Post[] | undefined;
+    posts: Post[] | undefined;
+    onRefresh: () => Promise<void> | undefined;
+    refreshing: boolean | undefined;
 }
 
-export const PostFeed = ({ posts }: Props) => {
+export const PostFeed = ({ posts, onRefresh, refreshing }: Props) => {
   const [focusedPostIndex, setFocusedPostIndex] = useState<number | undefined>(
     undefined
   );
@@ -219,31 +221,33 @@ export const PostFeed = ({ posts }: Props) => {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.feedView}>
-        <FlatList
-          data={posts}
-          keyExtractor={(post) => post._id}
-          renderItem={renderPost}
-        />
+      <View style={styles.container}>
+          <View style={styles.feedView}>
+              <FlatList
+                  data={posts}
+                  keyExtractor={(post) => post._id}
+                  renderItem={renderPost}
+                  onRefresh={onRefresh}
+                  refreshing={refreshing}
+              />
+          </View>
+          <View style={styles.playCardView}>
+              {posts && focusedPostIndex != undefined ? (
+                  <PlayCard
+                      post={posts[focusedPostIndex]}
+                      isPlaybackAllowed={isPlaybackAllowed}
+                      isLoading={isLoading}
+                      isPlaying={isPlaying}
+                      seekSliderPosition={seekSliderPosition}
+                      onSeekSliderValueChange={onSeekSliderValueChange}
+                      onSeekSliderSlidingComplete={onSeekSliderSlidingComplete}
+                      playbackTimestamp={playbackTimestamp}
+                      playPausePost={playPausePost}
+                      playNextPost={playNextPost}
+                      playPreviousPost={playPreviousPost}
+                  />
+              ) : null}
+          </View>
       </View>
-      <View style={styles.playCardView}>
-        {posts && focusedPostIndex != undefined ? (
-          <PlayCard
-            post={posts[focusedPostIndex]}
-            isPlaybackAllowed={isPlaybackAllowed}
-            isLoading={isLoading}
-            isPlaying={isPlaying}
-            seekSliderPosition={seekSliderPosition}
-            onSeekSliderValueChange={onSeekSliderValueChange}
-            onSeekSliderSlidingComplete={onSeekSliderSlidingComplete}
-            playbackTimestamp={playbackTimestamp}
-            playPausePost={playPausePost}
-            playNextPost={playNextPost}
-            playPreviousPost={playPreviousPost}
-          />
-        ) : null}
-      </View>
-    </View>
   );
 };
