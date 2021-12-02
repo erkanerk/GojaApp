@@ -164,18 +164,6 @@ function RootNavigator() {
             <Stack.Screen name="Modal" component={ModalScreen} />
         </Stack.Group>
         
-        <Stack.Group 
-        screenOptions={({ route, navigation }) => ({
-            headerRight: () => (
-              <NotificationNavigator route={route} navigation={navigation}/>  
-            ),
-            headerLeft: () => (
-                <ProfileNavigator route={route} navigation={navigation}/>
-            )
-        })}>
-
-        </Stack.Group>
-        
         <Stack.Screen
         name={'ProfileScreen'}
         component={ProfileScreen} 
