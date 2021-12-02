@@ -8,7 +8,7 @@ import { Bell } from "react-native-feather";
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 20,
+        marginRight: 20,
     },
     image: {
         width: 40,
@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
   }); 
 
 interface Props {
-    route: RouteProp<RootStackParamList, 'ProfileScreen'>
-    navigation: NativeStackNavigationProp<RootStackParamList, 'ProfileScreen'>
+    route: any
+    navigation: any
 }
 
 export const NotificationNavigator = ({ 

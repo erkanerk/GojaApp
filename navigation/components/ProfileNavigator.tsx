@@ -1,4 +1,5 @@
-import { RouteProp } from '@react-navigation/native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
 import { Image, View, Pressable } from 'react-native';
@@ -8,7 +9,7 @@ import { RootStackParamList, RootTabParamList } from '../../types';
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 20,
+        marginLeft: 20
     },
     image: {
         width: 40,
@@ -18,8 +19,8 @@ const styles = StyleSheet.create({
   }); 
 
 interface Props {
-    route: RouteProp<RootTabParamList, 'FeedTab'>
-    navigation: NativeStackNavigationProp<RootStackParamList, 'ProfileScreen'>
+    route: any
+    navigation: any
 }
 
 export const ProfileNavigator = ({ 
