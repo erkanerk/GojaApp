@@ -160,6 +160,7 @@ function RootNavigator() {
       initialParams={{ userId: undefined}}
       options={({ route, navigation }) => ({
         title: '',
+        // TODO: HeaderRight is a temporary implementation to test the notification screen. 
         headerRight: () => (
             <View>
                 <Pressable
