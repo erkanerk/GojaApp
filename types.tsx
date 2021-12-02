@@ -22,6 +22,9 @@ export type RootStackParamList = {
     NotFound: undefined;
     Auth: undefined;
     ChoosePic: undefined;
+    RecordProfileSound: undefined;
+    NotificationScreen: undefined;
+    ProfileScreen: { userId: string | undefined };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -30,7 +33,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 export type RootTabParamList = {
   FeedTab: undefined;
   RecordTab: undefined;
-  SearchTab: undefined
+  SearchTab: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

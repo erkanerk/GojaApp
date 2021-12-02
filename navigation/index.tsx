@@ -13,7 +13,14 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { useContext } from 'react';
-import { ColorSchemeName, Pressable, Image } from 'react-native';
+import {
+    ColorSchemeName,
+    Pressable,
+    Image,
+    Text,
+    StyleSheet,
+    View,
+} from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -32,6 +39,21 @@ import ChoosePic from '../screens/ChoosePic';
 import ProfilePage from '../screens/ProfilePage';
 import AppContext from '../shared/AppContext';
 import { Feather } from '@expo/vector-icons';
+import SearchScreen from '../screens/SearchScreen';
+import NotificationScreen from '../screens/NotificationScreen';
+
+const styles = StyleSheet.create({
+    headerImage: {
+        width: 50,
+        height: 50,
+    },
+    headerCancel: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        color: 'grey',
+        marginLeft: 7,
+    },
+});
 
 export default function Navigation({
     colorScheme,
@@ -49,7 +71,6 @@ export default function Navigation({
             </NavigationContainer>
         );
     } else {
-        //use a stack navigator here!?
         return (
             <NavigationContainer theme={DefaultTheme}>
                 <AuthNavigator />
@@ -61,6 +82,7 @@ export default function Navigation({
 const AuthStack = createNativeStackNavigator<RootStackParamList>();
 
 function AuthNavigator() {
+    const globalCtx = useContext(AppContext);
     return (
         <AuthStack.Navigator>
             <AuthStack.Screen
@@ -74,12 +96,24 @@ function AuthNavigator() {
                 options={{
                     headerTitle: (props) => (
                         <Image
-                            style={{ width: 200, height: 50, flex: 1 }}
+                            style={styles.headerImage}
                             source={require('../assets/images/parrot.png')}
                             resizeMode="contain"
                         />
                     ),
+                    headerLeft: () => (
+                        <Pressable onPress={() => globalCtx.setLoggedIn(true)}>
+                            <Text style={styles.headerCancel}>Cancel</Text>
+                        </Pressable>
+                    ),
+                    headerStyle: {
+                        backgroundColor: 'white',
+                    },
                 }}
+            />
+            <AuthStack.Screen
+                name="RecordProfileSound"
+                component={AuthScreen}
             />
         </AuthStack.Navigator>
     );
@@ -107,6 +141,31 @@ function RootNavigator() {
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
                 <Stack.Screen name="Modal" component={ModalScreen} />
             </Stack.Group>
+            <Stack.Screen
+                name="NotificationScreen"
+                component={NotificationScreen}
+                options={{ title: 'Notifications' }}
+            />
+            <Stack.Screen
+                name={'ProfileScreen'}
+                component={ProfilePage}
+                initialParams={{ userId: undefined }}
+                options={({ route, navigation }) => ({
+                    title: '',
+                    // TODO: HeaderRight is a temporary implementation to test the notification screen.
+                    headerRight: () => (
+                        <View>
+                            <Pressable
+                                onPress={() =>
+                                    navigation.navigate('NotificationScreen')
+                                }
+                            >
+                                <Text>Notifications</Text>
+                            </Pressable>
+                        </View>
+                    ),
+                })}
+            />
         </Stack.Navigator>
     );
 }
@@ -162,9 +221,8 @@ function BottomTabNavigator() {
             />
             <BottomTab.Screen
                 name="SearchTab"
-                component={ProfilePage}
+                component={SearchScreen}
                 options={{
-                    title: 'ProfilePage',
                     tabBarIcon: ({ focused, color, size }) => {
                         return (
                             <Feather

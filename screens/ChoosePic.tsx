@@ -1,60 +1,141 @@
-import React, { useState } from 'react';
-import {
-    Platform,
-    Image,
-    StyleSheet,
-    Pressable,
-    KeyboardAvoidingView,
-    Keyboard,
-    TouchableWithoutFeedback,
-} from 'react-native';
-
-import { RegisterForm } from '../components/Forms/RegisterForm/RegisterForm';
-import { LoginForm } from '../components/Forms/LoginForm/LoginForm';
+import React, { useState, useContext } from 'react';
+import * as Icon from 'react-native-feather';
+import { StatusBar } from 'expo-status-bar';
+import { Platform, Image, StyleSheet, Pressable, Alert } from 'react-native';
+import { APIKit, getToken } from '../shared/APIkit';
 import { Text, View } from '../components/Themed';
+import Constants from 'expo-constants';
+const { manifest } = Constants;
+import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from 'expo-image-picker';
+import AppContext from '../shared/AppContext';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function ChoosePic({ navigation }) {
+    const [image, setImage] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const globalCtx = useContext(AppContext);
+
+    const requestPermission = async () => {
+        if (Platform.OS !== 'web') {
+            const { status } =
+                await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert(
+                    'Sorry, we need camera roll permissions to make this work. Navigate to your settings on your device and allow camera roll permission for the app.'
+                );
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    };
+
+    const pickImage = async () => {
+        let permission = await requestPermission();
+        if (!permission) {
+            return;
+        }
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+        if (!result.cancelled) {
+            if (result.type == 'image') {
+                setImage(result.uri);
+            } else {
+                Alert.alert('Please choose an image');
+            }
+        }
+    };
+
+    async function uploadImage() {
+        setIsLoading(true);
+        let apiUrl =
+            `http://${manifest?.debuggerHost?.split(':').shift()}:3000` +
+            '/users/upload-image/';
+        const token = await getToken();
+
+        FileSystem.uploadAsync(apiUrl, image, {
+            uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+            fieldName: 'file',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => {
+                var urlNoQuotes = res.body.split('"').join('');
+                const payload = {
+                    url: urlNoQuotes,
+                };
+                console.log("payload: ");
+                console.log(payload);
+                APIKit.post('/users/add-profile-picture', payload)
+                    .then((response) => {
+                        globalCtx.setUserInfo({...globalCtx.userInfo, profilePicture: urlNoQuotes });
+                        setIsLoading(false);
+                        //change to navigation.navigate record sound
+                        globalCtx.setLoggedIn(true);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        setIsLoading(false);
+                    });
+            })
+            .catch((error) => {
+                console.log(error);
+                setIsLoading(false);
+            });
+    }
+
+    function PicPicker() {
+        if (image == '') {
+            return (
+                <Icon.PlusCircle
+                    color="#fff"
+                    strokeWidth={1}
+                    width={90}
+                    height={90}
+                />
+            );
+        } else {
+            return <Image source={{ uri: image }} style={styles.image} />;
+        }
+    }
+    function ContinueButton() {
+        if (!image) {
+            return <></>;
+        } else {
+            return (
+                <Pressable style={styles.button} onPress={uploadImage}>
+                    <Text style={styles.buttonText}>Continue</Text>
+                </Pressable>
+            );
+        }
+    }
+
     return (
         <View style={styles.container}>
-            <Image
-                style={styles.bigLogo}
-                source={require('../assets/images/parrot.png')}
-            />
-            <View style={styles.titleBox}>
-                <Text style={styles.title}>Goja</Text>
+            <Spinner visible={isLoading} />
+            <Text style={styles.title}>Choose a profile picture</Text>
+            <Pressable onPress={pickImage} style={styles.imageCirle}>
+                <PicPicker />
+            </Pressable>
+            <View style={styles.buttonContainer}>
+                <ContinueButton />
             </View>
-            <FormTypeSwitcher navigation={navigation} />
+            <StatusBar style={Platform.OS === 'ios' ? 'dark' : 'auto'} />
         </View>
     );
-}
-
-function FormTypeSwitcher({ navigation }) {
-    const [formType, setFormType] = useState('Login');
-    if (formType == 'Login') {
-        return (
-            <>
-                <LoginForm />
-                <Pressable
-                    style={styles.button}
-                    onPress={() => setFormType('Register')}
-                >
-                    <Text style={styles.buttonText}>Register</Text>
-                </Pressable>
-            </>
-        );
-    } else {
-        return (
-            <>
-                <RegisterForm navigation={navigation} />
-                <Pressable
-                    style={styles.button}
-                    onPress={() => setFormType('Login')}
-                >
-                    <Text style={styles.buttonText}>Log in</Text>
-                </Pressable>
-            </>
-        );
-    }
 }
 
 const styles = StyleSheet.create({
@@ -62,32 +143,37 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#BA0505',
+        backgroundColor: 'white',
     },
-    titleBox: {
-        backgroundColor: 'rgba(0, 0, 0, 0)',
+    buttonContainer:{
+        height:40,
     },
+    imageCirle: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 130,
+        height: 130,
+        borderRadius: 100,
+        marginBottom: 150,
+        backgroundColor: 'grey',
+    },
+    image: { width: 130, height: 130, borderRadius: 100 },
     title: {
-        fontSize: 40,
+        fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 35,
-        color: 'white',
-    },
-    bigLogo: {
-        height: 100,
-        width: 100,
-        marginBottom: 0,
+        marginBottom: 20,
+        color: 'black',
     },
     button: {
-        marginTop: 20,
-        backgroundColor: 'rgba(0, 0, 0, 0)',
-        width: 100,
+        backgroundColor: 'red',
+        borderRadius: 19,
+        width: 115,
         height: 40,
         alignItems: 'center',
         justifyContent: 'center',
     },
     buttonText: {
-        fontSize: 15,
+        fontSize: 18,
         fontWeight: 'bold',
         color: 'white',
     },

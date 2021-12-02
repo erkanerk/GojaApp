@@ -5,6 +5,7 @@ import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
 import { useIsFocused } from "@react-navigation/native";
 import { FadeText } from "../FadeText/FadeText";
+import { User } from "../User/User";
 
 export const styles = StyleSheet.create({
     container: {
@@ -22,39 +23,60 @@ export const styles = StyleSheet.create({
     },
 });
 
-interface Props {}
+interface Props {
+    userId: string | undefined
+}
 
-export const FollowingFeed = ({}: Props) => {
+export const FollowingFeed = ({
+    userId
+}: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const isFocused = useIsFocused();
-    const [users, setUsers] = useState<any | undefined>(undefined);
+    const [users, setUsers] = useState<Following[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
     
-    async function getUserFollowing() {
+    async function getFollowing() {
         setIsLoading(true)
-        APIKit.get("/users/following/me")
-        .then((response) => {
-            console.log("Successful /users/following/me response: ")
-            console.log(response.data)
-            setUsers(response.data);
-            setIsLoading(false);
-        })
-        .catch((error) => {
-            onFailure(error, globalCtx);
-            console.log(error && error);
-            setIsLoading(false);
-        });
+        if (userId) {
+            APIKit.get(`/users/following/${userId}`)
+            .then((response) => {
+                console.log("Successful /users/following/:id response: ")
+                console.log(response.data)
+                setUsers(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
+        } else {
+            APIKit.get("/users/following/me")
+            .then((response) => {
+                console.log("Successful /users/following/me response: ")
+                console.log(response.data)
+                setUsers(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
+        }
+        
     }
 
     useEffect(() => {
         if (isFocused) {
-            getUserFollowing()    
+            getFollowing()    
         }
     }, [isFocused]);
 
-    // TODO: Build the user item component
     const renderItem = ({ item, index, separators }: any) => (
-        <Text>User Item</Text>
+        <User 
+        user={item} 
+        following={true}/>
     );
 
     return (
@@ -64,7 +86,7 @@ export const FollowingFeed = ({}: Props) => {
             <View style={styles.feedView}>
                 <FlatList
                 data={users}
-                keyExtractor={user => user._id}
+                keyExtractor={user => user.userId}
                 renderItem={renderItem} />
             </View>
             :
