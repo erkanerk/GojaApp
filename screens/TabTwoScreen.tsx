@@ -5,7 +5,7 @@ import { PostType } from './postFlow/RecordingScreen';
 
 export default function TabTwoScreen() {
     const testAnswerInfo = {
-        answerId: 'TestID',
+        answerId: '61a78216fc0bcfff4144f86a',
         imageUrl:
             'https://i.pinimg.com/236x/20/1f/01/201f016bd3a8576fc6cfc872ecac648e--dwight-schrute-hero-.jpg',
         username: 'TestU',
@@ -14,7 +14,7 @@ export default function TabTwoScreen() {
     return (
         <View>
             <RecordingScreen
-                recordingScreenType={PostType.REGISTER}
+                recordingScreenType={PostType.ANSWER}
                 answerInfo={testAnswerInfo}
             />
         </View>

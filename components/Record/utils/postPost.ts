@@ -11,7 +11,7 @@ async function PostPost(
     c: any,
     answerToId: string | null = null
 ) {
-    console.log(c);
+    console.log('ANSWERTOID', answerToId);
     let apiUrl =
         `http://${manifest?.debuggerHost?.split(':').shift()}:3000` +
         '/posts/upload-audio/';
@@ -35,7 +35,7 @@ async function PostPost(
                 hashtags: hashtags,
                 audio: urlNoQuotes,
                 audioFileType: fileType,
-                inReplpyToPostId: answerToId,
+                inReplyToPostId: answerToId,
                 user: {
                     id: c.userInfo._id,
                     profileAudio: c.userInfo.profileAudio,

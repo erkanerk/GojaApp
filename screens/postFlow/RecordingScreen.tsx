@@ -59,7 +59,13 @@ export const RecordingScreen = ({
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
-        PostPost(recordingURI, arrayHashtags, '/posts', globalCtx);
+        PostPost(
+            recordingURI,
+            arrayHashtags,
+            '/posts',
+            globalCtx,
+            answerInfo?.answerId
+        );
         setHashtags('');
         setCanPost(false);
         setRecordingURI(null);
@@ -93,7 +99,7 @@ export const RecordingScreen = ({
                         <OnlyPicture pictureUrl={profilePic} />
                     )}
                     {recordingScreenType === PostType.REGISTER && (
-                        <TextAndPictures />
+                        <TextAndPictures pictureUrl={profilePic} />
                     )}
                     {recordingScreenType === PostType.ANSWER && (
                         <AnswerTo
