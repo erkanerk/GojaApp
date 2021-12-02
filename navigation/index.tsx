@@ -13,7 +13,13 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { useContext } from "react";
-import { ColorSchemeName, Pressable, Image } from 'react-native';
+import {
+    ColorSchemeName,
+    Pressable,
+    Image,
+    Text,
+    StyleSheet,
+} from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -34,6 +40,19 @@ import AppContext from '../shared/AppContext';
 import { Feather } from '@expo/vector-icons';
 import SearchScreen from "../screens/SearchScreen";
 
+const styles = StyleSheet.create({
+    headerImage: {
+        width: 50,
+        height: 50,
+    },
+    headerCancel: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        color: 'grey',
+        marginLeft: 7,
+    },
+});
+
 export default function Navigation({
     colorScheme,
 }: {
@@ -50,7 +69,6 @@ export default function Navigation({
             </NavigationContainer>
         );
     } else {
-        //use a stack navigator here!?
         return (
             <NavigationContainer
                 theme={DefaultTheme}
@@ -64,6 +82,7 @@ export default function Navigation({
 const AuthStack = createNativeStackNavigator<RootStackParamList>();
 
 function AuthNavigator() {
+    const globalCtx = useContext(AppContext);
     return (
         <AuthStack.Navigator>
             <AuthStack.Screen
@@ -77,12 +96,30 @@ function AuthNavigator() {
                 options={{
                     headerTitle: (props) => (
                         <Image
-                            style={{ width: 200, height: 50, flex: 1 }}
+                            style={styles.headerImage}
                             source={require('../assets/images/parrot.png')}
                             resizeMode="contain"
                         />
                     ),
+                    headerLeft: () => (
+                        <Pressable
+                            onPress={() => globalCtx.setLoggedIn(true)}
+                        >
+                            <Text
+                                style={styles.headerCancel}
+                            >
+                                Cancel
+                            </Text>
+                        </Pressable>
+                    ),
+                    headerStyle: {
+                        backgroundColor: 'white',
+                    },
                 }}
+            />
+            <AuthStack.Screen
+                name="RecordProfileSound"
+                component={AuthScreen}
             />
         </AuthStack.Navigator>
     );
