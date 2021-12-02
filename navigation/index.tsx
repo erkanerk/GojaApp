@@ -42,6 +42,9 @@ import SearchScreen from "../screens/SearchScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { LogoutButton } from "../components/Logout/LogoutButton";
+import { ProfileNavigator } from "./components/ProfileNavigator";
+import { NotificationNavigator } from "./components/NotificationNavigator";
+import { LogoutNavigator } from "./components/LogoutNavigator";
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -164,20 +167,9 @@ function RootNavigator() {
         // TODO: HeaderRight is a temporary implementation to test the notification screen. 
         headerRight: () => {
             if (route.params.userId) {
-                return (
-                    <View>
-                        <Pressable
-                        onPress={() => navigation.navigate('NotificationScreen')}>
-                            <Text>Notifications</Text>
-                        </Pressable>
-                    </View>
-                    )        
+                return <NotificationNavigator route={route} navigation={navigation}/>      
             } else {
-                return (
-                <View>
-                    <LogoutButton/>
-                </View>
-                )        
+                return <LogoutNavigator route={route} navigation={navigation}/>  
             }
         }
       })}
@@ -213,14 +205,9 @@ function BottomTabNavigator() {
                     tabBarIcon: ({ focused, color, size }) => {
                         return <Feather name={'home'} size={size} color={color} />
                     },
-                    headerLeft: () => (
-                        <View>
-                            <Pressable
-                            onPress={() => navigation.navigate('ProfileScreen', {userId: undefined})}>
-                                <Text>Profile page</Text>
-                            </Pressable>
-                        </View>
-                    ),
+                    headerLeft: () => {
+                        return <ProfileNavigator route={route} navigation={navigation}/>
+                    }
                 })}
               />
               <BottomTab.Screen
