@@ -1,25 +1,25 @@
 import * as React from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { Audio } from 'expo-av';
-import { APIKit, getToken } from '../../shared/APIkit';
-import Constants from 'expo-constants';
-const { manifest } = Constants;
-import * as FileSystem from 'expo-file-system';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: 'red',
     },
     wrapper: {
-        width: '100%',
         flexDirection: 'row',
+
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     buttonAndText: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: 25,
+
+        flex: 1,
     },
     record: {
         borderRadius: 100,
@@ -64,7 +64,6 @@ export const RecordButton = ({
 }: PropTypes) => {
     const [recording, setRecording] = React.useState<any | null>(null);
     const [sound, setSound] = React.useState<any | null>(null);
-    const [posted, setPosted] = React.useState<true | false>(false);
 
     async function startRecording() {
         //setPosted(false);
@@ -113,7 +112,7 @@ export const RecordButton = ({
     }
 
     return (
-        <View>
+        <View style={styles.wrapper}>
             {!recordingURIP && (
                 <View style={styles.buttonAndText}>
                     <Pressable
@@ -126,25 +125,32 @@ export const RecordButton = ({
                 </View>
             )}
             {recordingURIP && (
-                <View style={styles.container}>
-                    <View style={styles.wrapper}>
-                        <Icon.Button
-                            name="trash-o"
-                            color="red"
-                            size={40}
-                            backgroundColor="transparent"
-                            borderRadius={0}
-                            onPress={deleteSound}
-                            underlayColor="white"
-                        ></Icon.Button>
-                        <View style={styles.buttonAndText}>
-                            <Pressable
-                                style={styles.play}
-                                onPress={playSound}
-                            />
-                            <Text style={styles.text}>{'Play recording'}</Text>
+                <View
+                    style={{
+                        flexDirection: 'row',
+
+                        width: '100%',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <View style={{ marginLeft: 50 }}>
+                            <Icon.Button
+                                name="trash-o"
+                                color="red"
+                                size={40}
+                                backgroundColor="transparent"
+                                borderRadius={0}
+                                onPress={deleteSound}
+                                underlayColor="white"
+                            ></Icon.Button>
                         </View>
                     </View>
+                    <View style={styles.buttonAndText}>
+                        <Pressable style={styles.play} onPress={playSound} />
+                        <Text style={styles.text}>{'Play recording'}</Text>
+                    </View>
+                    <View style={{ flex: 1 }}></View>
                 </View>
             )}
         </View>

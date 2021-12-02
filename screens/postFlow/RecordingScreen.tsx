@@ -19,6 +19,7 @@ import { OnlyPicture } from '../../components/Record/OnlyPicture';
 import { AnswerTo } from '../../components/Record/AnswerTo';
 import AppContext from '../../shared/AppContext';
 import { hashtagHandler } from '../../components/Record/utils/hashtagHandler';
+import { TopBar } from '../../components/Record/TopBar';
 
 export enum PostType {
     REGISTER,
@@ -82,6 +83,11 @@ export const RecordingScreen = ({
                     justifyContent: 'space-between',
                 }}
             >
+                <TopBar
+                    postToBackend={postPostToBackend}
+                    canPost={canPost}
+                    buttonText={postButtonText}
+                />
                 <View style={{ marginTop: 50 }}>
                     {recordingScreenType === PostType.POST && (
                         <OnlyPicture pictureUrl={profilePic} />
@@ -104,34 +110,11 @@ export const RecordingScreen = ({
                     <Hashtags hashtagSetter={setHashtags} hashtags={hashtags} />
                 </KeyboardAvoidingView>
 
-                <View
-                    style={{
-                        justifyContent: 'center',
-                        alignSelf: 'center',
-                        borderColor: 'red',
-                    }}
-                >
-                    <PostButton
-                        postToBackend={postPostToBackend}
-                        canPost={canPost}
-                        buttonText={postButtonText}
+                <View style={{ marginBottom: 20 }}>
+                    <RecordButton
+                        recordingURISetter={setRecordingURI}
+                        recordingURIP={recordingURI}
                     />
-                </View>
-                <View
-                    style={{
-                        marginBottom: 75,
-                        justifyContent: 'center',
-                        //alignSelf: 'center',
-                        flexDirection: 'row',
-                        backgroundColor: 'white',
-                    }}
-                >
-                    <View style={{ bottom: -20 }}>
-                        <RecordButton
-                            recordingURISetter={setRecordingURI}
-                            recordingURIP={recordingURI}
-                        />
-                    </View>
                 </View>
             </View>
         </TouchableWithoutFeedback>
