@@ -19,6 +19,7 @@ import {
     Image,
     Text,
     StyleSheet,
+    View,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
@@ -39,6 +40,7 @@ import ProfilePage from '../screens/ProfilePage';
 import AppContext from '../shared/AppContext';
 import { Feather } from '@expo/vector-icons';
 import SearchScreen from "../screens/SearchScreen";
+import NotificationScreen from "../screens/NotificationScreen";
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -148,9 +150,27 @@ function RootNavigator() {
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
       <Stack.Screen
+        name="NotificationScreen"
+        component={NotificationScreen}
+        options={{ title: "Notifications" }}
+      />
+      <Stack.Screen
       name={'ProfileScreen'}
       component={ProfilePage} 
-      initialParams={{ userId: undefined}}/>
+      initialParams={{ userId: undefined}}
+      options={({ route, navigation }) => ({
+        title: '',
+        // TODO: HeaderRight is a temporary implementation to test the notification screen. 
+        headerRight: () => (
+            <View>
+                <Pressable
+                onPress={() => navigation.navigate('NotificationScreen')}>
+                    <Text>Notifications</Text>
+                </Pressable>
+            </View>
+        ),
+      })}
+    />
     </Stack.Navigator>
   );
 }
