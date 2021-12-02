@@ -11,7 +11,6 @@ async function PostPost(
     c: any,
     answerToId: string | null = null
 ) {
-    console.log('ANSWERTOID', answerToId);
     let apiUrl =
         `http://${manifest?.debuggerHost?.split(':').shift()}:3000` +
         '/posts/upload-audio/';
@@ -31,19 +30,27 @@ async function PostPost(
     })
         .then((res) => {
             var urlNoQuotes = res.body.split('"').join('');
-            const payload = {
-                hashtags: hashtags,
-                audio: urlNoQuotes,
-                audioFileType: fileType,
-                inReplyToPostId: answerToId,
-                user: {
-                    id: c.userInfo._id,
-                    profileAudio: c.userInfo.profileAudio,
-                    profilePicture: c.userInfo.profilePicture,
-                    userName: c.userInfo.userName,
-                    email: c.userInfo.email,
-                },
-            };
+            let payload = {};
+            if (endPoint === '/posts') {
+                payload = {
+                    hashtags: hashtags,
+                    audio: urlNoQuotes,
+                    audioFileType: fileType,
+                    inReplyToPostId: answerToId,
+                    user: {
+                        id: c.userInfo._id,
+                        profileAudio: c.userInfo.profileAudio,
+                        profilePicture: c.userInfo.profilePicture,
+                        userName: c.userInfo.userName,
+                        email: c.userInfo.email,
+                    },
+                };
+            } else {
+                payload = {
+                    url: urlNoQuotes,
+                };
+            }
+            console.log(payload);
             APIKit.post(endPoint, payload)
                 .then((response) => {
                     console.log(response.data);

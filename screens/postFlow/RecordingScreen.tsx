@@ -48,8 +48,10 @@ export const RecordingScreen = ({
     const globalCtx = useContext(AppContext);
 
     let postButtonText = 'Post';
+    let endPoint = '/posts';
     if (recordingScreenType === PostType.REGISTER) {
         postButtonText = 'Done';
+        endPoint = '/users/add-profile-audio';
     }
     const profilePic = globalCtx.userInfo.profilePicture;
 
@@ -62,7 +64,7 @@ export const RecordingScreen = ({
         PostPost(
             recordingURI,
             arrayHashtags,
-            '/posts',
+            endPoint,
             globalCtx,
             answerInfo?.answerId
         );
