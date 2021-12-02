@@ -2,15 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import { RootStackParamList } from "../types";
 import { StyleSheet } from "react-native";
-import { ProfileInformation } from "../components/ProfileInformation/ProfileInformation";
-import { LogoutButton } from "../components/Logout/LogoutButton";
-import { FollowingFeed } from "../components/FollowingFeed/FollowingFeed";
-import { FollowersFeed } from "../components/FollowersFeed/FollowersFeed";
-import { MyFeed } from "../components/MyFeed/MyFeed";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp, useIsFocused } from "@react-navigation/native";
 import AppContext from "../shared/AppContext";
 import { APIKit, onFailure } from "../shared/APIkit";
+import { NotificationEvent } from "../components/NotificationEvent/NotificationEvent";
 
 export const styles = StyleSheet.create({
     container: {
@@ -36,7 +32,7 @@ export default function ProfilePage({
     const isFocused = useIsFocused();
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [notifications, setNotifications] = useState<Notification[] | undefined>(undefined);
-
+    
     // TODO: change to a real endpoint
     async function getNotifications() {
         setIsLoading(true)
@@ -62,7 +58,8 @@ export default function ProfilePage({
     }, [isFocused]);
 
     const renderItem = ({ item, index, separators }: any) => (
-        <Text>Placeholder</Text>
+        <NotificationEvent 
+        event={item} />
     );
 
     return (
