@@ -87,7 +87,7 @@ export const Post = ({
     
     function handleOnPressPicture() {
         console.log('Picture pressed, redirecting to profile')
-        navigation.navigate('ProfileScreen', {userId: post.user.id})
+        navigation.navigate('ProfileScreen', {userId: post.user._id})
     }
 
     function handleOnPressPost() {

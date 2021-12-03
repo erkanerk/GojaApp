@@ -1,7 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
-
-import { faReply } from '@fortawesome/free-solid-svg-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const styles = StyleSheet.create({
@@ -30,9 +28,9 @@ export const Reply = ({ post }: Props) => {
 
     return (
         <View style={styles.container}>
-            <Pressable onPress={handleOnPress}></Pressable>
+            <Pressable onPress={handleOnPress}>
+                <Icon name="reply" size={25} color="black" />
+            </Pressable>
         </View>
     );
 };
-
-/* <Icon class="fas fa-reply" size={25} color="black" />*/
