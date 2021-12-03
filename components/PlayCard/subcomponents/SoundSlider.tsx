@@ -42,20 +42,18 @@ export const SoundSlider = ({
     playbackTimestamp,
 }: Props) => {
     return (
-    <View style={styles.container}>
-        <Slider
-        style={styles.slider}
-        value={seekSliderPosition}
-        onValueChange={onSeekSliderValueChange}
-        onSlidingComplete={onSeekSliderSlidingComplete}
-        disabled={!isPlaybackAllowed || isLoading}
-        maximumTrackTintColor='transparent'
-        minimumTrackTintColor='#FF0000'
-        thumbTintColor='transparent'
-        />
-        <Text style={styles.text}>
-            {playbackTimestamp} s
-        </Text>
-    </View>
+        <View style={styles.container}>
+            <Slider
+                style={styles.slider}
+                value={seekSliderPosition}
+                onValueChange={onSeekSliderValueChange}
+                onSlidingComplete={onSeekSliderSlidingComplete}
+                disabled={!isPlaybackAllowed || isLoading}
+                maximumTrackTintColor="transparent"
+                minimumTrackTintColor="#FF0000"
+                thumbTintColor="transparent"
+            />
+            <Text style={styles.text}>{playbackTimestamp} s</Text>
+        </View>
     );
 }; 

@@ -44,13 +44,10 @@ export const SoundController = ({
         playPreviousPost()
     }
 
-
     function handlePlayPause() {
-        console.log("Play/paused button pressed")
-        playPausePost()
+        console.log('Play/paused button pressed');
+        playPausePost();
     }
-
-
 
     function handlePlayNext() {
         console.log("Next button pressed")

@@ -69,86 +69,100 @@ export const styles = StyleSheet.create({
   }); 
 
 interface Props {
-    post: Post
-    index: number
-    focusedPostIndex: number | undefined
-    setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>
+    post: Post;
+    index: number;
+    focusedPostIndex: number | undefined;
+    setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
+    showComments?: (arg0: Post) => void;
 }
 
-export const Post = ({ 
+export const Post = ({
     post,
     index,
     focusedPostIndex,
     setFocusedPostIndex,
+    showComments,
 }: Props) => {
-    const [isFocused, setIsFocused] = useState<boolean>(false)
+    const [isFocused, setIsFocused] = useState<boolean>(false);
 
     function handleOnPress() {
         if (isFocused) {
-            console.log("Post pressed again, pausing sound")
-            setIsFocused(false)
-            setFocusedPostIndex(undefined)
+            console.log('Post pressed again, pausing sound');
+            setIsFocused(false);
+            setFocusedPostIndex(undefined);
         } else {
-            console.log("Post pressed, loading and playing sound")
-            setIsFocused(true)
-            setFocusedPostIndex(index)
+            console.log('Post pressed, loading and playing sound');
+            setIsFocused(true);
+            setFocusedPostIndex(index);
         }
     }
 
     // TODO: Might not be the most optimal way of finding the focused post.
     useEffect(() => {
         if (focusedPostIndex == index) {
-            setIsFocused(true)
+            setIsFocused(true);
         } else {
-            setIsFocused(false)
+            setIsFocused(false);
         }
     }, [focusedPostIndex]);
 
     return (
-    <View style={styles.container}>
-        <Pressable
-        onPress={handleOnPress}
-        style={({ pressed }) => [
-            {backgroundColor: pressed
-                ? '#edf7fd'
-                : 'white'
-                }]}>
-            <View style={styles.pressableView}>
-                <View style={styles.pictureView}>
-                    <Image
-                    style={styles.profilePicture}
-                    source={{
-                        uri: post.user.profilePicture,
-                    }} 
-                    /> 
-                </View>
-                <View style={styles.textView}>
-                    <Text style={isFocused ? styles.focused_userName : styles.userName}>{post.user.userName}</Text>
-                    {post.hashtags && 
-                        <View style={styles.hashtagView}>
-                            <Text numberOfLines={1}> 
-                                {post.hashtags.map((hashtag, index) => 
-                                    <Text key={index} style={isFocused ? styles.focused_hashtag : styles.hashtag} numberOfLines={1}>#{hashtag}</Text>
-                                )}
-                            </Text>
-                        
+        <View style={styles.container}>
+            <Pressable
+                onPress={handleOnPress}
+                style={({ pressed }) => [
+                    { backgroundColor: pressed ? '#edf7fd' : 'white' },
+                ]}
+            >
+                <View style={styles.pressableView}>
+                    <View style={styles.pictureView}>
+                        <Image
+                            style={styles.profilePicture}
+                            source={{
+                                uri: post.user.profilePicture,
+                            }}
+                        />
                     </View>
-                    }
+                    <View style={styles.textView}>
+                        <Text
+                            style={
+                                isFocused
+                                    ? styles.focused_userName
+                                    : styles.userName
+                            }
+                        >
+                            {post.user.userName}
+                        </Text>
+                        {post.hashtags && (
+                            <View style={styles.hashtagView}>
+                                <Text numberOfLines={1}>
+                                    {post.hashtags.map((hashtag, index) => (
+                                        <Text
+                                            key={index}
+                                            style={
+                                                isFocused
+                                                    ? styles.focused_hashtag
+                                                    : styles.hashtag
+                                            }
+                                            numberOfLines={1}
+                                        >
+                                            #{hashtag}
+                                        </Text>
+                                    ))}
+                                </Text>
+                            </View>
+                        )}
+                    </View>
+                    <View style={styles.commentsView}>
+                        <Comments post={post} showComments={showComments} />
+                    </View>
+                    <View style={styles.likesView}>
+                        <Likes post={post} />
+                    </View>
                 </View>
-                <View style={styles.commentsView}>
-                    <Comments 
-                    post={post}
-                    />
-                </View>
-                <View style={styles.likesView}>
-                    <Likes 
-                    post={post}
-                    />
-                </View>
-            </View>
-        </Pressable>
-        <View style={styles.line} />
-    </View>
+            </Pressable>
+            <View style={styles.line} />
+        </View>
     );
 }; 
 
