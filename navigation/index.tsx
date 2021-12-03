@@ -20,6 +20,7 @@ import {
     Text,
     StyleSheet,
     View,
+    Platform,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
@@ -41,6 +42,7 @@ import AppContext from '../shared/AppContext';
 import { Feather } from '@expo/vector-icons';
 import SearchScreen from '../screens/SearchScreen';
 import NotificationScreen from '../screens/NotificationScreen';
+import { StatusBar } from 'expo-status-bar';
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -68,6 +70,7 @@ export default function Navigation({
                 theme={DefaultTheme}
             >
                 <RootNavigator />
+                <StatusBar style={Platform.OS === 'ios' ? 'dark' : 'auto'} />
             </NavigationContainer>
         );
     } else {
