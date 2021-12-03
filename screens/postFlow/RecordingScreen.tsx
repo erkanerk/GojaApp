@@ -7,7 +7,7 @@ import {
     Keyboard,
 } from 'react-native';
 import { RecordButton } from '../../components/Record/RecordButton';
-import { PostPost } from '../../components/Record/utils/postPost';
+import { createPost } from '../../components/Record/utils/postPost';
 import { Hashtags } from '../../components/Record/Hashtags';
 import { TextAndPictures } from '../../components/Record/TextAndPictures';
 import { OnlyPicture } from '../../components/Record/OnlyPicture';
@@ -56,7 +56,7 @@ export const RecordingScreen = ({
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
-        PostPost(
+        createPost(
             recordingURI,
             arrayHashtags,
             endPoint,

@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
 const { manifest } = Constants;
 
-async function PostPost(
+async function createPost(
     recordingURIP: any,
     hashtags: string[],
     endPoint: string,
@@ -65,4 +65,4 @@ async function PostPost(
             console.log(error);
         });
 }
-export { PostPost };
+export { createPost };
