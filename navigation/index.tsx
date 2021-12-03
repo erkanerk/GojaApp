@@ -37,11 +37,16 @@ import {
 import LinkingConfiguration from './LinkingConfiguration';
 import AuthScreen from '../screens/AuthScreen';
 import ChoosePic from '../screens/ChoosePic';
-import ProfilePage from '../screens/ProfilePage';
 import AppContext from '../shared/AppContext';
 import { Feather } from '@expo/vector-icons';
-import SearchScreen from '../screens/SearchScreen';
-import NotificationScreen from '../screens/NotificationScreen';
+import SearchScreen from "../screens/SearchScreen";
+import NotificationScreen from "../screens/NotificationScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import { LogoutButton } from "../components/Logout/LogoutButton";
+import { ProfileNavigator } from "./components/ProfileNavigator";
+import { NotificationNavigator } from "./components/NotificationNavigator";
+import { LogoutNavigator } from "./components/LogoutNavigator";
+import { IconNavigator } from "./components/IconNavigator";
 import { StatusBar } from 'expo-status-bar';
 
 const styles = StyleSheet.create({
@@ -130,47 +135,53 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
     return (
-        <Stack.Navigator>
-            <Stack.Screen
-                name="Root"
-                component={BottomTabNavigator}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="NotFound"
-                component={NotFoundScreen}
-                options={{ title: 'Oops!' }}
-            />
-            <Stack.Group screenOptions={{ presentation: 'modal' }}>
-                <Stack.Screen name="Modal" component={ModalScreen} />
-            </Stack.Group>
-            <Stack.Screen
-                name="NotificationScreen"
-                component={NotificationScreen}
-                options={{ title: 'Notifications' }}
-            />
-            <Stack.Screen
-                name={'ProfileScreen'}
-                component={ProfilePage}
-                initialParams={{ userId: undefined }}
-                options={({ route, navigation }) => ({
-                    title: '',
-                    // TODO: HeaderRight is a temporary implementation to test the notification screen.
-                    headerRight: () => (
-                        <View>
-                            <Pressable
-                                onPress={() =>
-                                    navigation.navigate('NotificationScreen')
-                                }
-                            >
-                                <Text>Notifications</Text>
-                            </Pressable>
-                        </View>
-                    ),
-                })}
-            />
-        </Stack.Navigator>
-    );
+    <Stack.Navigator
+    screenOptions={({ route, navigation }) => ({
+        headerTitle: () => (
+            <IconNavigator />
+        ),
+        headerTitleAlign: 'center'
+    })}>
+
+        <Stack.Screen
+            name="Root"
+            component={BottomTabNavigator}
+            options={{ headerShown: false }}
+        />
+        
+        <Stack.Screen
+            name="NotFound"
+            component={NotFoundScreen}
+            options={{ title: "Oops!" }}
+        />
+        
+        <Stack.Group screenOptions={{ presentation: "modal" }}>
+            <Stack.Screen name="Modal" component={ModalScreen} />
+        </Stack.Group>
+        
+        <Stack.Screen
+        name={'ProfileScreen'}
+        component={ProfileScreen} 
+        initialParams={{ userId: undefined}}
+        options={({ route, navigation }) => ({
+            title: '',
+            headerRight: () => {
+                if (route.params.userId) {
+                    return <NotificationNavigator route={route} navigation={navigation}/>      
+                } else {
+                    return <LogoutNavigator route={route} navigation={navigation}/>  
+                }
+            }
+        })}/>
+        
+        <Stack.Screen
+            name="NotificationScreen"
+            component={NotificationScreen}
+            options={{ title: "Notifications" }}
+        />
+
+    </Stack.Navigator>
+  );
 }
 
 /**
@@ -183,62 +194,65 @@ function BottomTabNavigator() {
     const colorScheme = useColorScheme();
 
     return (
-        <BottomTab.Navigator
-            initialRouteName="FeedTab"
-            screenOptions={{
-                tabBarActiveTintColor: 'black',
-                tabBarShowLabel: false,
-            }}
-        >
+    <BottomTab.Navigator
+        initialRouteName={'FeedTab'}
+        screenOptions={{
+            tabBarActiveTintColor: 'black',
+            tabBarShowLabel: false,
+            tabBarStyle: {
+                height: 65,
+            }
+    }}>
+        <BottomTab.Group
+        screenOptions={({ route, navigation }) => ({
+            headerRight: () => (
+                <NotificationNavigator route={route} navigation={navigation}/>  
+            ),
+            headerLeft: () => (
+                <ProfileNavigator route={route} navigation={navigation}/>
+            ),
+            headerTitle: () => (
+                <IconNavigator />
+            ),
+            headerTitleAlign: 'center'
+        })}>
             <BottomTab.Screen
-                name="FeedTab"
+                name={'FeedTab'}
                 component={HomeFeed}
-                options={{
+                options={({ route, navigation }: RootTabScreenProps<'FeedTab'>) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                         return (
                             <Feather name={'home'} size={size} color={color} />
                         );
                     },
-                }}
-            />
-            <BottomTab.Screen
-                name="RecordTab"
+                    headerLeft: () => {
+                        return <ProfileNavigator route={route} navigation={navigation}/>
+                    }
+                })}
+              />
+              <BottomTab.Screen
+                name={'RecordTab'}
                 component={TabTwoScreen}
-                options={({ navigation }: RootTabScreenProps<'RecordTab'>) => ({
-                    title: '',
+                options={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
                     tabBarIcon: ({ focused, color, size }) => {
-                        let sizeL = size * 1.5;
-                        return (
-                            <Feather
-                                name={'circle'}
-                                size={sizeL}
-                                color={'red'}
-                                style={{
-                                    backgroundColor: 'red',
-                                    borderRadius: sizeL / 2,
-                                }}
-                            />
-                        );
+                        let sizeL = size*1.5
+                        return <Feather name={'circle'} size={sizeL} color={'red'} style={{backgroundColor:'red',borderRadius:sizeL/2}}/>
                     },
                 })}
             />
             <BottomTab.Screen
-                name="SearchTab"
+                name={'SearchTab'}
                 component={SearchScreen}
-                options={{
-                    tabBarIcon: ({ focused, color, size }) => {
-                        return (
-                            <Feather
-                                name={'search'}
-                                size={size}
-                                color={color}
-                            />
-                        );
-                    },
-                }}
+                options={({ route, navigation }: RootTabScreenProps<'SearchTab'>) => ({
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Feather name={'search'} size={size} color={color} />
+                    )
+                })}
             />
-        </BottomTab.Navigator>
-    );
+        </BottomTab.Group>
+    </BottomTab.Navigator>
+  );
+
 }
 
 /**

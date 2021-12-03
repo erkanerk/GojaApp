@@ -10,14 +10,11 @@ import { MyFeed } from "../components/MyFeed/MyFeed";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp } from "@react-navigation/native";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         flex: 1,
         flexDirection: 'column',
-    },
-    logout: {
-        alignItems: 'flex-end'
     },
     profileView: {
     },
@@ -40,7 +37,7 @@ interface Props {
     navigation: NativeStackNavigationProp<RootStackParamList, 'ProfileScreen'>
 }
 
-export default function ProfilePage({ 
+export default function ProfileScreen({ 
     route,
     navigation 
 }: Props){
@@ -77,9 +74,6 @@ export default function ProfilePage({
     
     return (
     <View style={styles.container}>
-        <View style={styles.logout}>
-            <LogoutButton/>
-        </View>
         <View style={styles.profileView}>
             <ProfileInformation 
             tab={tab}
