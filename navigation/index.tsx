@@ -3,16 +3,16 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FontAwesome } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as React from "react";
-import { useContext } from "react";
+    NavigationContainer,
+    DefaultTheme,
+    DarkTheme,
+} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from 'react';
+import { useContext } from 'react';
 import {
     ColorSchemeName,
     Pressable,
@@ -40,8 +40,8 @@ import ChoosePic from '../screens/ChoosePic';
 import ProfilePage from '../screens/ProfilePage';
 import AppContext from '../shared/AppContext';
 import { Feather } from '@expo/vector-icons';
-import SearchScreen from "../screens/SearchScreen";
-import NotificationScreen from "../screens/NotificationScreen";
+import SearchScreen from '../screens/SearchScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 import { StatusBar } from 'expo-status-bar';
 
 const styles = StyleSheet.create({
@@ -75,9 +75,7 @@ export default function Navigation({
         );
     } else {
         return (
-            <NavigationContainer
-                theme={DefaultTheme}
-            >
+            <NavigationContainer theme={DefaultTheme}>
                 <AuthNavigator />
             </NavigationContainer>
         );
@@ -107,14 +105,8 @@ function AuthNavigator() {
                         />
                     ),
                     headerLeft: () => (
-                        <Pressable
-                            onPress={() => globalCtx.setLoggedIn(true)}
-                        >
-                            <Text
-                                style={styles.headerCancel}
-                            >
-                                Cancel
-                            </Text>
+                        <Pressable onPress={() => globalCtx.setLoggedIn(true)}>
+                            <Text style={styles.headerCancel}>Cancel</Text>
                         </Pressable>
                     ),
                     headerStyle: {
@@ -137,45 +129,48 @@ function AuthNavigator() {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Root"
-        component={BottomTabNavigator}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: "Oops!" }}
-      />
-      <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
-      <Stack.Screen
-        name="NotificationScreen"
-        component={NotificationScreen}
-        options={{ title: "Notifications" }}
-      />
-      <Stack.Screen
-      name={'ProfileScreen'}
-      component={ProfilePage} 
-      initialParams={{ userId: undefined}}
-      options={({ route, navigation }) => ({
-        title: '',
-        // TODO: HeaderRight is a temporary implementation to test the notification screen. 
-        headerRight: () => (
-            <View>
-                <Pressable
-                onPress={() => navigation.navigate('NotificationScreen')}>
-                    <Text>Notifications</Text>
-                </Pressable>
-            </View>
-        ),
-      })}
-    />
-    </Stack.Navigator>
-  );
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Root"
+                component={BottomTabNavigator}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="NotFound"
+                component={NotFoundScreen}
+                options={{ title: 'Oops!' }}
+            />
+            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                <Stack.Screen name="Modal" component={ModalScreen} />
+            </Stack.Group>
+            <Stack.Screen
+                name="NotificationScreen"
+                component={NotificationScreen}
+                options={{ title: 'Notifications' }}
+            />
+            <Stack.Screen
+                name={'ProfileScreen'}
+                component={ProfilePage}
+                initialParams={{ userId: undefined }}
+                options={({ route, navigation }) => ({
+                    title: '',
+                    // TODO: HeaderRight is a temporary implementation to test the notification screen.
+                    headerRight: () => (
+                        <View>
+                            <Pressable
+                                onPress={() =>
+                                    navigation.navigate('NotificationScreen')
+                                }
+                            >
+                                <Text>Notifications</Text>
+                            </Pressable>
+                        </View>
+                    ),
+                })}
+            />
+        </Stack.Navigator>
+    );
 }
 
 /**
@@ -185,7 +180,7 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+    const colorScheme = useColorScheme();
 
     return (
         <BottomTab.Navigator
@@ -200,34 +195,31 @@ function BottomTabNavigator() {
                 component={HomeFeed}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {
-                        return <Feather name={'home'} size={size} color={color} />
+                        return (
+                            <Feather name={'home'} size={size} color={color} />
+                        );
                     },
                 }}
-              />
-              <BottomTab.Screen
+            />
+            <BottomTab.Screen
                 name="RecordTab"
                 component={TabTwoScreen}
-                options={({ navigation }: RootTabScreenProps<"RecordTab">) => ({
-                  title: "",
+                options={({ navigation }: RootTabScreenProps<'RecordTab'>) => ({
+                    title: '',
                     tabBarIcon: ({ focused, color, size }) => {
-                        let sizeL = size*1.5
-                        return <Feather name={'circle'} size={sizeL} color={'red'} style={{backgroundColor:'red',borderRadius:sizeL/2}}/>
-                    },
-                    headerRight: () => (
-                        <Pressable
-                            onPress={() => navigation.navigate("Modal")}
-                            style={({ pressed }) => ({
-                                opacity: pressed ? 0.5 : 1,
-                            })}
-                        >
-                            <FontAwesome
-                                name="info-circle"
-                                size={25}
-                                color={Colors[colorScheme].text}
-                                style={{ marginRight: 15 }}
+                        let sizeL = size * 1.5;
+                        return (
+                            <Feather
+                                name={'circle'}
+                                size={sizeL}
+                                color={'red'}
+                                style={{
+                                    backgroundColor: 'red',
+                                    borderRadius: sizeL / 2,
+                                }}
                             />
-                        </Pressable>
-                    ),
+                        );
+                    },
                 })}
             />
             <BottomTab.Screen
@@ -235,21 +227,26 @@ function BottomTabNavigator() {
                 component={SearchScreen}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {
-                        return <Feather name={'search'} size={size} color={color} />
+                        return (
+                            <Feather
+                                name={'search'}
+                                size={size}
+                                color={color}
+                            />
+                        );
                     },
                 }}
             />
-    </BottomTab.Navigator>
-  );
-
+        </BottomTab.Navigator>
+    );
 }
 
 /**
  * You can explore the built-in icon families and icons on the web at https:/home/icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
+    name: React.ComponentProps<typeof FontAwesome>['name'];
+    color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+    return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
