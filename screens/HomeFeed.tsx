@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { RootTabScreenProps } from "../types";
 import { StyleSheet } from "react-native";
 import { PostFeed } from "../components/PostFeed/PostFeed";
-import { APIKit, onFailure } from "../shared/APIkit";
+import { APIKit, onFailure, clearUserSession } from '../shared/APIkit';
 import { useIsFocused } from "@react-navigation/native";
 import AppContext from "../shared/AppContext";
 
@@ -33,13 +33,9 @@ export default function HomeFeed({
 
     async function getMyFeed() {
         setIsRefreshing(true);
-        //change to /posts/my-feed when you can follow someone and it works
-        APIKit.get('/posts/all')
+        APIKit.get('/posts/my-feed')
             .then((response) => {
                 setPosts(response.data);
-                console.log(response.data);
-                const minDate = response.data[response.data.length - 1]['created_at'];
-                console.log(minDate);
                 setIsRefreshing(false);
             })
             .catch((error) => {
@@ -73,6 +69,7 @@ export default function HomeFeed({
                 posts={posts}
                 onRefresh={getMyFeed}
                 refreshing={isRefreshing}
+                onEndReached={getMyFeedMore}
             />
         </View>
     );
