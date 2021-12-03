@@ -69,11 +69,16 @@ export const CommentsModal = ({
     modalVisible,
 }: Props) => {
     const [replies, setReplies] = useState<Post[] | undefined>(undefined);
-    const [focusedPostIndex, setFocusedPostIndex] = useState<
+    const [focusedPostIndexReplies, setFocusedPostIndexReplies] = useState<
+        number | undefined
+    >(undefined);
+    const [focusedPostIndexRoot, setFocusedPostIndexRoot] = useState<
         number | undefined
     >(undefined);
 
-    useAudio(focusedPostIndex, replies);
+    useAudio(focusedPostIndexReplies, replies);
+
+    useAudio(focusedPostIndexRoot, [post]);
 
     useEffect(() => {
         APIKit.get('/posts/replies/' + post._id)
@@ -126,14 +131,14 @@ export const CommentsModal = ({
                     <View style={styles.footer}>
                         <PostFeed
                             posts={[post]}
-                            focusedPostIndex={focusedPostIndex}
-                            setFocusedPostIndex={setFocusedPostIndex}
+                            focusedPostIndex={focusedPostIndexRoot}
+                            setFocusedPostIndex={setFocusedPostIndexRoot}
                         />
                     </View>
                     <View style={styles.replies}>
                         <PostFeed
-                            focusedPostIndex={focusedPostIndex}
-                            setFocusedPostIndex={setFocusedPostIndex}
+                            focusedPostIndex={focusedPostIndexReplies}
+                            setFocusedPostIndex={setFocusedPostIndexReplies}
                             posts={replies}
                         />
                     </View>
