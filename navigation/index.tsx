@@ -3,16 +3,16 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FontAwesome } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as React from "react";
-import { useContext } from "react";
+    NavigationContainer,
+    DefaultTheme,
+    DarkTheme,
+} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from 'react';
+import { useContext } from 'react';
 import {
     ColorSchemeName,
     Pressable,
@@ -20,6 +20,7 @@ import {
     Text,
     StyleSheet,
     View,
+    Platform,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
@@ -46,6 +47,7 @@ import { ProfileNavigator } from "./components/ProfileNavigator";
 import { NotificationNavigator } from "./components/NotificationNavigator";
 import { LogoutNavigator } from "./components/LogoutNavigator";
 import { IconNavigator } from "./components/IconNavigator";
+import { StatusBar } from 'expo-status-bar';
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -73,13 +75,12 @@ export default function Navigation({
                 theme={DefaultTheme}
             >
                 <RootNavigator />
+                <StatusBar style={Platform.OS === 'ios' ? 'dark' : 'auto'} />
             </NavigationContainer>
         );
     } else {
         return (
-            <NavigationContainer
-                theme={DefaultTheme}
-            >
+            <NavigationContainer theme={DefaultTheme}>
                 <AuthNavigator />
             </NavigationContainer>
         );
@@ -109,14 +110,8 @@ function AuthNavigator() {
                         />
                     ),
                     headerLeft: () => (
-                        <Pressable
-                            onPress={() => globalCtx.setLoggedIn(true)}
-                        >
-                            <Text
-                                style={styles.headerCancel}
-                            >
-                                Cancel
-                            </Text>
+                        <Pressable onPress={() => globalCtx.setLoggedIn(true)}>
+                            <Text style={styles.headerCancel}>Cancel</Text>
                         </Pressable>
                     ),
                     headerStyle: {
@@ -196,7 +191,7 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+    const colorScheme = useColorScheme();
 
     return (
     <BottomTab.Navigator
@@ -226,7 +221,9 @@ function BottomTabNavigator() {
                 component={HomeFeed}
                 options={({ route, navigation }: RootTabScreenProps<'FeedTab'>) => ({
                     tabBarIcon: ({ focused, color, size }) => {
-                        return <Feather name={'home'} size={size} color={color} />
+                        return (
+                            <Feather name={'home'} size={size} color={color} />
+                        );
                     },
                     headerLeft: () => {
                         return <ProfileNavigator route={route} navigation={navigation}/>
@@ -262,8 +259,8 @@ function BottomTabNavigator() {
  * You can explore the built-in icon families and icons on the web at https:/home/icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
+    name: React.ComponentProps<typeof FontAwesome>['name'];
+    color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+    return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
