@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native'
+import { FadeText } from '../FadeText/FadeText';
 import { User } from '../User/User';
 import {UserFromSearch} from './data_models/User'
 
@@ -34,14 +35,14 @@ export const SearchResultUser = ({UsersToRender}: PropTypes) => {
             console.log("No search input")
             return (
             <View style={styles.textView}>
-                <Text style={styles.text}>Search for users</Text>
+                <FadeText style={styles.text}>Search for users</FadeText>
             </View>
             )
         } else if (UsersToRender.length === 0) {
             console.log("No search result")
             return (
             <View style={styles.textView}>
-                <Text style={styles.text}>No users found</Text>
+                <FadeText style={styles.text}>No users found</FadeText>
             </View>
             )
         } else {
@@ -59,7 +60,8 @@ export const SearchResultUser = ({UsersToRender}: PropTypes) => {
 
     const renderItem = ({ item, index, separators }: any) => (
         <User 
-        user={item} />
+        user={item} 
+        following={item.isFollowing}/>
     );
 
     return (

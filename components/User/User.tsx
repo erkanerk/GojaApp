@@ -4,6 +4,7 @@ import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import Navigation from '../../navigation';
 import { FollowButton } from '../FollowButton/FollowButton';
+import { UserFromSearch } from '../Search/data_models/User';
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
