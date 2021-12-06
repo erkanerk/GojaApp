@@ -48,6 +48,7 @@ import { NotificationNavigator } from "./components/NotificationNavigator";
 import { LogoutNavigator } from "./components/LogoutNavigator";
 import { IconNavigator } from "./components/IconNavigator";
 import { StatusBar } from 'expo-status-bar';
+import { RecordNavigator } from './components/RecordNavigator';
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -235,8 +236,7 @@ function BottomTabNavigator() {
                 component={TabTwoScreen}
                 options={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
                     tabBarIcon: ({ focused, color, size }) => {
-                        let sizeL = size*1.5
-                        return <Feather name={'circle'} size={sizeL} color={'red'} style={{backgroundColor:'red',borderRadius:sizeL/2}}/>
+                        return <RecordNavigator />
                     },
                 })}
             />
