@@ -48,8 +48,6 @@ export default function HomeFeed({
     const [focusedPostIndex, setFocusedPostIndex] = useState<
         number | undefined
     >(undefined);
-    // const [sound, setSound] = useState<Audio.Sound | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 

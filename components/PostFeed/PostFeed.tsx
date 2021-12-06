@@ -44,9 +44,9 @@ interface Props {
     showComments?: (arg0: Post) => void;
     focusedPostIndex: number | undefined;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
-    onRefresh: () => Promise<void> | undefined;
-    refreshing: boolean | undefined;
-    onEndReached: () => Promise<void> | undefined;
+    onRefresh?: () => Promise<void> | undefined;
+    refreshing?: boolean | undefined;
+    onEndReached?: () => Promise<void> | undefined;
 }
 
 export const PostFeed = ({

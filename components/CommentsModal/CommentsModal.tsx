@@ -75,6 +75,9 @@ export const CommentsModal = ({
     const [focusedPostIndexRoot, setFocusedPostIndexRoot] = useState<
         number | undefined
     >(undefined);
+    const [activeFocus, setActiveFocus] = useState<number | undefined>(
+        undefined
+    );
 
     useAudio(focusedPostIndexReplies, replies);
 
@@ -89,6 +92,20 @@ export const CommentsModal = ({
                 console.log(error && error);
             });
     }, [modalVisible]);
+
+    useEffect(() => {
+        console.log('tryckor på replies');
+        if (focusedPostIndexReplies != undefined) {
+            setFocusedPostIndexRoot(undefined);
+        }
+    }, [focusedPostIndexReplies]);
+
+    useEffect(() => {
+        console.log('tryckor på parent');
+        if (focusedPostIndexRoot != undefined) {
+            setFocusedPostIndexReplies(undefined);
+        }
+    }, [focusedPostIndexRoot]);
 
     return (
         <View>
