@@ -55,6 +55,32 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         backgroundColor: 'transparent',
     },
+    modalStyle: {
+        margin: 0,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+    },
+    modalViewStyle: {
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        overflow: 'hidden',
+        width: '100%',
+        height: '80%',
+        marginTop: 'auto',
+        backgroundColor: 'white',
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowRadius: 5,
+        shadowOpacity: 1.0,
+    },
 });
 
 interface Props {
@@ -94,14 +120,12 @@ export const CommentsModal = ({
     }, [modalVisible]);
 
     useEffect(() => {
-        console.log('tryckor på replies');
         if (focusedPostIndexReplies != undefined) {
             setFocusedPostIndexRoot(undefined);
         }
     }, [focusedPostIndexReplies]);
 
     useEffect(() => {
-        console.log('tryckor på parent');
         if (focusedPostIndexRoot != undefined) {
             setFocusedPostIndexReplies(undefined);
         }
@@ -110,16 +134,7 @@ export const CommentsModal = ({
     return (
         <View>
             <Modal
-                style={{
-                    margin: 0,
-                    shadowColor: '#000',
-                    shadowOffset: {
-                        width: 0,
-                        height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 4,
-                }}
+                style={styles.modalStyle}
                 isVisible={modalVisible}
                 swipeDirection="down"
                 onSwipeComplete={() => setModalVisible(false)}
@@ -127,24 +142,7 @@ export const CommentsModal = ({
                 backdropOpacity={0}
                 hasBackdrop={true}
             >
-                <View
-                    style={{
-                        borderTopLeftRadius: 10,
-                        borderTopRightRadius: 10,
-                        overflow: 'hidden',
-                        width: '100%',
-                        height: '80%',
-                        marginTop: 'auto',
-                        backgroundColor: 'white',
-                        shadowColor: '#000000',
-                        shadowOffset: {
-                            width: 0,
-                            height: 3,
-                        },
-                        shadowRadius: 5,
-                        shadowOpacity: 1.0,
-                    }}
-                >
+                <View style={styles.modalViewStyle}>
                     <View style={styles.footer}>
                         <PostFeed
                             posts={[post]}
