@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { RootTabScreenProps } from "../types";
+import { RootStackParamList } from "../types";
 import { StyleSheet } from "react-native";
 import { ProfileInformation } from "../components/ProfileInformation/ProfileInformation";
 import { LogoutButton } from "../components/Logout/LogoutButton";
 import { FollowingFeed } from "../components/FollowingFeed/FollowingFeed";
 import { FollowersFeed } from "../components/FollowersFeed/FollowersFeed";
 import { MyFeed } from "../components/MyFeed/MyFeed";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RouteProp } from "@react-navigation/native";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         flex: 1,
         flexDirection: 'column',
-    },
-    logout: {
-        alignItems: 'flex-end'
     },
     profileView: {
     },
@@ -32,9 +31,17 @@ export const styles = StyleSheet.create({
     
 });
 
-export default function ProfilePage({
-    navigation,
-}: RootTabScreenProps<"TabFour">) {
+
+interface Props {
+    route: RouteProp<RootStackParamList, 'ProfileScreen'>;
+    navigation: NativeStackNavigationProp<RootStackParamList, 'ProfileScreen'>
+}
+
+export default function ProfileScreen({ 
+    route,
+    navigation 
+}: Props){
+    const userId = route.params.userId
     const [tab, setTab] = useState<number>(0)
 
     function conditionalRender() {
@@ -42,36 +49,36 @@ export default function ProfilePage({
             console.log("Showing posts")
             return (
             <View style={styles.postsView}>
-                <MyFeed />
+                <MyFeed 
+                userId={userId} />
             </View>
             )
         } else if (tab == 1) {
             console.log("Showing followers")
             return (
             <View style={styles.followersView}>
-                <FollowersFeed />
+                <FollowersFeed 
+                userId={userId} />
             </View>
             )
         } else if (tab == 2) {
             console.log("Showing following")
             return (
             <View style={styles.followingView}>
-                <FollowingFeed />
+                <FollowingFeed 
+                userId={userId} />
             </View>
             )
         }
     }
     
-    // TODO: Build the user item component
     return (
     <View style={styles.container}>
-        <View style={styles.logout}>
-            <LogoutButton/>
-        </View>
         <View style={styles.profileView}>
             <ProfileInformation 
             tab={tab}
-            setTab={setTab} />
+            setTab={setTab} 
+            userId={userId}/>
         </View>
         {conditionalRender()}
     </View>

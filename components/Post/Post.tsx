@@ -1,12 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Likes } from '../Likes/Likes';
-import { Comments } from "./subcomponents/Comments";
+import { Comments } from './subcomponents/Comments';
 
 export const styles = StyleSheet.create({
     container: {
-        justifyContent: "center",
+        justifyContent: 'center',
         padding: 5,
         borderRadius: 5,
         flexDirection: 'column',
@@ -23,16 +24,16 @@ export const styles = StyleSheet.create({
     profilePicture: {
         width: 52,
         height: 52,
-        borderRadius: 15
+        borderRadius: 15,
     },
     pressableView: {
-        flexDirection: "row",   
+        flexDirection: 'row',
         marginBottom: 15,
     },
     hashtagView: {
-        flexDirection: "row",
+        flexDirection: 'row',
         flex: 1,
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
     },
     hashtag: {
         fontSize: 15,
@@ -47,26 +48,26 @@ export const styles = StyleSheet.create({
         flex: 2,
     },
     textView: {
-        flexDirection: "column",
+        flexDirection: 'column',
         flex: 7,
         marginLeft: 20,
     },
     commentsView: {
         flex: 2,
         margin: 5,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     likesView: {
         flex: 2,
         margin: 5,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     line: {
         borderBottomColor: 'lightgray',
         opacity: 0.3,
         borderBottomWidth: 1,
-    }
-  }); 
+    },
+});
 
 interface Props {
     post: Post;
@@ -84,8 +85,14 @@ export const Post = ({
     showComments,
 }: Props) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
+    const navigation = useNavigation();
 
-    function handleOnPress() {
+    function handleOnPressPicture() {
+        console.log('Picture pressed, redirecting to profile');
+        navigation.navigate('ProfileScreen', { userId: post.user._id });
+    }
+
+    function handleOnPressPost() {
         if (isFocused) {
             console.log('Post pressed again, pausing sound');
             setIsFocused(false);
@@ -109,20 +116,22 @@ export const Post = ({
     return (
         <View style={styles.container}>
             <Pressable
-                onPress={handleOnPress}
+                onPress={handleOnPressPost}
                 style={({ pressed }) => [
                     { backgroundColor: pressed ? '#edf7fd' : 'white' },
                 ]}
             >
                 <View style={styles.pressableView}>
-                    <View style={styles.pictureView}>
-                        <Image
-                            style={styles.profilePicture}
-                            source={{
-                                uri: post.user.profilePicture,
-                            }}
-                        />
-                    </View>
+                    <Pressable onPress={handleOnPressPicture}>
+                        <View style={styles.pictureView}>
+                            <Image
+                                style={styles.profilePicture}
+                                source={{
+                                    uri: post.user.profilePicture,
+                                }}
+                            />
+                        </View>
+                    </Pressable>
                     <View style={styles.textView}>
                         <Text
                             style={
@@ -164,5 +173,4 @@ export const Post = ({
             <View style={styles.line} />
         </View>
     );
-}; 
-
+};

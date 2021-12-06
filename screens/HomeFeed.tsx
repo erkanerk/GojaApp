@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Modal } from 'react-native';
 import { RootTabScreenProps } from '../types';
 import { StyleSheet } from 'react-native';
@@ -50,14 +50,10 @@ export default function HomeFeed({
     >(undefined);
     // const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+    const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
     const sound = useAudio(focusedPostIndex, posts, onPlaybackStatusUpdate);
-
-    useEffect(() => {
-        if (isFocused) {
-            getAllPosts();
-        }
-    }, [isFocused]);
 
     useEffect(() => {
         return sound
@@ -187,16 +183,39 @@ export default function HomeFeed({
         setShowCommentsModal(post);
     };
 
-    async function getAllPosts() {
-        APIKit.get('/posts/all')
+    useEffect(() => {
+        getMyFeed();
+    }, []);
+
+    async function getMyFeed() {
+        setIsRefreshing(true);
+        APIKit.get('/posts/my-feed')
             .then((response) => {
                 setPosts(response.data);
-                // setIsLoading(false);
+                setIsRefreshing(false);
             })
             .catch((error) => {
                 onFailure(error, globalCtx);
                 console.log(error && error);
-                //  setIsLoading(false);
+                setIsRefreshing(false);
+            });
+    }
+
+    async function getMyFeedMore() {
+        if (!posts) {
+            return;
+        }
+        setIsLoadingMore(true);
+        const minDate = posts[posts.length - 1]['created_at'];
+        APIKit.get('/posts/my-feed/more/' + minDate)
+            .then((response) => {
+                setPosts(posts.concat(response.data));
+                setIsLoadingMore(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoadingMore(false);
             });
     }
 
@@ -214,6 +233,9 @@ export default function HomeFeed({
                 setFocusedPostIndex={setFocusedPostIndex}
                 showComments={showComments}
                 posts={posts}
+                onRefresh={getMyFeed}
+                refreshing={isRefreshing}
+                onEndReached={getMyFeedMore}
             />
 
             {

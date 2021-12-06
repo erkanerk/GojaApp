@@ -44,6 +44,9 @@ interface Props {
     showComments?: (arg0: Post) => void;
     focusedPostIndex: number | undefined;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
+    onRefresh: () => Promise<void> | undefined;
+    refreshing: boolean | undefined;
+    onEndReached: () => Promise<void> | undefined;
 }
 
 export const PostFeed = ({
@@ -51,6 +54,9 @@ export const PostFeed = ({
     showComments,
     focusedPostIndex,
     setFocusedPostIndex,
+    onRefresh,
+    refreshing,
+    onEndReached,
 }: Props) => {
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -60,9 +66,6 @@ export const PostFeed = ({
     );
 
     const [isSeeking, setIsSeeking] = useState<boolean>(false);
-    const [isPlaybackAllowed, setIsPlaybackAllowed] = useState<boolean>(false);
-    const [seekSliderPosition, setSeekSliderPosition] = useState<number>(0);
-    const [playbackTimestamp, setPlaybackTimestamp] = useState<string>('0');
 
     const shouldPlayAtEndOfSeek = true;
 
@@ -92,6 +95,10 @@ export const PostFeed = ({
                     data={posts}
                     keyExtractor={(post) => post._id}
                     renderItem={renderPost}
+                    onRefresh={onRefresh}
+                    refreshing={refreshing}
+                    onEndReachedThreshold={0.01}
+                    onEndReached={onEndReached}
                 />
             </View>
         </View>

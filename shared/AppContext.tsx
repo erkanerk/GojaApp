@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from 'react';
 
 const AppContext = React.createContext({
     loggedIn: false,
@@ -6,7 +6,7 @@ const AppContext = React.createContext({
     userInfo: {
         _id: null,
         profileAudio: null,
-        profilePicture: null,
+        profilePicture: undefined,
         userName: null,
         email: null,
     },
@@ -28,4 +28,5 @@ const AppContext = React.createContext({
     setMainFeedPosts: (posts) => {},
 });
 
+export type TypeAppContext = typeof AppContext;
 export default AppContext;
