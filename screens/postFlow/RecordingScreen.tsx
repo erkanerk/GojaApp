@@ -56,7 +56,7 @@ export const RecordingScreen = ({
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
-        createPost(
+        let audioUrl = await createPost(
             recordingURI,
             arrayHashtags,
             endPoint,
@@ -68,6 +68,10 @@ export const RecordingScreen = ({
         setRecordingURI(null);
         if (recordingScreenType === PostType.REGISTER) {
             globalCtx.setLoggedIn(true)
+            globalCtx.setUserInfo({
+                ...globalCtx.userInfo,
+                profileAudio: audioUrl,
+            });
         }
     };
 
