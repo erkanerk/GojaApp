@@ -3,11 +3,11 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Likes } from '../Likes/Likes';
-import { Comments } from "./subcomponents/Comments";
+import { Comments } from './subcomponents/Comments';
 
 export const styles = StyleSheet.create({
     container: {
-        justifyContent: "center",
+        justifyContent: 'center',
         padding: 5,
         borderRadius: 5,
         flexDirection: 'column',
@@ -24,16 +24,16 @@ export const styles = StyleSheet.create({
     profilePicture: {
         width: 52,
         height: 52,
-        borderRadius: 15
+        borderRadius: 15,
     },
     pressableView: {
-        flexDirection: "row",   
+        flexDirection: 'row',
         marginBottom: 15,
     },
     hashtagView: {
-        flexDirection: "row",
+        flexDirection: 'row',
         flex: 1,
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
     },
     hashtag: {
         fontSize: 15,
@@ -48,117 +48,129 @@ export const styles = StyleSheet.create({
         flex: 2,
     },
     textView: {
-        flexDirection: "column",
+        flexDirection: 'column',
         flex: 7,
         marginLeft: 20,
     },
     commentsView: {
         flex: 2,
         margin: 5,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     likesView: {
         flex: 2,
         margin: 5,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     line: {
         borderBottomColor: 'lightgray',
         opacity: 0.3,
         borderBottomWidth: 1,
-    }
-  }); 
+    },
+});
 
 interface Props {
-    post: Post
-    index: number
-    focusedPostIndex: number | undefined
-    setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>
+    post: Post;
+    index: number;
+    focusedPostIndex: number | undefined;
+    setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
+    showComments?: (arg0: Post) => void;
 }
 
-export const Post = ({ 
+export const Post = ({
     post,
     index,
     focusedPostIndex,
     setFocusedPostIndex,
+    showComments,
 }: Props) => {
-    const [isFocused, setIsFocused] = useState<boolean>(false)
+    const [isFocused, setIsFocused] = useState<boolean>(false);
     const navigation = useNavigation();
-    
+
     function handleOnPressPicture() {
-        console.log('Picture pressed, redirecting to profile')
-        navigation.navigate('ProfileScreen', {userId: post.user._id})
+        console.log('Picture pressed, redirecting to profile');
+        navigation.navigate('ProfileScreen', { userId: post.user._id });
     }
 
     function handleOnPressPost() {
         if (isFocused) {
-            console.log("Post pressed again, pausing sound")
-            setIsFocused(false)
-            setFocusedPostIndex(undefined)
+            console.log('Post pressed again, pausing sound');
+            setIsFocused(false);
+            setFocusedPostIndex(undefined);
         } else {
-            console.log("Post pressed, loading and playing sound")
-            setIsFocused(true)
-            setFocusedPostIndex(index)
+            console.log('Post pressed, loading and playing sound');
+            setIsFocused(true);
+            setFocusedPostIndex(index);
         }
     }
 
     // TODO: Might not be the most optimal way of finding the focused post.
     useEffect(() => {
         if (focusedPostIndex == index) {
-            setIsFocused(true)
+            setIsFocused(true);
         } else {
-            setIsFocused(false)
+            setIsFocused(false);
         }
     }, [focusedPostIndex]);
 
     return (
-    <View style={styles.container}>            
-        <Pressable
-        onPress={handleOnPressPost}
-        style={({ pressed }) => [
-            {backgroundColor: pressed
-                ? '#edf7fd'
-                : 'white'
-                }]}>
-            <View style={styles.pressableView}>
-                <Pressable
-                onPress={handleOnPressPicture}>
-                    <View style={styles.pictureView}>
-                        <Image
-                        style={styles.profilePicture}
-                        source={{
-                            uri: post.user.profilePicture,
-                        }} 
-                        /> 
+        <View style={styles.container}>
+            <Pressable
+                onPress={handleOnPressPost}
+                style={({ pressed }) => [
+                    { backgroundColor: pressed ? '#edf7fd' : 'white' },
+                ]}
+            >
+                <View style={styles.pressableView}>
+                    <Pressable onPress={handleOnPressPicture}>
+                        <View style={styles.pictureView}>
+                            <Image
+                                style={styles.profilePicture}
+                                source={{
+                                    uri: post.user.profilePicture,
+                                }}
+                            />
+                        </View>
+                    </Pressable>
+                    <View style={styles.textView}>
+                        <Text
+                            style={
+                                isFocused
+                                    ? styles.focused_userName
+                                    : styles.userName
+                            }
+                        >
+                            {post.user.userName}
+                        </Text>
+                        {post.hashtags && (
+                            <View style={styles.hashtagView}>
+                                <Text numberOfLines={1}>
+                                    {post.hashtags.map((hashtag, index) => (
+                                        <Text
+                                            key={index}
+                                            style={
+                                                isFocused
+                                                    ? styles.focused_hashtag
+                                                    : styles.hashtag
+                                            }
+                                            numberOfLines={1}
+                                        >
+                                            #{hashtag}
+                                        </Text>
+                                    ))}
+                                </Text>
+                            </View>
+                        )}
                     </View>
-                </Pressable>
-                <View style={styles.textView}>
-                    <Text style={isFocused ? styles.focused_userName : styles.userName}>{post.user.userName}</Text>
-                    {post.hashtags && 
-                        <View style={styles.hashtagView}>
-                            <Text numberOfLines={1}> 
-                                {post.hashtags.map((hashtag, index) => 
-                                    <Text key={index} style={isFocused ? styles.focused_hashtag : styles.hashtag} numberOfLines={1}>#{hashtag}</Text>
-                                )}
-                            </Text>
-                        
+                    <View style={styles.commentsView}>
+                        <Comments post={post} showComments={showComments} />
                     </View>
-                    }
+                    <View style={styles.likesView}>
+                        <Likes post={post} />
+                    </View>
                 </View>
-                <View style={styles.commentsView}>
-                    <Comments 
-                    post={post}
-                    />
-                </View>
-                <View style={styles.likesView}>
-                    <Likes 
-                    post={post}
-                    />
-                </View>
-            </View>
-        </Pressable>
-        <View style={styles.line} />
-    </View>
+            </Pressable>
+            <View style={styles.line} />
+        </View>
     );
-}; 
-
+};
