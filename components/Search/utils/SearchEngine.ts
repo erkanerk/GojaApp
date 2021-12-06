@@ -13,7 +13,7 @@ const SearchEngine = async (searchWord: string): Promise<UserFromSearch[]> => {
     }
     await APIKit.get<UserFromSearch[]>("/users/search", {
        params}).then((response)=>{
-           console.log(response.data)
+            console.log(response.data)
             searchResult = response.data
     }).catch((error)=> {
         console.error(error)

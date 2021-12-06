@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {Dispatch, SetStateAction, useState} from 'react'
 import { View, TextInput, StyleSheet } from 'react-native'
 import { SearchEngine } from './utils/SearchEngine'
 import { UserFromSearch } from './data_models/User'
@@ -16,15 +16,20 @@ const styles = StyleSheet.create({
 });
 
 interface PropTypes {
-  setSearchResult: React.Dispatch<React.SetStateAction<UserFromSearch[]>>
+  setSearchResult: Dispatch<SetStateAction<UserFromSearch[] | undefined>>
 }
 
 export const OwnSearchBar = ({setSearchResult}: PropTypes) => {
-    const [text, setText] = useState("");
+    const [text, setText] = useState<string>('');
+
     const onChangeTextSearch = async (text: string) => {
         setText(text)
-        const resultUsers = await SearchEngine(text)
-        setSearchResult(resultUsers)
+        if (text.length > 0) {
+          const resultUsers = await SearchEngine(text)
+          setSearchResult(resultUsers)  
+        } else {
+          setSearchResult(undefined)  
+        }
     }
 
     return (
