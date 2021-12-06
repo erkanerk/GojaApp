@@ -91,7 +91,7 @@ export const FollowingFeed = ({
             </View>
             :
             <View style={styles.textView}>
-                <FadeText style={styles.text} text={'When you follow your friends they will show up here!'} />
+                <FadeText style={styles.text}>When you follow your friends they will show up here!</FadeText>
             </View>
             }
         </View>

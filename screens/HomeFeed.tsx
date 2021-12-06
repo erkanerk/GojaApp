@@ -11,6 +11,7 @@ import { PlayCard } from '../components/PlayCard/PlayCard';
 import { Audio, AVPlaybackStatus } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import useAudio from '../hooks/useAudio';
+import { FadeText } from '../components/FadeText/FadeText';
 
 export const styles = StyleSheet.create({
     container: {
@@ -18,10 +19,17 @@ export const styles = StyleSheet.create({
         backgroundColor: 'white',
         flex: 1,
     },
-    feedView: {
-        flex: 1,
+    text: {
+        fontSize: 12,
+        color: 'gray',
+        textAlign: 'center',
     },
-    playCardView: {},
+    textView: {
+        flex: 1,
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
 export default function HomeFeed({
@@ -219,6 +227,24 @@ export default function HomeFeed({
 
     return (
         <View style={styles.container}>
+            {posts && posts.length > 0 ? (
+                <PostFeed
+                    focusedPostIndex={focusedPostIndex}
+                    setFocusedPostIndex={setFocusedPostIndex}
+                    showComments={showComments}
+                    posts={posts}
+                    onRefresh={getMyFeed}
+                    refreshing={isRefreshing}
+                    onEndReached={getMyFeedMore}
+                />
+            ) : (
+                <View style={styles.textView}>
+                    <FadeText style={styles.text}>
+                        Your feed is empty, try following some people through
+                        the search tab!
+                    </FadeText>
+                </View>
+            )}
             {posts && showCommentsModal ? (
                 <CommentsModal
                     post={showCommentsModal}
@@ -226,18 +252,9 @@ export default function HomeFeed({
                     modalVisible={modalVisible}
                 />
             ) : null}
-            <PostFeed
-                focusedPostIndex={focusedPostIndex}
-                setFocusedPostIndex={setFocusedPostIndex}
-                showComments={showComments}
-                posts={posts}
-                onRefresh={getMyFeed}
-                refreshing={isRefreshing}
-                onEndReached={getMyFeedMore}
-            />
 
             {
-                <View style={styles.playCardView}>
+                <View>
                     {posts && focusedPostIndex != undefined ? (
                         <PlayCard
                             post={posts[focusedPostIndex]}
