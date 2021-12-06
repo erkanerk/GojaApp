@@ -1,14 +1,14 @@
-import React, { useRef } from "react";
+import React, { ReactNode, useRef } from "react";
 import { Text, Animated, StyleProp, TextStyle } from "react-native";
 
 interface Props {
-    style: StyleProp<TextStyle>
-    text: string
+    style?: StyleProp<TextStyle>
+    children: ReactNode
 }
 
 export const FadeText = ({
     style,
-    text
+    children,
 }: Props) => {
     const fadeAnim = useRef(new Animated.Value(0)).current;
     
@@ -23,7 +23,7 @@ export const FadeText = ({
     return (
         <Animated.View
         style={{opacity: fadeAnim}} >
-            <Text style={style}>{text}</Text>
+            <Text style={style}>{children}</Text>
         </Animated.View>
     );
 };

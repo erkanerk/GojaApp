@@ -93,7 +93,7 @@ export const FollowersFeed = ({
             </View>
             :
             <View style={styles.textView}>
-                <FadeText style={styles.text} text={'Your followers will show up here!'} />
+                <FadeText style={styles.text}>Your followers will show up here!</FadeText>
             </View>
             }
         </View>

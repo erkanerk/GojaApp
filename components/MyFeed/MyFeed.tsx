@@ -79,10 +79,7 @@ export const MyFeed = ({ userId }: Props) => {
                 </View>
             ) : (
                 <View style={styles.textView}>
-                    <FadeText
-                        style={styles.text}
-                        text={'Record some audio and see all your posts here!'}
-                    />
+                    <FadeText style={styles.text}>Record some audio and see all your posts here!</FadeText>
                 </View>
             )}
         </View>
