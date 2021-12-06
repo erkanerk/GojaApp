@@ -6,17 +6,25 @@ import { PostFeed } from "../components/PostFeed/PostFeed";
 import { APIKit, onFailure, clearUserSession } from '../shared/APIkit';
 import { useIsFocused } from "@react-navigation/native";
 import AppContext from "../shared/AppContext";
+import { FadeText } from "../components/FadeText/FadeText";
 
 export const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    backgroundColor: "white",
-    flex: 1,
-  },
-  feedView: {
-    flex: 1,
-  },
-  playCardView: {},
+    container: {
+        padding: 10,
+        backgroundColor: "white",
+        flex: 1,
+    },
+    text: {
+        fontSize: 12,
+        color: 'gray',
+        textAlign: 'center'
+        },
+    textView: {
+        flex: 1,
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
+        },
 });
 
 export default function HomeFeed({
@@ -65,12 +73,19 @@ export default function HomeFeed({
 
     return (
         <View style={styles.container}>
+            {!posts
+            ?
             <PostFeed
                 posts={posts}
                 onRefresh={getMyFeed}
                 refreshing={isRefreshing}
                 onEndReached={getMyFeedMore}
             />
+            :
+            <View style={styles.textView}>
+                <FadeText style={styles.text}>Your feed is empty, try following some people through the search tab!</FadeText>
+            </View>
+            }
         </View>
     );
 }
