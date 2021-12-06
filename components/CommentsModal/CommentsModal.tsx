@@ -3,44 +3,12 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { MessageCircle } from 'react-native-feather';
-import { PostFeed } from '../PostFeed/PostFeed';
+import { PostFeed, PostType } from '../PostFeed/PostFeed';
 import { Post } from '../Post/Post';
 import Modal from 'react-native-modal';
 import useAudio from '../../hooks/useAudio';
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    button: {
-        backgroundColor: 'lightblue',
-        padding: 12,
-        margin: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 4,
-        borderColor: 'rgba(0, 0, 0, 0.1)',
-    },
-    modalContent: {
-        backgroundColor: 'white',
-        padding: 22,
-        justifyContent: 'center',
-        height: '50%',
-        alignItems: 'center',
-        borderRadius: 4,
-        borderColor: 'rgba(0, 0, 0, 0.1)',
-    },
-    bottomModal: {
-        bottom: 0,
-        margin: 0,
-        flex: 0.5,
-    },
-    modalView: {
-        margin: 0,
-        justifyContent: 'flex-start',
-    },
     footer: {
         flex: 1,
         backgroundColor: 'transparent',
@@ -146,12 +114,14 @@ export const CommentsModal = ({
                     <View style={styles.footer}>
                         <PostFeed
                             posts={[post]}
+                            postType={PostType.COMMENT_PARENT}
                             focusedPostIndex={focusedPostIndexRoot}
                             setFocusedPostIndex={setFocusedPostIndexRoot}
                         />
                     </View>
                     <View style={styles.replies}>
                         <PostFeed
+                            postType={PostType.COMMENT_CHILD}
                             focusedPostIndex={focusedPostIndexReplies}
                             setFocusedPostIndex={setFocusedPostIndexReplies}
                             posts={replies}

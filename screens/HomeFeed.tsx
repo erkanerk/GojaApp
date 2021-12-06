@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Modal } from 'react-native';
 import { RootTabScreenProps } from '../types';
 import { StyleSheet } from 'react-native';
-import { PostFeed } from '../components/PostFeed/PostFeed';
+import { PostFeed, PostType } from '../components/PostFeed/PostFeed';
 import { APIKit, onFailure } from '../shared/APIkit';
 import { useIsFocused } from '@react-navigation/native';
 import AppContext from '../shared/AppContext';
@@ -233,6 +233,7 @@ export default function HomeFeed({
                     setFocusedPostIndex={setFocusedPostIndex}
                     showComments={showComments}
                     posts={posts}
+                    postType={PostType.MAIN}
                     onRefresh={getMyFeed}
                     refreshing={isRefreshing}
                     onEndReached={getMyFeedMore}

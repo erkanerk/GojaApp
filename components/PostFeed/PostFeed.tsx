@@ -39,8 +39,16 @@ export const styles = StyleSheet.create({
         marginTop: 22,
     },
 });
+
+export enum PostType {
+    MAIN,
+    COMMENT_PARENT,
+    COMMENT_CHILD,
+    PROFILE
+}
 interface Props {
     posts: Post[] | undefined;
+    postType?: PostType;
     showComments?: (arg0: Post) => void;
     focusedPostIndex: number | undefined;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
@@ -51,6 +59,7 @@ interface Props {
 
 export const PostFeed = ({
     posts,
+    postType,
     showComments,
     focusedPostIndex,
     setFocusedPostIndex,
@@ -81,6 +90,7 @@ export const PostFeed = ({
     const renderPost = ({ item, index, separators }: any) => (
         <Post
             post={item}
+            postType={postType}
             index={index}
             focusedPostIndex={focusedPostIndex}
             setFocusedPostIndex={setFocusedPostIndex}

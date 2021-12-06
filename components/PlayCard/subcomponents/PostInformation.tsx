@@ -2,8 +2,9 @@ import React from 'react';
 import { Image, View, Text} from 'react-native';
 
 import { StyleSheet } from 'react-native';
-import { Reply } from './Reply';
+import { Reply } from '../../Post/subcomponents/Reply';
 import { Likes } from '../../Likes/Likes';
+import { Comments } from '../../Post/subcomponents/Comments';
 
 export const styles = StyleSheet.create({
     container: {
@@ -40,14 +41,20 @@ export const styles = StyleSheet.create({
     hashtag: {
         fontSize: 15,
     },
+    actionButton: {
+        margin: 5,
+        justifyContent: 'flex-end',
+    },
   }); 
 
 interface Props {
-    post: Post
+    post: Post;
+    showComments?: (arg0: Post) => void;
 }
 
 export const PostInformation = ({ 
-    post
+    post,
+    showComments,
 }: Props) => {
 
     return (
@@ -70,9 +77,17 @@ export const PostInformation = ({
                 )}
             </View>
         </View>
-        <View style={styles.replyView}>
-            <Reply 
-            post={post}/>
+        <View style={{ flexDirection: 'row'}}>
+            <View style={styles.actionButton}>
+                <Likes post={post} />
+            </View>
+            <View style={styles.actionButton}>
+                <Comments post={post} showComments={showComments} />
+            </View>
+            <View style={styles.actionButton}>
+                <Reply 
+                post={post}/>
+            </View>
         </View>
     </View>
     );
