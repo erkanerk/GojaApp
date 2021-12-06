@@ -6,6 +6,7 @@ import { PostFeed } from '../PostFeed/PostFeed';
 import AppContext from '../../shared/AppContext';
 import { useIsFocused } from '@react-navigation/native';
 import { FadeText } from '../FadeText/FadeText';
+import useAudio from '../../hooks/useAudio';
 
 export const styles = StyleSheet.create({
     container: {
@@ -28,11 +29,15 @@ interface Props {
     userId: string | undefined;
 }
 
-export const MyFeed = ({ userId }: Props) => {
+export const ProfileFeed = ({ userId }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const isFocused = useIsFocused();
     const [posts, setPosts] = useState<Post[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
+    const [focusedPostIndex, setFocusedPostIndex] = useState<
+        number | undefined
+    >(undefined);
+    const sound = useAudio(focusedPostIndex, posts);
 
     async function getPosts() {
         setIsLoading(true);
@@ -75,11 +80,17 @@ export const MyFeed = ({ userId }: Props) => {
         <View style={styles.container}>
             {posts && posts?.length > 0 ? (
                 <View style={styles.feedView}>
-                    <PostFeed posts={posts} />
+                    <PostFeed
+                        posts={posts}
+                        focusedPostIndex={focusedPostIndex}
+                        setFocusedPostIndex={setFocusedPostIndex}
+                    />
                 </View>
             ) : (
                 <View style={styles.textView}>
-                    <FadeText style={styles.text}>Record some audio and see all your posts here!</FadeText>
+                    <FadeText style={styles.text}>
+                        Record some audio and see all your posts here!
+                    </FadeText>
                 </View>
             )}
         </View>
