@@ -1,5 +1,4 @@
 import React from 'react';
-import {useContext} from 'react';
 import { APIKit, getToken, onFailure } from '../../../shared/APIkit';
 import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
