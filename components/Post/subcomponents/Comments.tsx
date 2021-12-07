@@ -25,7 +25,6 @@ interface Props {
 
 export const Comments = ({ post, showComments }: Props) => {
     function handleOnPress() {
-        console.log(post);
         if (showComments) {
             showComments(post);
         }

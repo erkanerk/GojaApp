@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { FlatList, View, Modal, Text } from 'react-native';
-import { Post } from '../Post/Post';
+import { Post, PostType } from '../Post/Post';
 import { StyleSheet } from 'react-native';
 import { PlayCard } from '../PlayCard/PlayCard';
 import { CommentsModal } from '../CommentsModal/CommentsModal';
@@ -10,7 +10,7 @@ import * as FileSystem from 'expo-file-system';
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         flex: 1,
     },
     feedView: {
@@ -39,13 +39,6 @@ export const styles = StyleSheet.create({
         marginTop: 22,
     },
 });
-
-export enum PostType {
-    MAIN,
-    COMMENT_PARENT,
-    COMMENT_CHILD,
-    PROFILE
-}
 interface Props {
     posts: Post[] | undefined;
     postType?: PostType;

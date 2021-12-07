@@ -4,7 +4,6 @@ import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Likes } from '../Likes/Likes';
 import { Comments } from './subcomponents/Comments';
-import { PostType } from '../PostFeed/PostFeed';
 import { Reply } from './subcomponents/Reply';
 
 export const styles = StyleSheet.create({
@@ -13,6 +12,7 @@ export const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 5,
         flexDirection: 'column',
+        backgroundColor: 'transparent'
     },
     userName: {
         fontSize: 18,
@@ -30,7 +30,8 @@ export const styles = StyleSheet.create({
     },
     pressableView: {
         flexDirection: 'row',
-        marginBottom: 15,
+        paddingBottom: 15,
+        backgroundColor: 'transparent',
     },
     hashtagView: {
         flexDirection: 'row',
@@ -67,6 +68,13 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
 });
+
+export enum PostType {
+    MAIN,
+    COMMENT_PARENT,
+    COMMENT_CHILD,
+    PROFILE
+}
 interface Props {
     post: Post;
     postType?: PostType;
@@ -118,7 +126,7 @@ export const Post = ({
             <Pressable
                 onPress={handleOnPressPost}
                 style={({ pressed }) => [
-                    { backgroundColor: pressed ? '#edf7fd' : 'white' },
+                    { backgroundColor: pressed ? '#edf7fd' : 'transparent' },
                 ]}
             >
                 <View style={styles.pressableView}>
@@ -190,6 +198,16 @@ export const Post = ({
                         <View style={{ flexDirection: 'row'}}>
                             <View style={styles.actionButton}>
                                 <Likes post={post} />
+                            </View>
+                        </View>
+                    }
+                    {postType == PostType.PROFILE &&
+                        <View style={{ flexDirection: 'row'}}>
+                            <View style={styles.actionButton}>
+                                <Likes post={post} />
+                            </View>
+                            <View style={styles.actionButton}>
+                                <Comments post={post} showComments={showComments} />
                             </View>
                         </View>
                     }

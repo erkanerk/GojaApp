@@ -1,10 +1,9 @@
-import { APIKit, onFailure } from '../../shared/APIkit';
+import { APIKit } from '../../shared/APIkit';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
-import GestureRecognizer from 'react-native-swipe-gestures';
-import { MessageCircle } from 'react-native-feather';
-import { PostFeed, PostType } from '../PostFeed/PostFeed';
-import { Post } from '../Post/Post';
+import { StyleSheet, View } from 'react-native';
+import { PostFeed } from '../PostFeed/PostFeed';
+import { PostType } from '../Post/Post';
+
 import Modal from 'react-native-modal';
 import useAudio from '../../hooks/useAudio';
 
@@ -21,7 +20,6 @@ const styles = StyleSheet.create({
         flex: 7,
         width: '90%',
         alignSelf: 'flex-end',
-        backgroundColor: 'transparent',
     },
     modalStyle: {
         margin: 0,
@@ -40,7 +38,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '80%',
         marginTop: 'auto',
-        backgroundColor: 'white',
+        backgroundColor: '#FDF6ED',
         shadowColor: '#000000',
         shadowOffset: {
             width: 0,
