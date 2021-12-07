@@ -83,8 +83,7 @@ export default function ChoosePic({ navigation }) {
                     .then((response) => {
                         globalCtx.setUserInfo({...globalCtx.userInfo, profilePicture: urlNoQuotes });
                         setIsLoading(false);
-                        //change to navigation.navigate record sound
-                        globalCtx.setLoggedIn(true);
+                        navigation.navigate('RecordProfileSound');
                     })
                     .catch((error) => {
                         console.log(error);
