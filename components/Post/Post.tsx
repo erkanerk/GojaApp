@@ -175,9 +175,11 @@ export const Post = ({
                             <View style={styles.actionButton}>
                                 <Comments post={post} showComments={showComments} />
                             </View>
-                            <View style={styles.actionButton}>
-                                <Text style={styles.funkyStatus}>🦜</Text>
-                            </View>
+                            {post.funkyStatus &&
+                                <View style={styles.actionButton}>
+                                    <Text style={styles.funkyStatus}>{post.funkyStatus}</Text>
+                                </View>
+                            }
                         </View>
                     }
                     {postType == PostType.COMMENT_PARENT &&

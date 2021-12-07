@@ -227,7 +227,6 @@ export default function HomeFeed({
 
     return (
         <View style={styles.container}>
-            <Text>🍩</Text>
             {posts && posts.length > 0 ? (
                 <PostFeed
                     focusedPostIndex={focusedPostIndex}
