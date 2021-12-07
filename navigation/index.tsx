@@ -49,6 +49,7 @@ import { LogoutNavigator } from "./components/LogoutNavigator";
 import { IconNavigator } from "./components/IconNavigator";
 import { StatusBar } from 'expo-status-bar';
 import { RecordNavigator } from './components/RecordNavigator';
+import { RecordingScreen } from '../screens/postFlow/RecordingScreen';
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -143,43 +144,44 @@ function RootNavigator() {
         ),
         headerTitleAlign: 'center'
     })}>
+        <Stack.Group>
+            <Stack.Screen
+                name="Root"
+                component={BottomTabNavigator}
+                options={{ headerShown: false }}
+            />
+            
+            <Stack.Screen
+                name="NotFound"
+                component={NotFoundScreen}
+                options={{ title: "Oops!" }}
+            />
 
-        <Stack.Screen
-            name="Root"
-            component={BottomTabNavigator}
-            options={{ headerShown: false }}
-        />
-        
-        <Stack.Screen
-            name="NotFound"
-            component={NotFoundScreen}
-            options={{ title: "Oops!" }}
-        />
+            <Stack.Screen
+            name={'ProfileScreen'}
+            component={ProfileScreen} 
+            initialParams={{ userId: undefined}}
+            options={({ route, navigation }) => ({
+                headerRight: () => {
+                    if (route.params.userId) {
+                        return <NotificationNavigator route={route} navigation={navigation}/>      
+                    } else {
+                        return <LogoutNavigator route={route} navigation={navigation}/>  
+                    }
+                }
+            })}/>
+            
+            <Stack.Screen
+                name="NotificationScreen"
+                component={NotificationScreen}
+            />
+
+        </Stack.Group>
         
         <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen name="Modal" component={ModalScreen} />
+            <Stack.Screen name="RecordModal" component={RecordingScreen} />
         </Stack.Group>
-        
-        <Stack.Screen
-        name={'ProfileScreen'}
-        component={ProfileScreen} 
-        initialParams={{ userId: undefined}}
-        options={({ route, navigation }) => ({
-            title: '',
-            headerRight: () => {
-                if (route.params.userId) {
-                    return <NotificationNavigator route={route} navigation={navigation}/>      
-                } else {
-                    return <LogoutNavigator route={route} navigation={navigation}/>  
-                }
-            }
-        })}/>
-        
-        <Stack.Screen
-            name="NotificationScreen"
-            component={NotificationScreen}
-            options={{ title: "Notifications" }}
-        />
 
     </Stack.Navigator>
   );
@@ -203,7 +205,7 @@ function BottomTabNavigator() {
             tabBarStyle: {
                 height: 65,
             }
-    }}>
+    }}> 
         <BottomTab.Group
         screenOptions={({ route, navigation }) => ({
             headerRight: () => (
@@ -233,17 +235,25 @@ function BottomTabNavigator() {
               />
               <BottomTab.Screen
                 name={'RecordTab'}
-                component={TabTwoScreen}
+                component={RecordNavigator}
                 options={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                         return <RecordNavigator />
                     },
                 })}
+                listeners={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
+                    tabPress: event => {
+                        event.preventDefault()
+                        navigation.navigate('RecordModal')
+                    }
+                })}
+                
             />
             <BottomTab.Screen
                 name={'SearchTab'}
                 component={SearchScreen}
                 options={({ route, navigation }: RootTabScreenProps<'SearchTab'>) => ({
+                    tabBarShowLabel: false,
                     tabBarIcon: ({ focused, color, size }) => (
                         <Feather name={'search'} size={size} color={color} />
                     )
