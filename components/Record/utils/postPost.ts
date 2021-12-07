@@ -2,6 +2,7 @@ import React from 'react';
 import { APIKit, getToken, onFailure } from '../../../shared/APIkit';
 import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
+
 const { manifest } = Constants;
 
 async function createPost(
@@ -54,6 +55,7 @@ async function createPost(
             APIKit.post(endPoint, payload)
                 .then((response) => {
                     console.log(response.data);
+                    return response.data.url;
                 })
                 .catch((error) => {
                     onFailure(error, c);

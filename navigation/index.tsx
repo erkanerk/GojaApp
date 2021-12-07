@@ -48,6 +48,8 @@ import { NotificationNavigator } from "./components/NotificationNavigator";
 import { LogoutNavigator } from "./components/LogoutNavigator";
 import { IconNavigator } from "./components/IconNavigator";
 import { StatusBar } from 'expo-status-bar';
+import { RecordingScreen } from '../screens/postFlow/RecordingScreen';
+import { PostType } from '../screens/postFlow/RecordingScreen';
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -121,8 +123,28 @@ function AuthNavigator() {
             />
             <AuthStack.Screen
                 name="RecordProfileSound"
-                component={AuthScreen}
-            />
+                options={{
+                    headerTitle: (props) => (
+                        <Image
+                            style={styles.headerImage}
+                            source={require('../assets/images/parrot.png')}
+                            resizeMode="contain"
+                        />
+                    ),
+                    headerLeft: () => (
+                        <Pressable onPress={() => globalCtx.setLoggedIn(true)}>
+                            <Text style={styles.headerCancel}>Cancel</Text>
+                        </Pressable>
+                    ),
+                    headerStyle: {
+                        backgroundColor: 'white',
+                    },
+                }}
+            >
+                {(props) => (
+                    <RecordingScreen recordingScreenType={PostType.REGISTER} />
+                )}
+            </AuthStack.Screen>
         </AuthStack.Navigator>
     );
 }

@@ -56,7 +56,7 @@ export const RecordingScreen = ({
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
-        createPost(
+        let audioUrl = await createPost(
             recordingURI,
             arrayHashtags,
             endPoint,
@@ -66,6 +66,13 @@ export const RecordingScreen = ({
         setHashtags('');
         setCanPost(false);
         setRecordingURI(null);
+        if (recordingScreenType === PostType.REGISTER) {
+            globalCtx.setLoggedIn(true)
+            globalCtx.setUserInfo({
+                ...globalCtx.userInfo,
+                profileAudio: audioUrl,
+            });
+        }
     };
 
     useEffect(() => {
@@ -78,48 +85,53 @@ export const RecordingScreen = ({
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View
-                style={{
-                    flexDirection: 'column',
-                    backgroundColor: 'white',
-                    height: '100%',
-                    justifyContent: 'space-between',
-                }}
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
-                <TopBar
-                    postToBackend={postPostToBackend}
-                    canPost={canPost}
-                    buttonText={postButtonText}
-                />
-                <View style={{ marginTop: 50 }}>
+                <View
+                    style={{
+                        flexDirection: 'column',
+                        backgroundColor: 'white',
+                        height: '100%',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <TopBar
+                        postToBackend={postPostToBackend}
+                        canPost={canPost}
+                        buttonText={postButtonText}
+                    />
+                    <View style={{ marginTop: 50 }}>
+                        {recordingScreenType === PostType.POST && (
+                            <OnlyPicture pictureUrl={profilePic} />
+                        )}
+                        {recordingScreenType === PostType.REGISTER && (
+                            <TextAndPictures pictureUrl={profilePic} />
+                        )}
+                        {recordingScreenType === PostType.ANSWER && (
+                            <AnswerTo
+                                imageUrl={answerInfo?.imageUrl}
+                                username={answerInfo?.username}
+                                hashtags={answerInfo?.hashtags}
+                            />
+                        )}
+                    </View>
+
                     {recordingScreenType === PostType.POST && (
-                        <OnlyPicture pictureUrl={profilePic} />
-                    )}
-                    {recordingScreenType === PostType.REGISTER && (
-                        <TextAndPictures pictureUrl={profilePic} />
-                    )}
-                    {recordingScreenType === PostType.ANSWER && (
-                        <AnswerTo
-                            imageUrl={answerInfo?.imageUrl}
-                            username={answerInfo?.username}
-                            hashtags={answerInfo?.hashtags}
+                        <Hashtags
+                            hashtagSetter={setHashtags}
+                            hashtags={hashtags}
                         />
                     )}
-                </View>
 
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                >
-                    <Hashtags hashtagSetter={setHashtags} hashtags={hashtags} />
-                </KeyboardAvoidingView>
-
-                <View style={{ marginBottom: 20 }}>
-                    <RecordButton
-                        recordingURISetter={setRecordingURI}
-                        recordingURIP={recordingURI}
-                    />
+                    <View style={{ marginBottom: 20 }}>
+                        <RecordButton
+                            recordingURISetter={setRecordingURI}
+                            recordingURIP={recordingURI}
+                        />
+                    </View>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     );
 };
