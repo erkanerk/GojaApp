@@ -38,8 +38,7 @@ export const FollowersFeed = ({
     const globalCtx = useContext(AppContext);
     
     async function getFollowers() {
-        setIsLoading(true)
-        console.log('Fetching followers')
+        setIsLoading(true);
         if (userId) {
             APIKit.get(`/users/followers/${userId}`)
             .then((response) => {

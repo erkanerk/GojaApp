@@ -4,6 +4,9 @@ import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import Navigation from '../../navigation';
 import { FollowButton } from '../FollowButton/FollowButton';
+import CachedImage from 'expo-cached-image';
+
+
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -54,7 +57,7 @@ export const User = ({
 }: Props) => {
     const navigation = useNavigation();
     function handleOnPress() {
-        console.log('Pressed profile picture')
+        console.log(user);
         navigation.navigate('ProfileScreen', {userId: user.userId})
     }
 
@@ -62,11 +65,12 @@ export const User = ({
         <Pressable onPress={handleOnPress}>
             <View style={styles.container}>
                 <View style={styles.imageView}>
-                    <Image
+                    <CachedImage
                         style={styles.image}
                         source={{
                             uri: user.profilePicture,
                         }}
+                        cacheKey={user.userId}
                     />
                 </View>
                 <View style={styles.textView}>

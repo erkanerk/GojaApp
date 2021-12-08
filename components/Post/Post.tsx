@@ -4,13 +4,16 @@ import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Likes } from '../Likes/Likes';
 import { Comments } from './subcomponents/Comments';
+import { Reply } from './subcomponents/Reply';
+import CachedImage from 'expo-cached-image';
 
 export const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        padding: 5,
+        padding: 12,
         borderRadius: 5,
         flexDirection: 'column',
+        backgroundColor: 'transparent',
     },
     userName: {
         fontSize: 18,
@@ -22,13 +25,14 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     profilePicture: {
-        width: 52,
-        height: 52,
+        width: 59,
+        height: 59,
         borderRadius: 15,
     },
     pressableView: {
         flexDirection: 'row',
-        marginBottom: 15,
+        paddingBottom: 15,
+        backgroundColor: 'transparent',
     },
     hashtagView: {
         flexDirection: 'row',
@@ -52,25 +56,30 @@ export const styles = StyleSheet.create({
         flex: 7,
         marginLeft: 20,
     },
-    commentsView: {
-        flex: 2,
+    actionButton: {
         margin: 5,
         justifyContent: 'flex-end',
     },
-    likesView: {
-        flex: 2,
-        margin: 5,
-        justifyContent: 'flex-end',
+    funkyStatus: {
+        fontSize: 20,
     },
     line: {
         borderBottomColor: 'lightgray',
         opacity: 0.3,
         borderBottomWidth: 1,
+        width: 1,
     },
 });
 
+export enum PostType {
+    MAIN,
+    COMMENT_PARENT,
+    COMMENT_CHILD,
+    PROFILE,
+}
 interface Props {
     post: Post;
+    postType?: PostType;
     index: number;
     focusedPostIndex: number | undefined;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
@@ -79,6 +88,7 @@ interface Props {
 
 export const Post = ({
     post,
+    postType,
     index,
     focusedPostIndex,
     setFocusedPostIndex,
@@ -88,17 +98,14 @@ export const Post = ({
     const navigation = useNavigation();
 
     function handleOnPressPicture() {
-        console.log('Picture pressed, redirecting to profile');
         navigation.navigate('ProfileScreen', { userId: post.user._id });
     }
 
     function handleOnPressPost() {
         if (isFocused) {
-            console.log('Post pressed again, pausing sound');
             setIsFocused(false);
             setFocusedPostIndex(undefined);
         } else {
-            console.log('Post pressed, loading and playing sound');
             setIsFocused(true);
             setFocusedPostIndex(index);
         }
@@ -118,17 +125,18 @@ export const Post = ({
             <Pressable
                 onPress={handleOnPressPost}
                 style={({ pressed }) => [
-                    { backgroundColor: pressed ? '#edf7fd' : 'white' },
+                    { backgroundColor: pressed ? '#edf7fd' : 'transparent' },
                 ]}
             >
                 <View style={styles.pressableView}>
                     <Pressable onPress={handleOnPressPicture}>
                         <View style={styles.pictureView}>
-                            <Image
+                            <CachedImage
                                 style={styles.profilePicture}
                                 source={{
                                     uri: post.user.profilePicture,
                                 }}
+                                cacheKey={post.user._id}
                             />
                         </View>
                     </Pressable>
@@ -162,12 +170,59 @@ export const Post = ({
                             </View>
                         )}
                     </View>
-                    <View style={styles.commentsView}>
-                        <Comments post={post} showComments={showComments} />
-                    </View>
-                    <View style={styles.likesView}>
-                        <Likes post={post} />
-                    </View>
+                    {postType == PostType.MAIN && (
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.actionButton}>
+                                <Comments
+                                    post={post}
+                                    showComments={showComments}
+                                />
+                            </View>
+                            {post.funkyStatus && (
+                                <View style={styles.actionButton}>
+                                    <Text style={styles.funkyStatus}>
+                                        {post.funkyStatus}
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+                    )}
+                    {postType == PostType.COMMENT_PARENT && (
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.actionButton}>
+                                <Likes post={post} />
+                            </View>
+                            <View style={styles.actionButton}>
+                                <Comments
+                                    post={post}
+                                    showComments={showComments}
+                                />
+                            </View>
+                            <View style={styles.actionButton}>
+                                <Reply post={post} />
+                            </View>
+                        </View>
+                    )}
+                    {postType == PostType.COMMENT_CHILD && (
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.actionButton}>
+                                <Likes post={post} />
+                            </View>
+                        </View>
+                    )}
+                    {postType == PostType.PROFILE && (
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.actionButton}>
+                                <Likes post={post} />
+                            </View>
+                            <View style={styles.actionButton}>
+                                <Comments
+                                    post={post}
+                                    showComments={showComments}
+                                />
+                            </View>
+                        </View>
+                    )}
                 </View>
             </Pressable>
             <View style={styles.line} />

@@ -40,18 +40,15 @@ export const SoundController = ({
 }: Props) => {
 
     function handlePlayPrevious() {
-        console.log("Previous button pressed")
-        playPreviousPost()
+        playPreviousPost();
     }
 
     function handlePlayPause() {
-        console.log('Play/paused button pressed');
         playPausePost();
     }
 
     function handlePlayNext() {
-        console.log("Next button pressed")
-        playNextPost()
+        playNextPost();
     }
     
     return (
