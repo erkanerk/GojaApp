@@ -37,7 +37,7 @@ export const Comments = ({ post, showComments }: Props) => {
                 <View>
                     <MessageCircle
                         stroke="black"
-                        fill="white"
+                        fill="transparent"
                         width={25}
                         height={25}
                         strokeWidth={1}

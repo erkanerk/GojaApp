@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, Modal } from 'react-native';
+import { View } from 'react-native';
 import { RootTabScreenProps } from '../types';
 import { StyleSheet } from 'react-native';
 import { PostFeed } from '../components/PostFeed/PostFeed';
+import { PostType } from '../components/Post/Post';
 import { APIKit, onFailure } from '../shared/APIkit';
 import { useIsFocused } from '@react-navigation/native';
 import AppContext from '../shared/AppContext';
 import { CommentsModal } from '../components/CommentsModal/CommentsModal';
 import { PlayCard } from '../components/PlayCard/PlayCard';
-import { Audio, AVPlaybackStatus } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
+import { AVPlaybackStatus } from 'expo-av';
 import useAudio from '../hooks/useAudio';
 import { FadeText } from '../components/FadeText/FadeText';
 
@@ -228,6 +228,7 @@ export default function HomeFeed({
                     setFocusedPostIndex={setFocusedPostIndex}
                     showComments={showComments}
                     posts={posts}
+                    postType={PostType.MAIN}
                     onRefresh={getMyFeed}
                     refreshing={isRefreshing}
                     onEndReached={getMyFeedMore}

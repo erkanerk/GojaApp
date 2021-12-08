@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View} from 'react-native';
 import { StyleSheet } from 'react-native';
 import { SoundSlider } from "./subcomponents/SoundSlider";
 import { PostInformation } from "./subcomponents/PostInformation";
 import { SoundController } from "./subcomponents/SoundController";
+import { CommentsModal } from '../CommentsModal/CommentsModal';
 
 export const styles = StyleSheet.create({
     container: {
@@ -41,13 +42,20 @@ export const PlayCard = ({
     playPreviousPost,
     playNextPost
 }: Props) => {
-    
+
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [showCommentsModal, setShowCommentsModal] = useState<Post | undefined>(undefined);
+
+    const showComments = (post) => {
+        setModalVisible(true);
+        setShowCommentsModal(post);
+    };
 
     return (
     <View style={styles.container}>
         <View>
             <PostInformation 
-            post={post}/>
+            post={post} showComments={showComments}/>
         </View>
         <View>
             <SoundSlider 
@@ -66,6 +74,13 @@ export const PlayCard = ({
             playNextPost={playNextPost}
             playPausePost={playPausePost}/>
         </View>
+        {showCommentsModal ? (
+            <CommentsModal
+                post={showCommentsModal}
+                setModalVisible={setModalVisible}
+                modalVisible={modalVisible}
+            />
+        ) : null}
     </View>
     );
 }; 

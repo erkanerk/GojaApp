@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
     imageView: {
         alignItems: 'center',
         margin: 2,
+        marginTop: 20,
     },
     textView: {
         alignItems: 'center',

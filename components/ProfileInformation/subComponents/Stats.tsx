@@ -52,7 +52,7 @@ export const Stats = ({ user, tab, setTab }: Props) => {
                         Posts
                     </Text>
                     <Text style={tab === 0 ? styles.textFocused : styles.text}>
-                        ???
+                        {user.postCount}
                     </Text>
                 </Pressable>
             </View>
