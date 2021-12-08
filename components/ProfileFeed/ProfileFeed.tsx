@@ -55,8 +55,6 @@ export const ProfileFeed = ({ userId }: Props) => {
         if (userId) {
             APIKit.get(`/posts/by-user/${userId}`)
                 .then((response) => {
-                    console.log('Successful /posts/by-user/:id response: ');
-                    //console.log(response.data)
                     setPosts(response.data);
                     setIsLoading(false);
                 })
@@ -68,8 +66,6 @@ export const ProfileFeed = ({ userId }: Props) => {
         } else {
             APIKit.get('/posts/by-user/me')
                 .then((response) => {
-                    console.log('Successful /posts/by-user/me response: ');
-                    //console.log(response.data);
                     setPosts(response.data);
                     setIsLoading(false);
                 })

@@ -13,12 +13,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     pressable: {
-        flexDirection: 'row'
-      },
+        flexDirection: 'row',
+    },
     text: {
-        marginLeft: 5,
+        marginTop: 2,
+        marginLeft: 7,
         fontSize: 15,
-    }
+    },
 }); 
 
 interface Props {

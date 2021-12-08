@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     text: {
-        marginLeft: 5,
+        marginLeft: 7,
+        marginTop: 2,
         fontSize: 15,
     },
 });
@@ -28,7 +29,6 @@ export const Comments = ({ post, showComments }: Props) => {
         if (showComments) {
             showComments(post);
         }
-        console.log('comment button pressed');
     }
 
     return (

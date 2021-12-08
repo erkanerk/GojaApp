@@ -38,34 +38,29 @@ export const FollowersFeed = ({
     const globalCtx = useContext(AppContext);
     
     async function getFollowers() {
-        setIsLoading(true)
-        console.log('Fetching followers')
+        setIsLoading(true);
         if (userId) {
             APIKit.get(`/users/followers/${userId}`)
-            .then((response) => {
-                console.log("Successful /users/followers/:id response: ")
-                console.log(response.data)
-                setUsers(response.data);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
+                .then((response) => {
+                    setUsers(response.data);
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    onFailure(error, globalCtx);
+                    console.log(error && error);
+                    setIsLoading(false);
+                });
         } else {
-            APIKit.get("/users/followers/me")
-            .then((response) => {
-                console.log("Successful /users/followers/me response: ")
-                console.log(response.data)
-                setUsers(response.data);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
+            APIKit.get('/users/followers/me')
+                .then((response) => {
+                    setUsers(response.data);
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    onFailure(error, globalCtx);
+                    console.log(error && error);
+                    setIsLoading(false);
+                });
         }
     }
 
