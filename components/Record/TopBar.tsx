@@ -104,10 +104,22 @@ export const TopBar = ({
                     <Text style={styles.readyText}>Post</Text>
                 </View>
             );
-        } else if ((recordingScreenType === PostType.POST && !canPost)) {
+        } else if (recordingScreenType === PostType.POST && !canPost) {
             return (
                 <View style={styles.notReadyView}>
                     <Text style={styles.notReadyText}>Post</Text>
+                </View>
+            );
+        } else if (recordingScreenType === PostType.ANSWER && canPost) {
+            return (
+                <View style={styles.readyView}>
+                    <Text style={styles.readyText}>Reply</Text>
+                </View>
+            );
+        } else if (recordingScreenType === PostType.POST && !canPost) {
+            return (
+                <View style={styles.notReadyView}>
+                    <Text style={styles.notReadyText}>Reply</Text>
                 </View>
             );
         }
