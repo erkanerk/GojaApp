@@ -66,7 +66,6 @@ export default function preloadData(globalCtx) {
     const getPosts = async () => {
         APIKit.get("/posts/my-feed")
             .then((response) => {
-                globalCtx.setMainFeedPosts(response.data);
                 response.data.forEach(
                     async (item) => {
                         await cacheUserImage(item.user);

@@ -194,7 +194,6 @@ export default function HomeFeed({
         APIKit.get('/posts/my-feed')
             .then((response) => {
                 setPosts(response.data);
-                console.log(response.data);
                 setIsRefreshing(false);
             })
             .catch((error) => {
