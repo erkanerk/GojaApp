@@ -50,6 +50,7 @@ import { IconNavigator } from "./components/IconNavigator";
 import { StatusBar } from 'expo-status-bar';
 import { RecordNavigator } from './components/RecordNavigator';
 import { RecordingScreen } from '../screens/postFlow/RecordingScreen';
+import { PostNavigator } from './components/PostNavigator';
 
 const styles = StyleSheet.create({
     headerImage: {
@@ -137,14 +138,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
     return (
-    <Stack.Navigator
-    screenOptions={({ route, navigation }) => ({
-        headerTitle: () => (
-            <IconNavigator />
-        ),
-        headerTitleAlign: 'center'
-    })}>
-        <Stack.Group>
+    <Stack.Navigator>
+        <Stack.Group
+        screenOptions={({ route, navigation }) => ({
+            headerTitle: () => (
+                <IconNavigator />
+            ),
+            headerTitleAlign: 'center'
+        })}>
             <Stack.Screen
                 name="Root"
                 component={BottomTabNavigator}
@@ -178,9 +179,12 @@ function RootNavigator() {
 
         </Stack.Group>
         
-        <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Group screenOptions={{ presentation: "modal", headerShown: false }}>
             <Stack.Screen name="Modal" component={ModalScreen} />
-            <Stack.Screen name="RecordModal" component={RecordingScreen} />
+            <Stack.Screen 
+            name="RecordModal" 
+            component={RecordingScreen}
+            />
         </Stack.Group>
 
     </Stack.Navigator>
@@ -244,7 +248,7 @@ function BottomTabNavigator() {
                 listeners={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
                     tabPress: event => {
                         event.preventDefault()
-                        navigation.navigate('RecordModal')
+                        navigation.navigate('RecordModal', {canPost: false, postToBackend: undefined})
                     }
                 })}
                 

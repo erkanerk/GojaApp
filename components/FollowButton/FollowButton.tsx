@@ -19,7 +19,8 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 30,
         backgroundColor: 'red',
-        alignItems: 'center'
+        alignItems: 'center',
+        elevation: 2,
     },
     notFollowing: {
         fontSize: 14,
@@ -31,7 +32,9 @@ export const styles = StyleSheet.create({
         borderColor: 'red',
         borderWidth: 2,
         borderRadius: 30,
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'white',
+        elevation: 2,
     },
 });
 

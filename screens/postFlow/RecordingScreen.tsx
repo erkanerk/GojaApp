@@ -5,6 +5,11 @@ import {
     Platform,
     TouchableWithoutFeedback,
     Keyboard,
+    StyleSheet,
+    Modal,
+    Text,
+    Alert,
+    Pressable,
 } from 'react-native';
 import { RecordButton } from '../../components/Record/RecordButton';
 import { createPost } from '../../components/Record/utils/postPost';
@@ -15,6 +20,25 @@ import { AnswerTo } from '../../components/Record/AnswerTo';
 import AppContext from '../../shared/AppContext';
 import { hashtagHandler } from '../../components/Record/utils/hashtagHandler';
 import { TopBar } from '../../components/Record/TopBar';
+import Constants from 'expo-constants';
+import { PostConfirmModal } from '../../components/Modals/PostConfirmModal';
+
+export const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+        justifyContent: 'space-between',
+    },
+    topBarView: {
+        marginTop: Constants.statusBarHeight*1.2,
+    },
+    informationView: { 
+        marginTop: 50 
+    },
+    recordButtonView: { 
+        marginBottom: 20 
+    },
+});
 
 export enum PostType {
     REGISTER,
@@ -30,17 +54,19 @@ interface AnswerInfo {
 interface PropTypes {
     recordingScreenType: PostType;
     answerInfo?: AnswerInfo | null;
+    navigation: any
 }
 
 export const RecordingScreen = ({
     recordingScreenType,
     answerInfo,
+    navigation,
 }: PropTypes) => {
     const [hashtags, setHashtags] = useState<string>('');
     const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
     const [canPost, setCanPost] = useState<boolean>(false);
-
     const globalCtx = useContext(AppContext);
+    const [modalVisible, setModalVisible] = useState(false);
 
     let postButtonText = 'Post';
     let endPoint = '/posts';
@@ -76,22 +102,33 @@ export const RecordingScreen = ({
         }
     }, [recordingURI]);
 
+    useEffect(() => {
+        if(modalVisible) {
+            postPostToBackend()
+            const timer = setTimeout(() => {
+                setModalVisible(false)
+                navigation.navigate('FeedTab')
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [modalVisible])
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View
-                style={{
-                    flexDirection: 'column',
-                    backgroundColor: 'white',
-                    height: '100%',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <TopBar
-                    postToBackend={postPostToBackend}
-                    canPost={canPost}
-                    buttonText={postButtonText}
-                />
-                <View style={{ marginTop: 50 }}>
+            <View style={styles.container}>
+                <PostConfirmModal 
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}/>
+                <View style={styles.topBarView}>
+                    <TopBar
+                        postToBackend={postPostToBackend}
+                        canPost={canPost}
+                        buttonText={postButtonText}
+                        navigation={navigation}
+                        setModalVisible={setModalVisible}
+                    />
+                </View>
+                <View style={styles.informationView}>
                     {recordingScreenType === PostType.POST && (
                         <OnlyPicture pictureUrl={profilePic} />
                     )}
@@ -113,7 +150,7 @@ export const RecordingScreen = ({
                     <Hashtags hashtagSetter={setHashtags} hashtags={hashtags} />
                 </KeyboardAvoidingView>
 
-                <View style={{ marginBottom: 20 }}>
+                <View style={styles.recordButtonView}>
                     <RecordButton
                         recordingURISetter={setRecordingURI}
                         recordingURIP={recordingURI}

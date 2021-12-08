@@ -19,7 +19,7 @@ declare global {
 export type RootStackParamList = {
     Root: NavigatorScreenParams<RootTabParamList> | undefined;
     Modal: undefined;
-    RecordModal: undefined;
+    RecordModal: { canPost: boolean, postToBackend: Promise<void> | undefined};
     NotFound: undefined;
     Auth: undefined;
     ChoosePic: undefined;
