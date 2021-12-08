@@ -64,7 +64,6 @@ export default function HomeFeed({
     useEffect(() => {
         return sound
             ? () => {
-                  console.log('Unloading Sound');
                   sound.unloadAsync();
               }
             : undefined;
@@ -133,7 +132,6 @@ export default function HomeFeed({
 
     async function playPost() {
         if (sound?._loaded) {
-            console.log('Playing Sound');
             await sound.playAsync();
         } else {
             console.log('error playing post');
@@ -142,7 +140,6 @@ export default function HomeFeed({
 
     async function replayPost() {
         if (sound?._loaded) {
-            console.log('Replaying Sound');
             await sound.replayAsync();
         } else {
             console.log('error replaying post');
@@ -151,7 +148,6 @@ export default function HomeFeed({
 
     async function pausePost() {
         if (sound?._loaded) {
-            console.log('Pausing Sound');
             await sound.pauseAsync();
         } else {
             console.log('error pausing post');
@@ -167,14 +163,12 @@ export default function HomeFeed({
     }
 
     async function playPreviousPost() {
-        console.log('Playing previous post');
         if (focusedPostIndex != undefined && focusedPostIndex > 0) {
             setFocusedPostIndex(focusedPostIndex - 1);
         }
     }
 
     async function playNextPost() {
-        console.log('Playing next post');
         if (
             focusedPostIndex != undefined &&
             posts &&
@@ -215,6 +209,7 @@ export default function HomeFeed({
         const minDate = posts[posts.length - 1]['created_at'];
         APIKit.get('/posts/my-feed/more/' + minDate)
             .then((response) => {
+                console.log(response.data);
                 setPosts(posts.concat(response.data));
                 setIsLoadingMore(false);
             })
@@ -227,7 +222,6 @@ export default function HomeFeed({
 
     return (
         <View style={styles.container}>
-            <Text>🍩</Text>
             {posts && posts.length > 0 ? (
                 <PostFeed
                     focusedPostIndex={focusedPostIndex}

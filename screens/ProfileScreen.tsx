@@ -40,21 +40,18 @@ export default function ProfileScreen({ route, navigation }: Props) {
 
     function conditionalRender() {
         if (tab == 0) {
-            console.log('Showing posts');
             return (
                 <View style={styles.postsView}>
                     <ProfileFeed userId={userId} />
                 </View>
             );
         } else if (tab == 1) {
-            console.log('Showing followers');
             return (
                 <View style={styles.followersView}>
                     <FollowersFeed userId={userId} />
                 </View>
             );
         } else if (tab == 2) {
-            console.log('Showing following');
             return (
                 <View style={styles.followingView}>
                     <FollowingFeed userId={userId} />

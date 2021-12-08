@@ -86,12 +86,9 @@ export const FollowButton = ({
 
     function handleOnPress() {
         if (isFollowing) {
-            console.log("Unfollow button pressed")
-            unfollowUser()
+            unfollowUser();
         } else {
-            console.log("Follow button pressed")
-            followUser()
-            
+            followUser();
         }
       }
 

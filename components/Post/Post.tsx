@@ -8,7 +8,7 @@ import { Comments } from './subcomponents/Comments';
 export const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        padding: 5,
+        padding: 12,
         borderRadius: 5,
         flexDirection: 'column',
     },
@@ -22,8 +22,8 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     profilePicture: {
-        width: 52,
-        height: 52,
+        width: 59,
+        height: 59,
         borderRadius: 15,
     },
     pressableView: {
@@ -54,12 +54,10 @@ export const styles = StyleSheet.create({
     },
     commentsView: {
         flex: 2,
-        margin: 5,
         justifyContent: 'flex-end',
     },
     likesView: {
         flex: 2,
-        margin: 5,
         justifyContent: 'flex-end',
     },
     line: {
@@ -88,17 +86,14 @@ export const Post = ({
     const navigation = useNavigation();
 
     function handleOnPressPicture() {
-        console.log('Picture pressed, redirecting to profile');
         navigation.navigate('ProfileScreen', { userId: post.user._id });
     }
 
     function handleOnPressPost() {
         if (isFocused) {
-            console.log('Post pressed again, pausing sound');
             setIsFocused(false);
             setFocusedPostIndex(undefined);
         } else {
-            console.log('Post pressed, loading and playing sound');
             setIsFocused(true);
             setFocusedPostIndex(index);
         }

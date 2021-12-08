@@ -22,15 +22,15 @@ export const SearchResultUser = ({UsersToRender}: PropTypes) => {
 
     return (
         <View>
-            {UsersToRender
-            ?
-            <FlatList
-                data={UsersToRender}
-                keyExtractor={user => user._id}
-                renderItem={renderItem} />
-            :
-            <Text>NO Search results</Text>
-            }
+            {UsersToRender ? (
+                <FlatList
+                    data={UsersToRender}
+                    keyExtractor={(user) => user.userId}
+                    renderItem={renderItem}
+                />
+            ) : (
+                <Text>NO Search results</Text>
+            )}
         </View>
-    )
+    );
 }

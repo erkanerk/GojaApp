@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     text: {
-        marginLeft: 5,
+        marginLeft: 7,
+        marginTop: 2,
         fontSize: 15,
     },
 });
@@ -25,11 +26,9 @@ interface Props {
 
 export const Comments = ({ post, showComments }: Props) => {
     function handleOnPress() {
-        console.log(post);
         if (showComments) {
             showComments(post);
         }
-        console.log('comment button pressed');
     }
 
     return (

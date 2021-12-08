@@ -39,22 +39,18 @@ export const FollowingFeed = ({
         setIsLoading(true)
         if (userId) {
             APIKit.get(`/users/following/${userId}`)
-            .then((response) => {
-                console.log("Successful /users/following/:id response: ")
-                console.log(response.data)
-                setUsers(response.data);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
+                .then((response) => {
+                    setUsers(response.data);
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    onFailure(error, globalCtx);
+                    console.log(error && error);
+                    setIsLoading(false);
+                });
         } else {
             APIKit.get("/users/following/me")
             .then((response) => {
-                console.log("Successful /users/following/me response: ")
-                console.log(response.data)
                 setUsers(response.data);
                 setIsLoading(false);
             })
