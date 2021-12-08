@@ -82,7 +82,7 @@ export const RecordingScreen = ({
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
-        createPost(
+        let audioUrl = await createPost(
             recordingURI,
             arrayHashtags,
             endPoint,
@@ -92,6 +92,13 @@ export const RecordingScreen = ({
         setHashtags('');
         setCanPost(false);
         setRecordingURI(null);
+        if (recordingScreenType === PostType.REGISTER) {
+            globalCtx.setLoggedIn(true)
+            globalCtx.setUserInfo({
+                ...globalCtx.userInfo,
+                profileAudio: audioUrl,
+            });
+        }
     };
 
     useEffect(() => {
@@ -119,43 +126,47 @@ export const RecordingScreen = ({
                 <PostConfirmModal 
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}/>
-                <View style={styles.topBarView}>
-                    <TopBar
-                        postToBackend={postPostToBackend}
-                        canPost={canPost}
-                        buttonText={postButtonText}
-                        navigation={navigation}
-                        setModalVisible={setModalVisible}
-                    />
-                </View>
-                <View style={styles.informationView}>
-                    {recordingScreenType === PostType.POST && (
-                        <OnlyPicture pictureUrl={profilePic} />
-                    )}
-                    {recordingScreenType === PostType.REGISTER && (
-                        <TextAndPictures pictureUrl={profilePic} />
-                    )}
-                    {recordingScreenType === PostType.ANSWER && (
-                        <AnswerTo
-                            imageUrl={answerInfo?.imageUrl}
-                            username={answerInfo?.username}
-                            hashtags={answerInfo?.hashtags}
+                
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+                    <View style={styles.topBarView}>
+                        <TopBar
+                            postToBackend={postPostToBackend}
+                            canPost={canPost}
+                            buttonText={postButtonText}
+                            navigation={navigation}
+                            setModalVisible={setModalVisible}
                         />
-                    )}
-                </View>
+                    </View>
+                    <View style={styles.informationView}>
+                        {recordingScreenType === PostType.POST && (
+                            <OnlyPicture pictureUrl={profilePic} />
+                        )}
+                        {recordingScreenType === PostType.REGISTER && (
+                            <TextAndPictures pictureUrl={profilePic} />
+                        )}
+                        {recordingScreenType === PostType.ANSWER && (
+                            <AnswerTo
+                                imageUrl={answerInfo?.imageUrl}
+                                username={answerInfo?.username}
+                                hashtags={answerInfo?.hashtags}
+                            />
+                        )}
+                    </View>
 
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                >
-                    <Hashtags hashtagSetter={setHashtags} hashtags={hashtags} />
+                        {recordingScreenType === PostType.POST && (
+                            <Hashtags
+                                hashtagSetter={setHashtags}
+                                hashtags={hashtags}
+                            />
+                        )}
+
+                    <View style={styles.recordButtonView}>
+                        <RecordButton
+                            recordingURISetter={setRecordingURI}
+                            recordingURIP={recordingURI}
+                        />
+                    </View>
                 </KeyboardAvoidingView>
-
-                <View style={styles.recordButtonView}>
-                    <RecordButton
-                        recordingURISetter={setRecordingURI}
-                        recordingURIP={recordingURI}
-                    />
-                </View>
             </View>
         </TouchableWithoutFeedback>
     );

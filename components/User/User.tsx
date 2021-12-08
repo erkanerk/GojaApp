@@ -59,27 +59,25 @@ export const User = ({
     }
 
     return (
-    <View style={styles.container}>
-        <View style={styles.imageView}>
-            <Pressable
-            onPress={handleOnPress}>
-                <Image
-                style={styles.image}
-                source={{
-                    uri: user.profilePicture,
-                }} />   
-            </Pressable>
-        </View>
-        <View style={styles.textView}>
-            <Text style={styles.text}>{user.userName}</Text>
-        </View>
-        <View style={styles.buttonView}>
-            <FollowButton 
-            userId={user.userId} 
-            following={following}/>
-        </View>
-        <View style={styles.line} />
-    </View>
+        <Pressable onPress={handleOnPress}>
+            <View style={styles.container}>
+                <View style={styles.imageView}>
+                    <Image
+                        style={styles.image}
+                        source={{
+                            uri: user.profilePicture,
+                        }}
+                    />
+                </View>
+                <View style={styles.textView}>
+                    <Text style={styles.text}>{user.userName}</Text>
+                </View>
+                <View style={styles.buttonView}>
+                    <FollowButton userId={user.userId} following={following} />
+                </View>
+                <View style={styles.line} />
+            </View>
+        </Pressable>
     );
 }; 
 
