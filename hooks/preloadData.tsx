@@ -27,10 +27,6 @@ export default function preloadData(globalCtx) {
 
                 await getUser();
                 await getPosts();
-                await cacheUserImage(globalCtx.userInfo);
-                globalCtx.mainFeedPosts.forEach(async item => {
-                    await cacheUserImage(item.user);
-                });
             } catch (e) {
                 // We might want to provide this error information to an error reporting service
                 console.warn(e);
@@ -44,7 +40,6 @@ export default function preloadData(globalCtx) {
     }, []);
 
     const cacheUserImage = async (user) => {
-        console.log(user);
         return (
             <CachedImage
                 source={{ uri: user.profilePicture }}
@@ -58,6 +53,7 @@ export default function preloadData(globalCtx) {
         APIKit.get("/users/profile/me")
             .then((response) => {
                 globalCtx.setUserInfo(response.data);
+                cacheUserImage(response.data);
                 globalCtx.setLoggedIn(true, setLoggedInDone(true));
             })
             .catch((error) => {
@@ -68,9 +64,14 @@ export default function preloadData(globalCtx) {
     };
 
     const getPosts = async () => {
-        APIKit.get("/posts/all")
+        APIKit.get("/posts/my-feed")
             .then((response) => {
                 globalCtx.setMainFeedPosts(response.data);
+                response.data.forEach(
+                    async (item) => {
+                        await cacheUserImage(item.user);
+                    }
+                );
             })
             .catch((error) => {
                 console.log(error && error);
