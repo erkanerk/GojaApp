@@ -54,7 +54,7 @@ interface AnswerInfo {
 interface PropTypes {
     recordingScreenType: PostType;
     answerInfo?: AnswerInfo | null;
-    navigation: any
+    navigation?: any
 }
 
 export const RecordingScreen = ({
@@ -138,10 +138,10 @@ export const RecordingScreen = ({
                         />
                     </View>
                     <View style={styles.informationView}>
-                        {recordingScreenType === PostType.POST && (
+                        {recordingScreenType === PostType.POST && profilePic && (
                             <OnlyPicture pictureUrl={profilePic} />
                         )}
-                        {recordingScreenType === PostType.REGISTER && (
+                        {recordingScreenType === PostType.REGISTER && profilePic && (
                             <TextAndPictures pictureUrl={profilePic} />
                         )}
                         {recordingScreenType === PostType.ANSWER && (

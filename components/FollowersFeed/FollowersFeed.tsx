@@ -43,8 +43,6 @@ export const FollowersFeed = ({
         if (userId) {
             APIKit.get(`/users/followers/${userId}`)
             .then((response) => {
-                console.log("Successful /users/followers/:id response: ")
-                console.log(response.data)
                 setUsers(response.data);
                 setIsLoading(false);
             })
@@ -56,8 +54,6 @@ export const FollowersFeed = ({
         } else {
             APIKit.get("/users/followers/me")
             .then((response) => {
-                console.log("Successful /users/followers/me response: ")
-                console.log(response.data)
                 setUsers(response.data);
                 setIsLoading(false);
             })
@@ -83,19 +79,18 @@ export const FollowersFeed = ({
 
     return (
         <View style={styles.container}>
-            {users 
-            ?
+            {users && users?.length > 0 ? (
             <View style={styles.feedView}>
                 <FlatList
                 data={users}
                 keyExtractor={user => user.userId}
                 renderItem={renderItem} />
             </View>
-            :
+            ) : (
             <View style={styles.textView}>
                 <FadeText style={styles.text}>Your followers will show up here!</FadeText>
             </View>
-            }
+            )}
         </View>
     );
 };

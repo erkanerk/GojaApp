@@ -66,8 +66,6 @@ export const ProfileInformation = ({
         if (userId) {
             APIKit.get(`/users/profile/${userId}`)
             .then((response) => {
-                console.log('Successful /users/profile/:id response: ');
-                console.log(response.data);
                 setProfile(response.data);
                 setIsLoading(false);
             })
@@ -79,8 +77,6 @@ export const ProfileInformation = ({
         } else {
             APIKit.get('/users/profile/me')
             .then((response) => {
-                console.log('Successful /users/profile/me response: ');
-                console.log(response.data);
                 setProfile(response.data);
                 setIsLoading(false);
             })

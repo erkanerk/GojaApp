@@ -40,8 +40,6 @@ export const FollowingFeed = ({
         if (userId) {
             APIKit.get(`/users/following/${userId}`)
             .then((response) => {
-                console.log("Successful /users/following/:id response: ")
-                console.log(response.data)
                 setUsers(response.data);
                 setIsLoading(false);
             })
@@ -53,8 +51,6 @@ export const FollowingFeed = ({
         } else {
             APIKit.get("/users/following/me")
             .then((response) => {
-                console.log("Successful /users/following/me response: ")
-                console.log(response.data)
                 setUsers(response.data);
                 setIsLoading(false);
             })
@@ -81,19 +77,18 @@ export const FollowingFeed = ({
 
     return (
         <View style={styles.container}>
-            {users 
-            ?
+            {users && users?.length > 0 ? (
             <View style={styles.feedView}>
                 <FlatList
                 data={users}
                 keyExtractor={user => user.userId}
                 renderItem={renderItem} />
             </View>
-            :
+            ) : (
             <View style={styles.textView}>
                 <FadeText style={styles.text}>When you follow your friends they will show up here!</FadeText>
             </View>
-            }
+            )}
         </View>
     );
 };
