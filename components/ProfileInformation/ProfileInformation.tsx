@@ -6,6 +6,7 @@ import AppContext from "../../shared/AppContext";
 import { useIsFocused } from "@react-navigation/native";
 import { FollowButton } from "../FollowButton/FollowButton";
 import { Stats } from "./subcomponents/Stats";
+import CachedImage from 'expo-cached-image';
 
 export const styles = StyleSheet.create({
     container: {
@@ -105,23 +106,22 @@ export const ProfileInformation = ({
     return (
         <View style={styles.container}>
             <View style={styles.imageView}>
-                <Image
+                <CachedImage
                     style={styles.image}
                     source={{
                         uri: profile.profilePicture,
                     }}
+                    cacheKey={profile._id}
                 />
             </View>
             <View style={styles.textView}>
                 <Text style={styles.UserNameText}>{profile.userName}</Text>
             </View>
-            {userId
-            ?
-            <View style={styles.followButtonView}>
-                <FollowButton userId={userId} following={false}/>
-            </View>
-            :
-            null}
+            {userId ? (
+                <View style={styles.followButtonView}>
+                    <FollowButton userId={userId} following={false} />
+                </View>
+            ) : null}
             <View style={styles.statsView}>
                 <Stats user={profile} tab={tab} setTab={setTab} />
             </View>

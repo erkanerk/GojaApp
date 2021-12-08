@@ -189,15 +189,18 @@ export default function HomeFeed({
         setShowCommentsModal(post);
     };
 
-    useEffect(() => {
-        getMyFeed();
-    }, []);
+      useEffect(() => {
+        if(!posts || posts.length < 1){
+          getMyFeed();
+        }
+      }, [isFocused]);
 
     async function getMyFeed() {
         setIsRefreshing(true);
         APIKit.get('/posts/my-feed')
             .then((response) => {
                 setPosts(response.data);
+                console.log(response.data);
                 setIsRefreshing(false);
             })
             .catch((error) => {

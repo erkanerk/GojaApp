@@ -2,6 +2,7 @@ import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import * as SplashScreen from "expo-splash-screen";
 import * as React from "react";
+import CachedImage from 'expo-cached-image';
 import { useEffect, useState, useContext } from "react";
 import { APIKit, saveUserSession, onFailure } from "../shared/APIkit";
 
@@ -24,8 +25,8 @@ export default function preloadData(globalCtx) {
                     videos: [],
                 });
 
-                getUser();
-                getPosts();
+                await getUser();
+                await getPosts();
             } catch (e) {
                 // We might want to provide this error information to an error reporting service
                 console.warn(e);
@@ -38,10 +39,21 @@ export default function preloadData(globalCtx) {
         loadResourcesAndDataAsync();
     }, []);
 
+    const cacheUserImage = async (user) => {
+        return (
+            <CachedImage
+                source={{ uri: user.profilePicture }}
+                cacheKey={user._id}
+                resizeMode="contain"
+            />
+        );
+    };
+
     const getUser = async () => {
         APIKit.get("/users/profile/me")
             .then((response) => {
                 globalCtx.setUserInfo(response.data);
+                cacheUserImage(response.data);
                 globalCtx.setLoggedIn(true, setLoggedInDone(true));
             })
             .catch((error) => {
@@ -52,9 +64,14 @@ export default function preloadData(globalCtx) {
     };
 
     const getPosts = async () => {
-        APIKit.get("/posts/all")
+        APIKit.get("/posts/my-feed")
             .then((response) => {
                 globalCtx.setMainFeedPosts(response.data);
+                response.data.forEach(
+                    async (item) => {
+                        await cacheUserImage(item.user);
+                    }
+                );
             })
             .catch((error) => {
                 console.log(error && error);
@@ -92,3 +109,4 @@ function cacheVideos(videos) {
 function cacheFonts(fonts) {
     return fonts.map((font) => Font.loadAsync(font));
 }
+

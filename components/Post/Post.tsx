@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import { Likes } from '../Likes/Likes';
 import { Comments } from './subcomponents/Comments';
 import { Reply } from './subcomponents/Reply';
+import CachedImage from 'expo-cached-image';
 
 export const styles = StyleSheet.create({
     container: {
@@ -132,11 +133,12 @@ export const Post = ({
                 <View style={styles.pressableView}>
                     <Pressable onPress={handleOnPressPicture}>
                         <View style={styles.pictureView}>
-                            <Image
+                            <CachedImage
                                 style={styles.profilePicture}
                                 source={{
                                     uri: post.user.profilePicture,
                                 }}
+                                cacheKey={post.user._id}
                             />
                         </View>
                     </Pressable>
@@ -170,49 +172,59 @@ export const Post = ({
                             </View>
                         )}
                     </View>
-                    {postType == PostType.MAIN &&
-                        <View style={{ flexDirection: 'row'}}>
+                    {postType == PostType.MAIN && (
+                        <View style={{ flexDirection: 'row' }}>
                             <View style={styles.actionButton}>
-                                <Comments post={post} showComments={showComments} />
+                                <Comments
+                                    post={post}
+                                    showComments={showComments}
+                                />
                             </View>
-                            {post.funkyStatus &&
+                            {post.funkyStatus && (
                                 <View style={styles.actionButton}>
-                                    <Text style={styles.funkyStatus}>{post.funkyStatus}</Text>
+                                    <Text style={styles.funkyStatus}>
+                                        {post.funkyStatus}
+                                    </Text>
                                 </View>
-                            }
+                            )}
                         </View>
-                    }
-                    {postType == PostType.COMMENT_PARENT &&
-                        <View style={{ flexDirection: 'row'}}>
+                    )}
+                    {postType == PostType.COMMENT_PARENT && (
+                        <View style={{ flexDirection: 'row' }}>
                             <View style={styles.actionButton}>
                                 <Likes post={post} />
                             </View>
                             <View style={styles.actionButton}>
-                                <Comments post={post} showComments={showComments} />
+                                <Comments
+                                    post={post}
+                                    showComments={showComments}
+                                />
                             </View>
                             <View style={styles.actionButton}>
-                                <Reply 
-                                post={post}/>
+                                <Reply post={post} />
                             </View>
                         </View>
-                    }
-                    {postType == PostType.COMMENT_CHILD &&
-                        <View style={{ flexDirection: 'row'}}>
+                    )}
+                    {postType == PostType.COMMENT_CHILD && (
+                        <View style={{ flexDirection: 'row' }}>
                             <View style={styles.actionButton}>
                                 <Likes post={post} />
                             </View>
                         </View>
-                    }
-                    {postType == PostType.PROFILE &&
-                        <View style={{ flexDirection: 'row'}}>
+                    )}
+                    {postType == PostType.PROFILE && (
+                        <View style={{ flexDirection: 'row' }}>
                             <View style={styles.actionButton}>
                                 <Likes post={post} />
                             </View>
                             <View style={styles.actionButton}>
-                                <Comments post={post} showComments={showComments} />
+                                <Comments
+                                    post={post}
+                                    showComments={showComments}
+                                />
                             </View>
                         </View>
-                    }
+                    )}
                 </View>
             </Pressable>
             <View style={styles.line} />
