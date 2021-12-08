@@ -24,4 +24,5 @@ interface Post {
     likedByUsers: Like[];
     __v:number;
     inReplyToUser: string | null;
+    funkyStatus: string | null;
   }

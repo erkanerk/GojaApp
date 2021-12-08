@@ -15,7 +15,6 @@ export default function TabTwoScreen() {
         <View>
             <RecordingScreen
                 recordingScreenType={PostType.POST}
-                answerInfo={testAnswerInfo}
             />
         </View>
     );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { FlatList, View, Modal, Text } from 'react-native';
-import { Post } from '../Post/Post';
+import { Post, PostType } from '../Post/Post';
 import { StyleSheet } from 'react-native';
 import { PlayCard } from '../PlayCard/PlayCard';
 import { CommentsModal } from '../CommentsModal/CommentsModal';
@@ -10,7 +10,7 @@ import * as FileSystem from 'expo-file-system';
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         flex: 1,
     },
     feedView: {
@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
 });
 interface Props {
     posts: Post[] | undefined;
+    postType?: PostType;
     showComments?: (arg0: Post) => void;
     focusedPostIndex: number | undefined;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
@@ -51,6 +52,7 @@ interface Props {
 
 export const PostFeed = ({
     posts,
+    postType,
     showComments,
     focusedPostIndex,
     setFocusedPostIndex,
@@ -80,6 +82,7 @@ export const PostFeed = ({
     const renderPost = ({ item, index, separators }: any) => (
         <Post
             post={item}
+            postType={postType}
             index={index}
             focusedPostIndex={focusedPostIndex}
             setFocusedPostIndex={setFocusedPostIndex}
