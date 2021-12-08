@@ -9,6 +9,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { PostType } from "./constants/types/PostType";
 
 declare global {
   namespace ReactNavigation {
@@ -19,13 +20,12 @@ declare global {
 export type RootStackParamList = {
     Root: NavigatorScreenParams<RootTabParamList> | undefined;
     Modal: undefined;
-    RecordModal: { canPost: boolean, postToBackend: Promise<void> | undefined};
+    RecordModal: { recordingScreenType: PostType };
     NotFound: undefined;
     Auth: undefined;
     ChoosePic: undefined;
-    RecordProfileSound: undefined;
+    RecordProfileSound: { recordingScreenType: PostType};
     NotificationScreen: undefined;
-    HomeFeed: undefined;
     ProfileScreen: { userId: string | undefined };
 };
 
@@ -34,7 +34,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 
 export type RootTabParamList = {
   FeedTab: undefined;
-  RecordTab: undefined;
+  RecordTab: { recordingScreenType: PostType};
   SearchTab: undefined;
 };
 

@@ -8,7 +8,7 @@ import { Bell } from "react-native-feather";
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:'red'
+        marginRight: 20
     },
     image: {
         width: 40,

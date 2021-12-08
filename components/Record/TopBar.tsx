@@ -1,6 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
+import { CancelNavigator } from '../../navigation/components/CancelNavigator';
+import { PostType } from '../../constants/types/PostType';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootTabParamList } from '../../types';
 
 const styles = StyleSheet.create({
     container: {
@@ -27,7 +31,7 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
     },
-    ready: {
+    readyText: {
         fontSize: 14,
         color: 'white',
         fontWeight: 'bold',
@@ -42,7 +46,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         elevation: 2,
     },
-    notReady: {
+    notReadyText: {
         fontSize: 14,
         color: 'red',
         fontWeight: 'bold',
@@ -57,29 +61,55 @@ const styles = StyleSheet.create({
 interface PropTypes {
     postToBackend: () => Promise<void>;
     canPost: boolean;
-    buttonText: string;
-    navigation: any;
-    setModalVisible: Dispatch<SetStateAction<boolean>>
+    navigation: NativeStackNavigationProp<RootTabParamList, 'FeedTab'>;
+    recordingScreenType: PostType;
 }
 
 export const TopBar = ({ 
     postToBackend, 
     canPost, 
-    buttonText,
     navigation,
-    setModalVisible
+    recordingScreenType,
 }: PropTypes) => {
 
     function handleOnPressClose() {
-        console.log('Close pressed')
+        console.log('Left button pressed')
         navigation.goBack()
     }
 
     function handleOnPressPost() {
-        console.log('Post pressed')
+        console.log('Right button pressed')
         if (canPost) {
-            //postToBackend()
-            setModalVisible(true)
+            postToBackend()
+            navigation.navigate('FeedTab')
+        }
+    }
+
+    function conditionalRender() {
+        if (recordingScreenType === PostType.REGISTER && !canPost) {
+            return (
+                <View style={styles.notReadyView}>
+                    <Text style={styles.notReadyText}>Done</Text>
+                </View>
+            );
+        } else if (recordingScreenType === PostType.REGISTER && canPost) {
+            return (
+                <View style={styles.readyView}>
+                    <Text style={styles.readyText}>Done</Text>
+                </View>
+            );
+        } else if (recordingScreenType === PostType.POST && canPost) {
+            return (
+                <View style={styles.readyView}>
+                    <Text style={styles.readyText}>Post</Text>
+                </View>
+            );
+        } else if ((recordingScreenType === PostType.POST && !canPost)) {
+            return (
+                <View style={styles.notReadyView}>
+                    <Text style={styles.notReadyText}>Post</Text>
+                </View>
+            );
         }
     }
 
@@ -88,7 +118,12 @@ export const TopBar = ({
             <View style={styles.closeView}>
                 <Pressable
                 onPress={handleOnPressClose}>
+                    {recordingScreenType === PostType.REGISTER
+                    ?
+                    <CancelNavigator />
+                    :
                     <Feather name="x" size={24} color="black" />
+                    }
                 </Pressable>
             </View>
             <View style={styles.iconView}>
@@ -97,16 +132,7 @@ export const TopBar = ({
             <View style={styles.postView}>
                 <Pressable
                 onPress={handleOnPressPost}>
-                    {canPost
-                    ?
-                    <View style={styles.readyView}>
-                        <Text style={styles.ready}>{buttonText}</Text>
-                    </View>
-                    :
-                    <View style={styles.notReadyView}>
-                        <Text style={styles.notReady}>{buttonText}</Text>
-                    </View>
-                    }
+                    {conditionalRender()}
                 </Pressable>
             </View>
         </View>

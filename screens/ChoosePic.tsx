@@ -77,8 +77,6 @@ export default function ChoosePic({ navigation }) {
                 const payload = {
                     url: urlNoQuotes,
                 };
-                console.log("payload: ");
-                console.log(payload);
                 APIKit.post('/users/add-profile-picture', payload)
                     .then((response) => {
                         globalCtx.setUserInfo({...globalCtx.userInfo, profilePicture: urlNoQuotes });

@@ -51,20 +51,8 @@ import { StatusBar } from 'expo-status-bar';
 import { RecordNavigator } from './components/RecordNavigator';
 import { RecordingScreen } from '../screens/postFlow/RecordingScreen';
 import { PostNavigator } from './components/PostNavigator';
-import { PostType } from '../screens/postFlow/RecordingScreen';
-
-const styles = StyleSheet.create({
-    headerImage: {
-        width: 50,
-        height: 50,
-    },
-    headerCancel: {
-        fontWeight: 'bold',
-        fontSize: 15,
-        color: 'grey',
-        marginLeft: 7,
-    },
-});
+import { CancelNavigator } from './components/CancelNavigator';
+import { PostType } from '../constants/types/PostType';
 
 export default function Navigation({
     colorScheme,
@@ -105,48 +93,22 @@ function AuthNavigator() {
             <AuthStack.Screen
                 name="ChoosePic"
                 component={ChoosePic}
-                options={{
-                    headerTitle: (props) => (
-                        <Image
-                            style={styles.headerImage}
-                            source={require('../assets/images/parrot.png')}
-                            resizeMode="contain"
-                        />
+                options={({ route, navigation }) => ({ 
+                    headerTitle: () => (
+                        <IconNavigator />
                     ),
+                    headerTitleAlign: 'center',
+                    headerBackVisible: false,
                     headerLeft: () => (
-                        <Pressable onPress={() => globalCtx.setLoggedIn(true)}>
-                            <Text style={styles.headerCancel}>Cancel</Text>
-                        </Pressable>
+                        <CancelNavigator />
                     ),
-                    headerStyle: {
-                        backgroundColor: 'white',
-                    },
-                }}
-            />
+                })}
+                 />
             <AuthStack.Screen
                 name="RecordProfileSound"
-                options={{
-                    headerTitle: (props) => (
-                        <Image
-                            style={styles.headerImage}
-                            source={require('../assets/images/parrot.png')}
-                            resizeMode="contain"
-                        />
-                    ),
-                    headerLeft: () => (
-                        <Pressable onPress={() => globalCtx.setLoggedIn(true)}>
-                            <Text style={styles.headerCancel}>Cancel</Text>
-                        </Pressable>
-                    ),
-                    headerStyle: {
-                        backgroundColor: 'white',
-                    },
-                }}
-            >
-                {(props) => (
-                    <RecordingScreen recordingScreenType={PostType.REGISTER} />
-                )}
-            </AuthStack.Screen>
+                component={RecordingScreen}
+                initialParams={{ recordingScreenType: PostType.REGISTER}}
+                options={{ headerShown: false }} />
         </AuthStack.Navigator>
     );
 }
@@ -252,9 +214,6 @@ function BottomTabNavigator() {
                         return (
                             <Feather name={'home'} size={size} color={color} />
                         );
-                    },
-                    headerLeft: () => {
-                        return <ProfileNavigator route={route} navigation={navigation}/>
                     }
                 })}
               />
@@ -269,7 +228,7 @@ function BottomTabNavigator() {
                 listeners={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
                     tabPress: event => {
                         event.preventDefault()
-                        navigation.navigate('RecordModal', {canPost: false, postToBackend: undefined})
+                        navigation.navigate('RecordModal', { recordingScreenType: PostType.POST })
                     }
                 })}
                 
