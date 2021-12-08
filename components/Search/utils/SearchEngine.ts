@@ -16,7 +16,6 @@ const SearchEngine = async (searchWord: string): Promise<UserFromSearch[]> => {
     })
         .then((response) => {
             searchResult = response.data;
-            console.log(searchResult);
         })
         .catch((error) => {
             console.error(error);
