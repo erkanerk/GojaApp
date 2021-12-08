@@ -10,10 +10,10 @@ import CachedImage from 'expo-cached-image';
 export const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        padding: 5,
+        padding: 12,
         borderRadius: 5,
         flexDirection: 'column',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
     userName: {
         fontSize: 18,
@@ -25,8 +25,8 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     profilePicture: {
-        width: 52,
-        height: 52,
+        width: 59,
+        height: 59,
         borderRadius: 15,
     },
     pressableView: {
@@ -61,12 +61,13 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     funkyStatus: {
-        fontSize: 20
+        fontSize: 20,
     },
     line: {
         borderBottomColor: 'lightgray',
         opacity: 0.3,
         borderBottomWidth: 1,
+        width: 1,
     },
 });
 
@@ -74,7 +75,7 @@ export enum PostType {
     MAIN,
     COMMENT_PARENT,
     COMMENT_CHILD,
-    PROFILE
+    PROFILE,
 }
 interface Props {
     post: Post;
@@ -97,17 +98,14 @@ export const Post = ({
     const navigation = useNavigation();
 
     function handleOnPressPicture() {
-        console.log('Picture pressed, redirecting to profile');
         navigation.navigate('ProfileScreen', { userId: post.user._id });
     }
 
     function handleOnPressPost() {
         if (isFocused) {
-            console.log('Post pressed again, pausing sound');
             setIsFocused(false);
             setFocusedPostIndex(undefined);
         } else {
-            console.log('Post pressed, loading and playing sound');
             setIsFocused(true);
             setFocusedPostIndex(index);
         }

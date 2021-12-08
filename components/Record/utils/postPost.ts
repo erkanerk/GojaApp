@@ -51,10 +51,8 @@ async function createPost(
                     url: urlNoQuotes,
                 };
             }
-            console.log(payload);
             APIKit.post(endPoint, payload)
                 .then((response) => {
-                    console.log(response.data);
                     return response.data.url;
                 })
                 .catch((error) => {

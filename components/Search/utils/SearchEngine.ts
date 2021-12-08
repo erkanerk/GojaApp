@@ -11,13 +11,15 @@ const SearchEngine = async (searchWord: string): Promise<UserFromSearch[]> => {
     if(searchWord.length === 0) {
         return searchResult
     }
-    await APIKit.get<UserFromSearch[]>("/users/search", {
-       params}).then((response)=>{
-           console.log(response.data)
-            searchResult = response.data
-    }).catch((error)=> {
-        console.error(error)
-    });
+    await APIKit.get<UserFromSearch[]>('/users/search', {
+        params,
+    })
+        .then((response) => {
+            searchResult = response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     return searchResult
 }
 export {SearchEngine}

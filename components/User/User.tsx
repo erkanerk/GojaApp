@@ -57,7 +57,7 @@ export const User = ({
 }: Props) => {
     const navigation = useNavigation();
     function handleOnPress() {
-        console.log('Pressed profile picture')
+        console.log(user);
         navigation.navigate('ProfileScreen', {userId: user.userId})
     }
 
