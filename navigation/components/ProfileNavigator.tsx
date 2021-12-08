@@ -38,10 +38,10 @@ export const ProfileNavigator = ({
     <View style={styles.container}>
         <Pressable
         onPress={handleOnPress}>
-            {globalCtx.userInfo.profilePicture &&
-            <Image
-            style={styles.image}
-            source={{uri: globalCtx.userInfo.profilePicture}} />   
+            {globalCtx.userInfo?.profilePicture &&
+                <Image
+                style={styles.image}
+                source={{uri: globalCtx.userInfo.profilePicture}} />   
             }
         </Pressable>
     </View>
