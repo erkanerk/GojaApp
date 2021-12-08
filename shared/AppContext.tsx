@@ -11,21 +11,6 @@ const AppContext = React.createContext({
         email: null,
     },
     setUserInfo: (user) => {},
-    mainFeedPosts: [
-        {
-            _id: null,
-            hashtags: null,
-            audio: null,
-            user: null,
-            commentsCount: null,
-            created_at: null,
-            likes: null,
-            likedByUsers: null,
-            __v: null,
-            inReplyToUser: null,
-        },
-    ],
-    setMainFeedPosts: (posts) => {},
 });
 
 export type TypeAppContext = typeof AppContext;
