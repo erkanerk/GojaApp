@@ -25,7 +25,6 @@ interface Props {
 
 export const Comments = ({ post, showComments }: Props) => {
     function handleOnPress() {
-        console.log(post);
         if (showComments) {
             showComments(post);
         }
@@ -38,7 +37,7 @@ export const Comments = ({ post, showComments }: Props) => {
                 <View>
                     <MessageCircle
                         stroke="black"
-                        fill="white"
+                        fill="transparent"
                         width={25}
                         height={25}
                         strokeWidth={1}
