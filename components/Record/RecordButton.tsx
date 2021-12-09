@@ -55,15 +55,15 @@ export const RecordButton = ({
     const [recording, setRecording] = useState<any | null>(null);
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
     const [timer, setTimer] = useState<number | null>(null);
-
     let onionTime;
 
     useEffect(() => {
         if (timer !== null && timer > 0) {
             onionTime = setTimeout(() => setTimer(timer - 1), 1000);
             console.log('Seconds', timer);
+        } else if (timer === 0 && recording !== undefined) {
+            stopRecording();
         } else {
             console.log('Time is out');
         }
@@ -114,7 +114,6 @@ export const RecordButton = ({
         recordingURISetter(uri);
         console.log('Recording stopped and stored at', uri);
         setTimer(null);
-        clearTimeout(onionTime);
     }
 
     async function playSound() {
@@ -177,7 +176,26 @@ export const RecordButton = ({
                         <Pressable
                             style={styles.recordIcon}
                             onPress={recording ? stopRecording : startRecording}
-                        />
+                        >
+                            <View
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    paddingTop: 15,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: 30,
+                                        color: '#2ECA6F',
+                                    }}
+                                >
+                                    {timer && timer}
+                                </Text>
+                            </View>
+                        </Pressable>
                     )}
                 </View>
                 <View style={styles.spaceView} />
