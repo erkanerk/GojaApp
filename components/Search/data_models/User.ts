@@ -1,6 +1,6 @@
-interface UserFromSearch {
-    userId?: string;
-    userName?: string;
-    profilePicture?: string;
+export interface UserFromSearch {
+    userId: string;
+    userName: string;
+    profilePicture: string;
+    isFollowing: boolean
 }
-export {UserFromSearch}
