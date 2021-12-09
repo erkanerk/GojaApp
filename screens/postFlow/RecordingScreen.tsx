@@ -5,6 +5,11 @@ import {
     Platform,
     TouchableWithoutFeedback,
     Keyboard,
+    StyleSheet,
+    Modal,
+    Text,
+    Alert,
+    Pressable,
 } from 'react-native';
 import { RecordButton } from '../../components/Record/RecordButton';
 import { createPost } from '../../components/Record/utils/postPost';
@@ -15,12 +20,29 @@ import { AnswerTo } from '../../components/Record/AnswerTo';
 import AppContext from '../../shared/AppContext';
 import { hashtagHandler } from '../../components/Record/utils/hashtagHandler';
 import { TopBar } from '../../components/Record/TopBar';
+import Constants from 'expo-constants';
+import { PostType } from '../../constants/types/PostType';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList, RootTabParamList } from '../../types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export enum PostType {
-    REGISTER,
-    POST,
-    ANSWER,
-}
+export const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+        justifyContent: 'space-between',
+    },
+    topBarView: {
+        marginTop: Constants.statusBarHeight*1.2,
+    },
+    informationView: { 
+        marginTop: 50 
+    },
+    recordButtonView: { 
+        marginBottom: 20 
+    },
+});
+
 interface AnswerInfo {
     answerId: string;
     imageUrl: string;
@@ -28,24 +50,24 @@ interface AnswerInfo {
     hashtags: string[];
 }
 interface PropTypes {
-    recordingScreenType: PostType;
+    route: RouteProp<RootStackParamList, 'RecordProfileSound'>;
+    navigation: NativeStackNavigationProp<RootTabParamList, 'FeedTab'>;
     answerInfo?: AnswerInfo | null;
 }
 
 export const RecordingScreen = ({
-    recordingScreenType,
+    route,
+    navigation,
     answerInfo,
 }: PropTypes) => {
     const [hashtags, setHashtags] = useState<string>('');
     const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
     const [canPost, setCanPost] = useState<boolean>(false);
-
     const globalCtx = useContext(AppContext);
+    const recordingScreenType = route.params.recordingScreenType;
 
-    let postButtonText = 'Post';
     let endPoint = '/posts';
     if (recordingScreenType === PostType.REGISTER) {
-        postButtonText = 'Done';
         endPoint = '/users/add-profile-audio';
     }
     const profilePic = globalCtx.userInfo.profilePicture;
@@ -85,27 +107,21 @@ export const RecordingScreen = ({
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            >
-                <View
-                    style={{
-                        flexDirection: 'column',
-                        backgroundColor: 'white',
-                        height: '100%',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    <TopBar
-                        postToBackend={postPostToBackend}
-                        canPost={canPost}
-                        buttonText={postButtonText}
-                    />
-                    <View style={{ marginTop: 50 }}>
-                        {recordingScreenType === PostType.POST && (
+            <View style={styles.container}>                
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+                    <View style={styles.topBarView}>
+                        <TopBar
+                            postToBackend={postPostToBackend}
+                            canPost={canPost}
+                            navigation={navigation}
+                            recordingScreenType={recordingScreenType}
+                        />
+                    </View>
+                    <View style={styles.informationView}>
+                        {recordingScreenType === PostType.POST && profilePic && (
                             <OnlyPicture pictureUrl={profilePic} />
                         )}
-                        {recordingScreenType === PostType.REGISTER && (
+                        {recordingScreenType === PostType.REGISTER && profilePic && (
                             <TextAndPictures pictureUrl={profilePic} />
                         )}
                         {recordingScreenType === PostType.ANSWER && (
@@ -117,21 +133,21 @@ export const RecordingScreen = ({
                         )}
                     </View>
 
-                    {recordingScreenType === PostType.POST && (
-                        <Hashtags
-                            hashtagSetter={setHashtags}
-                            hashtags={hashtags}
-                        />
-                    )}
+                        {recordingScreenType === PostType.POST && (
+                            <Hashtags
+                                hashtagSetter={setHashtags}
+                                hashtags={hashtags}
+                            />
+                        )}
 
-                    <View style={{ marginBottom: 20 }}>
+                    <View style={styles.recordButtonView}>
                         <RecordButton
                             recordingURISetter={setRecordingURI}
                             recordingURIP={recordingURI}
                         />
                     </View>
-                </View>
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
+            </View>
         </TouchableWithoutFeedback>
     );
 };

@@ -2,11 +2,11 @@ import React from 'react';
 import { View, StyleSheet, Pressable, Text, Image } from 'react-native';
 
 interface PropTypes {
-    pictureUrl: string | null;
+    pictureUrl: string | undefined;
 }
 
 export const TextAndPictures = ({ pictureUrl }: PropTypes) => {
-    if (pictureUrl === null) {
+    if (pictureUrl === undefined) {
         pictureUrl =
             'https://i.pinimg.com/236x/20/1f/01/201f016bd3a8576fc6cfc872ecac648e--dwight-schrute-hero-.jpg';
     }

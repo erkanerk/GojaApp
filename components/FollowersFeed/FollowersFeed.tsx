@@ -41,26 +41,26 @@ export const FollowersFeed = ({
         setIsLoading(true);
         if (userId) {
             APIKit.get(`/users/followers/${userId}`)
-                .then((response) => {
-                    setUsers(response.data);
-                    setIsLoading(false);
-                })
-                .catch((error) => {
-                    onFailure(error, globalCtx);
-                    console.log(error && error);
-                    setIsLoading(false);
-                });
+            .then((response) => {
+                setUsers(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
         } else {
-            APIKit.get('/users/followers/me')
-                .then((response) => {
-                    setUsers(response.data);
-                    setIsLoading(false);
-                })
-                .catch((error) => {
-                    onFailure(error, globalCtx);
-                    console.log(error && error);
-                    setIsLoading(false);
-                });
+            APIKit.get("/users/followers/me")
+            .then((response) => {
+                setUsers(response.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                onFailure(error, globalCtx);
+                console.log(error && error);
+                setIsLoading(false);
+            });
         }
     }
 
@@ -78,19 +78,18 @@ export const FollowersFeed = ({
 
     return (
         <View style={styles.container}>
-            {users 
-            ?
+            {users && users?.length > 0 ? (
             <View style={styles.feedView}>
                 <FlatList
                 data={users}
                 keyExtractor={user => user.userId}
                 renderItem={renderItem} />
             </View>
-            :
+            ) : (
             <View style={styles.textView}>
                 <FadeText style={styles.text}>Your followers will show up here!</FadeText>
             </View>
-            }
+            )}
         </View>
     );
 };

@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { View } from 'react-native';
-import { RootTabScreenProps } from '../types';
+import { RootTabParamList } from '../types';
 import { StyleSheet } from 'react-native';
 import { PostFeed } from '../components/PostFeed/PostFeed';
 import { PostType } from '../components/Post/Post';
 import { APIKit, onFailure } from '../shared/APIkit';
-import { useIsFocused } from '@react-navigation/native';
+import { RouteProp, useIsFocused } from '@react-navigation/native';
 import AppContext from '../shared/AppContext';
 import { CommentsModal } from '../components/CommentsModal/CommentsModal';
 import { PlayCard } from '../components/PlayCard/PlayCard';
 import { AVPlaybackStatus } from 'expo-av';
 import useAudio from '../hooks/useAudio';
 import { FadeText } from '../components/FadeText/FadeText';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export const styles = StyleSheet.create({
     container: {
@@ -32,9 +33,15 @@ export const styles = StyleSheet.create({
     },
 });
 
+interface Props {
+    route: RouteProp<RootTabParamList, 'FeedTab'>;
+    navigation: NativeStackNavigationProp<RootTabParamList, 'FeedTab'>;
+}
+
 export default function HomeFeed({
+    route,
     navigation,
-}: RootTabScreenProps<'FeedTab'>) {
+}:Props) {
     const globalCtx = useContext(AppContext);
     const [posts, setPosts] = useState<Post[] | undefined>(undefined);
     const isFocused = useIsFocused();
@@ -58,7 +65,6 @@ export default function HomeFeed({
     >(undefined);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
-
     const sound = useAudio(focusedPostIndex, posts, onPlaybackStatusUpdate);
 
     useEffect(() => {

@@ -48,21 +48,11 @@ import { NotificationNavigator } from "./components/NotificationNavigator";
 import { LogoutNavigator } from "./components/LogoutNavigator";
 import { IconNavigator } from "./components/IconNavigator";
 import { StatusBar } from 'expo-status-bar';
+import { RecordNavigator } from './components/RecordNavigator';
 import { RecordingScreen } from '../screens/postFlow/RecordingScreen';
-import { PostType } from '../screens/postFlow/RecordingScreen';
-
-const styles = StyleSheet.create({
-    headerImage: {
-        width: 50,
-        height: 50,
-    },
-    headerCancel: {
-        fontWeight: 'bold',
-        fontSize: 15,
-        color: 'grey',
-        marginLeft: 7,
-    },
-});
+import { PostNavigator } from './components/PostNavigator';
+import { CancelNavigator } from './components/CancelNavigator';
+import { PostType } from '../constants/types/PostType';
 
 export default function Navigation({
     colorScheme,
@@ -103,48 +93,22 @@ function AuthNavigator() {
             <AuthStack.Screen
                 name="ChoosePic"
                 component={ChoosePic}
-                options={{
-                    headerTitle: (props) => (
-                        <Image
-                            style={styles.headerImage}
-                            source={require('../assets/images/parrot.png')}
-                            resizeMode="contain"
-                        />
+                options={({ route, navigation }) => ({ 
+                    headerTitle: () => (
+                        <IconNavigator />
                     ),
+                    headerTitleAlign: 'center',
+                    headerBackVisible: false,
                     headerLeft: () => (
-                        <Pressable onPress={() => globalCtx.setLoggedIn(true)}>
-                            <Text style={styles.headerCancel}>Cancel</Text>
-                        </Pressable>
+                        <CancelNavigator />
                     ),
-                    headerStyle: {
-                        backgroundColor: 'white',
-                    },
-                }}
-            />
+                })}
+                 />
             <AuthStack.Screen
                 name="RecordProfileSound"
-                options={{
-                    headerTitle: (props) => (
-                        <Image
-                            style={styles.headerImage}
-                            source={require('../assets/images/parrot.png')}
-                            resizeMode="contain"
-                        />
-                    ),
-                    headerLeft: () => (
-                        <Pressable onPress={() => globalCtx.setLoggedIn(true)}>
-                            <Text style={styles.headerCancel}>Cancel</Text>
-                        </Pressable>
-                    ),
-                    headerStyle: {
-                        backgroundColor: 'white',
-                    },
-                }}
-            >
-                {(props) => (
-                    <RecordingScreen recordingScreenType={PostType.REGISTER} />
-                )}
-            </AuthStack.Screen>
+                component={RecordingScreen}
+                initialParams={{ recordingScreenType: PostType.REGISTER}}
+                options={{ headerShown: false }} />
         </AuthStack.Navigator>
     );
 }
@@ -157,50 +121,54 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
     return (
-    <Stack.Navigator
-    screenOptions={({ route, navigation }) => ({
-        headerTitle: () => (
-            <IconNavigator />
-        ),
-        headerTitleAlign: 'center'
-    })}>
+    <Stack.Navigator>
+        <Stack.Group
+        screenOptions={({ route, navigation }) => ({
+            headerTitle: () => (
+                <IconNavigator />
+            ),
+            headerTitleAlign: 'center'
+        })}>
+            <Stack.Screen
+                name="Root"
+                component={BottomTabNavigator}
+                options={{ headerShown: false }}
+            />
+            
+            <Stack.Screen
+                name="NotFound"
+                component={NotFoundScreen}
+                options={{ title: "Oops!" }}
+            />
 
-        <Stack.Screen
-            name="Root"
-            component={BottomTabNavigator}
-            options={{ headerShown: false }}
-        />
-        
-        <Stack.Screen
-            name="NotFound"
-            component={NotFoundScreen}
-            options={{ title: "Oops!" }}
-        />
-        
-        <Stack.Group screenOptions={{ presentation: "modal" }}>
-            <Stack.Screen name="Modal" component={ModalScreen} />
+            <Stack.Screen
+            name={'ProfileScreen'}
+            component={ProfileScreen} 
+            initialParams={{ userId: undefined}}
+            options={({ route, navigation }) => ({
+                headerRight: () => {
+                    if (route.params.userId) {
+                        return <NotificationNavigator route={route} navigation={navigation}/>      
+                    } else {
+                        return <LogoutNavigator route={route} navigation={navigation}/>  
+                    }
+                }
+            })}/>
+            
+            <Stack.Screen
+                name="NotificationScreen"
+                component={NotificationScreen}
+            />
+
         </Stack.Group>
         
-        <Stack.Screen
-        name={'ProfileScreen'}
-        component={ProfileScreen} 
-        initialParams={{ userId: undefined}}
-        options={({ route, navigation }) => ({
-            title: '',
-            headerRight: () => {
-                if (route.params.userId) {
-                    return <NotificationNavigator route={route} navigation={navigation}/>      
-                } else {
-                    return <LogoutNavigator route={route} navigation={navigation}/>  
-                }
-            }
-        })}/>
-        
-        <Stack.Screen
-            name="NotificationScreen"
-            component={NotificationScreen}
-            options={{ title: "Notifications" }}
-        />
+        <Stack.Group screenOptions={{ presentation: "modal", headerShown: false }}>
+            <Stack.Screen name="Modal" component={ModalScreen} />
+            <Stack.Screen 
+            name="RecordModal" 
+            component={RecordingScreen}
+            />
+        </Stack.Group>
 
     </Stack.Navigator>
   );
@@ -224,7 +192,7 @@ function BottomTabNavigator() {
             tabBarStyle: {
                 height: 65,
             }
-    }}>
+    }}> 
         <BottomTab.Group
         screenOptions={({ route, navigation }) => ({
             headerRight: () => (
@@ -246,26 +214,30 @@ function BottomTabNavigator() {
                         return (
                             <Feather name={'home'} size={size} color={color} />
                         );
-                    },
-                    headerLeft: () => {
-                        return <ProfileNavigator route={route} navigation={navigation}/>
                     }
                 })}
               />
               <BottomTab.Screen
                 name={'RecordTab'}
-                component={TabTwoScreen}
+                component={RecordNavigator}
                 options={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
                     tabBarIcon: ({ focused, color, size }) => {
-                        let sizeL = size*1.5
-                        return <Feather name={'circle'} size={sizeL} color={'red'} style={{backgroundColor:'red',borderRadius:sizeL/2}}/>
+                        return <RecordNavigator />
                     },
                 })}
+                listeners={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
+                    tabPress: event => {
+                        event.preventDefault()
+                        navigation.navigate('RecordModal', { recordingScreenType: PostType.POST })
+                    }
+                })}
+                
             />
             <BottomTab.Screen
                 name={'SearchTab'}
                 component={SearchScreen}
                 options={({ route, navigation }: RootTabScreenProps<'SearchTab'>) => ({
+                    tabBarShowLabel: false,
                     tabBarIcon: ({ focused, color, size }) => (
                         <Feather name={'search'} size={size} color={color} />
                     )

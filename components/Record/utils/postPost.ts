@@ -57,12 +57,12 @@ async function createPost(
                 })
                 .catch((error) => {
                     onFailure(error, c);
-                    console.log(error);
+                    console.log('Error:' + error);
                 });
         })
         .catch((error) => {
             onFailure(error, c);
-            console.log(error);
+            console.log('Error:' + error);
         });
 }
 export { createPost };
