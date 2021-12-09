@@ -6,10 +6,6 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
     StyleSheet,
-    Modal,
-    Text,
-    Alert,
-    Pressable,
 } from 'react-native';
 import { RecordButton } from '../../components/Record/RecordButton';
 import { createPost } from '../../components/Record/utils/postPost';

@@ -9,40 +9,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    buttonAndText: {
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        flex: 1,
-    },
-    record: {
-        borderRadius: 100,
-        width: 70,
-        height: 70,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'red',
-        marginBottom: 20,
-    },
     recordIcon: {
         borderRadius: 100,
         width: 70,
         height: 70,
         backgroundColor: 'red',
-    },
-    play: {
-        width: 0,
-        height: 0,
-        backgroundColor: 'transparent',
-        borderStyle: 'solid',
-        borderLeftWidth: 30,
-        borderRightWidth: 30,
-        borderBottomWidth: 50,
-        borderLeftColor: 'transparent',
-        borderRightColor: 'transparent',
-        borderBottomColor: 'red',
-        transform: [{ rotate: '90deg' }],
-        marginBottom: 20,
     },
     text: {
         color: 'black',
@@ -200,59 +171,3 @@ export const RecordButton = ({
         </View>
     );
 };
-
-
-/*
-
-<Icon.Button
-                        name="trash-o"
-                        color="red"
-                        size={40}
-                        backgroundColor="transparent"
-                        borderRadius={0}
-                        onPress={deleteSound}
-                        underlayColor="white"
-                    />
-
-{!recordingURIP && (
-                <View style={styles.buttonAndText}>
-                    <Pressable
-                        style={styles.record}
-                        onPress={recording ? stopRecording : startRecording}
-                    />
-                    <Text style={styles.text}>
-                        {recording ? 'Stop Recording' : 'Tap to record'}
-                    </Text>
-                    
-                </View>
-            )}
-            {recordingURIP && (
-                <View
-                    style={{
-                        flexDirection: 'row',
-
-                        width: '100%',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <View style={{ flex: 1 }}>
-                        <View style={{ marginLeft: 50 }}>
-                            <Icon.Button
-                                name="trash-o"
-                                color="red"
-                                size={40}
-                                backgroundColor="transparent"
-                                borderRadius={0}
-                                onPress={deleteSound}
-                                underlayColor="white"
-                            ></Icon.Button>
-                        </View>
-                    </View>
-                    <View style={styles.buttonAndText}>
-                        <Pressable style={styles.play} onPress={playSound} />
-                        <Text style={styles.text}>{'Play recording'}</Text>
-                    </View>
-                    <View style={{ flex: 1 }}></View>
-                </View>
-            )}
-*/
