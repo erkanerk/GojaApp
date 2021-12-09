@@ -73,7 +73,6 @@ export const ProfileInformation = ({
             APIKit.get(`/users/profile/${userId}`)
             .then((response) => {
                 setProfile(response.data);
-                console.log(response.data)
                 setFollowingCount(response.data.followingCount);
                 setIsLoading(false);
             })
@@ -85,7 +84,6 @@ export const ProfileInformation = ({
         } else {
             APIKit.get('/users/profile/me')
             .then((response) => {
-                console.log(response.data)
                 setProfile(response.data);
                 setFollowingCount(response.data.followingCount);
                 setIsLoading(false);
