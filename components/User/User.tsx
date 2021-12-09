@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import Navigation from '../../navigation';
@@ -49,15 +49,20 @@ export const styles = StyleSheet.create({
 interface Props {
     user: Follower | Following
     following?: boolean
+    showFollowButton?: boolean
+    currentCount?: number
+    setCount?: Dispatch<SetStateAction<number>>
 }
 
 export const User = ({ 
     user,
-    following = false
+    following = false,
+    showFollowButton = true,
+    currentCount,
+    setCount
 }: Props) => {
     const navigation = useNavigation();
     function handleOnPress() {
-        console.log(user);
         navigation.navigate('ProfileScreen', {userId: user.userId})
     }
 
@@ -77,7 +82,13 @@ export const User = ({
                     <Text style={styles.text}>{user.userName}</Text>
                 </View>
                 <View style={styles.buttonView}>
-                    <FollowButton userId={user.userId} following={following} />
+                    {showFollowButton &&
+                    <FollowButton 
+                    userId={user.userId} 
+                    following={following}
+                    currentCount={currentCount}
+                    setCount={setCount} 
+                    onMyProfile={showFollowButton} />}
                 </View>
                 <View style={styles.line} />
             </View>

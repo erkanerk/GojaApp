@@ -37,6 +37,7 @@ interface Props {
 export default function ProfileScreen({ route, navigation }: Props) {
     const userId = route.params.userId;
     const [tab, setTab] = useState<number>(0);
+    const [followingCount, setFollowingCount] = useState<number>(0)
 
     function conditionalRender() {
         if (tab == 0) {
@@ -48,13 +49,17 @@ export default function ProfileScreen({ route, navigation }: Props) {
         } else if (tab == 1) {
             return (
                 <View style={styles.followersView}>
-                    <FollowersFeed userId={userId} />
+                    <FollowersFeed 
+                    userId={userId} />
                 </View>
             );
         } else if (tab == 2) {
             return (
                 <View style={styles.followingView}>
-                    <FollowingFeed userId={userId} />
+                    <FollowingFeed 
+                    userId={userId}
+                    currentCount={followingCount}
+                    setCount={setFollowingCount} />
                 </View>
             );
         }
@@ -63,7 +68,12 @@ export default function ProfileScreen({ route, navigation }: Props) {
     return (
         <View style={styles.container}>
             <View style={styles.profileView}>
-                <ProfileInformation tab={tab} setTab={setTab} userId={userId} />
+                <ProfileInformation 
+                tab={tab} 
+                setTab={setTab} 
+                userId={userId} 
+                followingCount={followingCount}
+                setFollowingCount={setFollowingCount} />
             </View>
             {conditionalRender()}
         </View>

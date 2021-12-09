@@ -30,7 +30,7 @@ export type RootStackParamList = {
     ChoosePic: undefined;
     RecordProfileSound: { recordingScreenType: PostType};
     NotificationScreen: undefined;
-    ProfileScreen: { userId: string | undefined };
+    ProfileScreen: { userId: string };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

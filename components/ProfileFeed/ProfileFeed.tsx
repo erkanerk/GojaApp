@@ -52,7 +52,7 @@ export const ProfileFeed = ({ userId }: Props) => {
 
     async function getPosts() {
         setIsLoading(true);
-        if (userId) {
+        if (userId !== globalCtx.userInfo._id) {
             APIKit.get(`/posts/by-user/${userId}`)
                 .then((response) => {
                     const onlyOriginalPosts = response.data.filter( post => 

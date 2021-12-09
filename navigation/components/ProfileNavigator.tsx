@@ -29,7 +29,7 @@ export const ProfileNavigator = ({ route, navigation }: Props) => {
 
     function handleOnPress() {
         console.log('Pressed profile picture');
-        navigation.navigate('ProfileScreen', { userId: undefined });
+        navigation.navigate('ProfileScreen', { userId: globalCtx.userInfo._id });
     }
 
     return (

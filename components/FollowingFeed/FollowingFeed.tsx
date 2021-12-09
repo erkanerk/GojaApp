@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { FlatList, View, Text, ActivityIndicator } from "react-native";
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { FlatList, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
@@ -25,19 +25,24 @@ export const styles = StyleSheet.create({
 
 interface Props {
     userId: string | undefined
+    currentCount: number
+    setCount: Dispatch<SetStateAction<number>>
 }
 
 export const FollowingFeed = ({
-    userId
+    userId,
+    currentCount,
+    setCount
 }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const isFocused = useIsFocused();
     const [users, setUsers] = useState<Following[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
-    
+    const showFollowButton = userId == globalCtx.userInfo._id ? true : false;
+
     async function getFollowing() {
         setIsLoading(true)
-        if (userId) {
+        if (userId !== globalCtx.userInfo._id) {
             APIKit.get(`/users/following/${userId}`)
             .then((response) => {
                 setUsers(response.data);
@@ -72,7 +77,10 @@ export const FollowingFeed = ({
     const renderItem = ({ item, index, separators }: any) => (
         <User 
         user={item} 
-        following={true}/>
+        following={true}
+        currentCount={currentCount}
+        setCount={setCount} 
+        showFollowButton={showFollowButton} />
     );
 
     return (
