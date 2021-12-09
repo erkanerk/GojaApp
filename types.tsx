@@ -10,6 +10,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { PostType } from "./constants/types/PostType";
+import { AnswerInfo } from "./screens/postFlow/RecordingScreen"
 
 declare global {
   namespace ReactNavigation {
@@ -20,7 +21,10 @@ declare global {
 export type RootStackParamList = {
     Root: NavigatorScreenParams<RootTabParamList> | undefined;
     Modal: undefined;
-    RecordModal: { recordingScreenType: PostType };
+    RecordModal: { 
+      recordingScreenType: PostType;
+      answerInfo?: AnswerInfo;
+    };
     NotFound: undefined;
     Auth: undefined;
     ChoosePic: undefined;
@@ -34,7 +38,10 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 
 export type RootTabParamList = {
   FeedTab: undefined;
-  RecordTab: { recordingScreenType: PostType};
+  RecordTab: { 
+    recordingScreenType: PostType;
+    answerInfo?: AnswerInfo; 
+  };
   SearchTab: undefined;
 };
 

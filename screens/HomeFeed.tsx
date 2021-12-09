@@ -199,7 +199,10 @@ export default function HomeFeed({
         setIsRefreshing(true);
         APIKit.get('/posts/my-feed')
             .then((response) => {
-                setPosts(response.data);
+                const onlyOriginalPosts = response.data.filter( post => 
+                    post.inReplyToPostId == null
+                  );
+                setPosts(onlyOriginalPosts);
                 setIsRefreshing(false);
             })
             .catch((error) => {
@@ -217,8 +220,10 @@ export default function HomeFeed({
         const minDate = posts[posts.length - 1]['created_at'];
         APIKit.get('/posts/my-feed/more/' + minDate)
             .then((response) => {
-                console.log(response.data);
-                setPosts(posts.concat(response.data));
+                const onlyOriginalPosts = response.data.filter( post => 
+                    post.inReplyToPostId == null
+                  );
+                setPosts(posts.concat(onlyOriginalPosts));
                 setIsLoadingMore(false);
             })
             .catch((error) => {

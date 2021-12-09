@@ -43,28 +43,27 @@ export const styles = StyleSheet.create({
     },
 });
 
-interface AnswerInfo {
+export interface AnswerInfo {
     answerId: string;
     imageUrl: string;
     username: string;
     hashtags: string[];
 }
 interface PropTypes {
-    route: RouteProp<RootStackParamList, 'RecordProfileSound'>;
+    route: RouteProp<RootStackParamList, 'RecordModal'>;
     navigation: NativeStackNavigationProp<RootTabParamList, 'FeedTab'>;
-    answerInfo?: AnswerInfo | null;
 }
 
 export const RecordingScreen = ({
     route,
     navigation,
-    answerInfo,
 }: PropTypes) => {
     const [hashtags, setHashtags] = useState<string>('');
     const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
     const [canPost, setCanPost] = useState<boolean>(false);
     const globalCtx = useContext(AppContext);
     const recordingScreenType = route.params.recordingScreenType;
+    const answerInfo = route.params.answerInfo;
 
     let endPoint = '/posts';
     if (recordingScreenType === PostType.REGISTER) {

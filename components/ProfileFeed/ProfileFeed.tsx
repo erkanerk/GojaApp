@@ -55,7 +55,10 @@ export const ProfileFeed = ({ userId }: Props) => {
         if (userId) {
             APIKit.get(`/posts/by-user/${userId}`)
                 .then((response) => {
-                    setPosts(response.data);
+                    const onlyOriginalPosts = response.data.filter( post => 
+                        post.inReplyToPostId == null
+                      );
+                    setPosts(onlyOriginalPosts);
                     setIsLoading(false);
                 })
                 .catch((error) => {
@@ -66,7 +69,10 @@ export const ProfileFeed = ({ userId }: Props) => {
         } else {
             APIKit.get('/posts/by-user/me')
                 .then((response) => {
-                    setPosts(response.data);
+                    const onlyOriginalPosts = response.data.filter( post => 
+                        post.inReplyToPostId == null
+                      );
+                    setPosts(onlyOriginalPosts);
                     setIsLoading(false);
                 })
                 .catch((error) => {
