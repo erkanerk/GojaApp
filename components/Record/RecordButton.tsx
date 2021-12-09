@@ -63,7 +63,6 @@ export const RecordButton = ({
     useEffect(() => {
         if (timer !== null && timer > 0) {
             onionTime = setTimeout(() => setTimer(timer - 1), 1000);
-            console.log('Seconds', timer);
         } else if (timer === 0 && recording !== undefined) {
             stopRecording();
         } else {
