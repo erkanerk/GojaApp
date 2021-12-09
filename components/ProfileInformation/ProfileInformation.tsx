@@ -73,6 +73,7 @@ export const ProfileInformation = ({
             APIKit.get(`/users/profile/${userId}`)
             .then((response) => {
                 setProfile(response.data);
+                console.log(response.data)
                 setFollowingCount(response.data.followingCount);
                 setIsLoading(false);
             })
@@ -84,6 +85,7 @@ export const ProfileInformation = ({
         } else {
             APIKit.get('/users/profile/me')
             .then((response) => {
+                console.log(response.data)
                 setProfile(response.data);
                 setFollowingCount(response.data.followingCount);
                 setIsLoading(false);
@@ -120,11 +122,12 @@ export const ProfileInformation = ({
             <View style={styles.textView}>
                 <Text style={styles.UserNameText}>{profile.userName}</Text>
             </View>
-            {userId !== globalCtx.userInfo._id ? (
+            {userId !== globalCtx.userInfo._id &&
                 <View style={styles.followButtonView}>
-                    <FollowButton userId={userId} following={false} />
-                </View>
-            ) : null}
+                    <FollowButton 
+                    userId={userId} 
+                    following={profile.isFollowing} />
+                </View>}
             <View style={styles.statsView}>
                 <Stats 
                 tab={tab} 

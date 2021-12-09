@@ -5,6 +5,7 @@ interface Profile {
     email: string;
     profilePicture: string;
     profileAudio: string;
+    isFollowing: boolean;
     followerCount: number;
     followingCount: number;
     postCount: number;
