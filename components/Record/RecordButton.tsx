@@ -46,11 +46,13 @@ const styles = StyleSheet.create({
 interface PropTypes {
     recordingURISetter: any;
     recordingURIP: any;
+    lengthOfAudio?: number;
 }
 
 export const RecordButton = ({
     recordingURISetter,
     recordingURIP,
+    lengthOfAudio = 10,
 }: PropTypes) => {
     const [recording, setRecording] = useState<any | null>(null);
     const [sound, setSound] = useState<Audio.Sound | null>(null);
@@ -100,7 +102,7 @@ export const RecordButton = ({
             );
             setRecording(recording);
             console.log('Recording started');
-            setTimer(10);
+            setTimer(lengthOfAudio);
         } catch (err) {
             console.error('Failed to start recording', err);
         }
