@@ -1,55 +1,46 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
-import { Audio } from 'expo-av';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Audio, AVPlaybackStatus } from 'expo-av';
+import { Feather } from '@expo/vector-icons'; 
+import { FontAwesome } from '@expo/vector-icons'; 
 
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red',
     },
-    wrapper: {
-        flexDirection: 'row',
-
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonAndText: {
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        flex: 1,
-    },
-    record: {
+    recordIcon: {
         borderRadius: 100,
         width: 70,
         height: 70,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: 'red',
-        marginBottom: 20,
-    },
-    play: {
-        width: 0,
-        height: 0,
-        backgroundColor: 'transparent',
-        borderStyle: 'solid',
-        borderLeftWidth: 30,
-        borderRightWidth: 30,
-        borderBottomWidth: 50,
-        borderLeftColor: 'transparent',
-        borderRightColor: 'transparent',
-        borderBottomColor: 'red',
-        transform: [{ rotate: '90deg' }],
-        marginBottom: 20,
     },
     text: {
         color: 'black',
-        textAlign: 'center',
-        textAlignVertical: 'center',
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    iconsView: {
+        flexDirection: 'row',
+        padding: 20,
+    },
+    deleteView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    recordView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    spaceView: {
+        flex: 1,
+    },
+    textView: {
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 
@@ -62,11 +53,25 @@ export const RecordButton = ({
     recordingURISetter,
     recordingURIP,
 }: PropTypes) => {
-    const [recording, setRecording] = React.useState<any | null>(null);
-    const [sound, setSound] = React.useState<any | null>(null);
+    const [recording, setRecording] = useState<any | null>(null);
+    const [sound, setSound] = useState<Audio.Sound | null>(null);
+    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    
+    function onPlaybackStatusUpdate(playbackStatus: AVPlaybackStatus) {
+        if (!playbackStatus.isLoaded) {
+            // Updating UI for the unloaded state
+            if (playbackStatus.error) {
+                console.log(
+                    `Encountered a fatal error during playback: ${playbackStatus.error}`
+                );
+            }
+        } else {
+            // Updating UI for the loaded state
+            setIsPlaying(playbackStatus.isPlaying);
+        }
+    }
 
     async function startRecording() {
-        //setPosted(false);
         try {
             console.log('Requesting permissions..');
             await Audio.requestPermissionsAsync();
@@ -98,70 +103,71 @@ export const RecordButton = ({
         await Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
         });
-        const { sound } = await Audio.Sound.createAsync({ uri: recordingURIP });
+        const initialStatus = { progressUpdateIntervalMillis: 200 };
+        const { sound } = await Audio.Sound.createAsync(
+            { uri: recordingURIP },
+            initialStatus,
+            onPlaybackStatusUpdate
+        );
         setSound(sound);
         console.log('Playing Sound');
         await sound.playAsync();
     }
 
+    async function pauseSound() {
+        if (sound?._loaded) {
+            await sound.pauseAsync();
+        } else {
+            console.log('error pausing post');
+        }
+    }
+
     async function deleteSound() {
-        //setPosted(false);
         setSound(null);
         recordingURISetter(null);
         setRecording(null);
     }
 
-    return (
-        <View style={styles.wrapper}>
-            {!recordingURIP && (
-                <View style={styles.buttonAndText}>
-                    <Pressable
-                        style={styles.record}
-                        onPress={recording ? stopRecording : startRecording}
-                    />
-                    <Text style={styles.text}>
-                        {recording ? 'Stop Recording' : 'Tap to record'}
-                    </Text>
-                </View>
-            )}
-            {recordingURIP && (
-                <View
-                    style={{
-                        flexDirection: 'row',
+    useEffect(() => {
+        return sound
+            ? () => {
+                  sound.unloadAsync();
+              }
+            : undefined;
+    }, [sound]);
 
-                        width: '100%',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <View style={{ flex: 1 }}>
-                        <View style={{ marginLeft: 50 }}>
-                            <Icon.Button
-                                name="trash-o"
-                                color="red"
-                                size={40}
-                                backgroundColor="transparent"
-                                borderRadius={0}
-                                onPress={deleteSound}
-                                underlayColor="white"
-                            ></Icon.Button>
-                        </View>
-                    </View>
-                    <View style={styles.buttonAndText}>
-                        <Pressable style={styles.play} onPress={playSound} />
-                        <Text style={styles.text}>{'Play recording'}</Text>
-                    </View>
-                    <View style={{ flex: 1 }}></View>
+    return (
+        <View style={styles.container}>
+            <View style={styles.iconsView}>
+                <View style={styles.deleteView}>
+                    {recordingURIP ?
+                    <Pressable
+                    onPress={deleteSound}>
+                        <Feather name="trash-2" size={40} color="red" />
+                    </Pressable>
+                        
+                    : null}
                 </View>
-            )}
+                <View style={styles.recordView}>
+                    {recordingURIP ?
+                    <Pressable onPress={isPlaying ? pauseSound : playSound}>  
+                        <FontAwesome name={isPlaying ? 'pause' : 'play'} size={70} color="red" />
+                    </Pressable>                  
+                    :
+                    <Pressable
+                    style={styles.recordIcon}
+                    onPress={recording ? stopRecording : startRecording} />
+                    }
+                </View>
+                <View style={styles.spaceView} />
+            </View>
+            <View style={styles.textView}>
+                {recordingURIP ?
+                <Text style={styles.text}>{isPlaying ? 'Pause' : 'Play recording'}</Text>
+                :
+                <Text style={styles.text}>{recording ? 'Stop Recording' : 'Tap to record'}</Text>
+                }
+            </View>
         </View>
     );
 };
-
-/** THINGS MOVED
- * 
- * <Pressable style={styles.post} onPress={handlePress}>
-            <Text style={styles.text}>{"Post"}</Text>
-          </Pressable>
- * {posted && <Text style={styles.text}>{"Posted!"}</Text>}
- *
- */
