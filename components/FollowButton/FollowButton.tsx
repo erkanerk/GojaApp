@@ -105,7 +105,6 @@ export const FollowButton = ({
 
     return (
     <View style={styles.container}>
-        {userId === globalCtx.userInfo._id ? null : 
         <Pressable
         onPress={handleOnPress}>
             {isFollowing
@@ -119,7 +118,6 @@ export const FollowButton = ({
             </View>
             }
         </Pressable>
-        }
     </View>
     );
 }
