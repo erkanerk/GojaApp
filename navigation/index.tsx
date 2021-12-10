@@ -120,6 +120,7 @@ function AuthNavigator() {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+    const globalCtx = useContext(AppContext);
     return (
     <Stack.Navigator>
         <Stack.Group
@@ -147,7 +148,7 @@ function RootNavigator() {
             initialParams={{ userId: undefined}}
             options={({ route, navigation }) => ({
                 headerRight: () => {
-                    if (route.params.userId) {
+                    if (route.params.userId != globalCtx.userInfo._id) {
                         return <NotificationNavigator route={route} navigation={navigation}/>      
                     } else {
                         return <LogoutNavigator route={route} navigation={navigation}/>  

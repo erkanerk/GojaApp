@@ -47,15 +47,19 @@ export const styles = StyleSheet.create({
 });
 
 interface Props {
-    userId: string | undefined
+    userId: string
     tab: number
     setTab: Dispatch<SetStateAction<number>>
+    followingCount: number
+    setFollowingCount: Dispatch<SetStateAction<number>>
 }
 
 export const ProfileInformation = ({ 
     tab, 
     userId,
-    setTab
+    setTab,
+    followingCount,
+    setFollowingCount
  }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const isFocused = useIsFocused();
@@ -65,10 +69,11 @@ export const ProfileInformation = ({
     async function getProfileInformation() {
         setIsLoading(true);
         console.log('Fetching user information');
-        if (userId) {
+        if (userId !== globalCtx.userInfo._id) {
             APIKit.get(`/users/profile/${userId}`)
             .then((response) => {
                 setProfile(response.data);
+                setFollowingCount(response.data.followingCount);
                 setIsLoading(false);
             })
             .catch((error) => {
@@ -80,6 +85,7 @@ export const ProfileInformation = ({
             APIKit.get('/users/profile/me')
             .then((response) => {
                 setProfile(response.data);
+                setFollowingCount(response.data.followingCount);
                 setIsLoading(false);
             })
             .catch((error) => {
@@ -114,13 +120,19 @@ export const ProfileInformation = ({
             <View style={styles.textView}>
                 <Text style={styles.UserNameText}>{profile.userName}</Text>
             </View>
-            {userId ? (
+            {userId !== globalCtx.userInfo._id &&
                 <View style={styles.followButtonView}>
-                    <FollowButton userId={userId} following={false} />
-                </View>
-            ) : null}
+                    <FollowButton 
+                    userId={userId} 
+                    following={profile.isFollowing} />
+                </View>}
             <View style={styles.statsView}>
-                <Stats user={profile} tab={tab} setTab={setTab} />
+                <Stats 
+                tab={tab} 
+                setTab={setTab} 
+                postCount={profile.postCount}
+                followerCount={profile.followerCount}
+                followingCount={followingCount}/>
             </View>
             <View style={styles.line} />
         </View>

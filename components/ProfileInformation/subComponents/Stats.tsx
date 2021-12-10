@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 
@@ -30,11 +29,21 @@ export const styles = StyleSheet.create({
 });
 
 interface Props {
-    user: Profile;
     tab: number;
     setTab: Dispatch<SetStateAction<number>>;
+    postCount: number;
+    followerCount: number;
+    followingCount: number;
 }
-export const Stats = ({ user, tab, setTab }: Props) => {
+
+export const Stats = ({ 
+    tab, 
+    setTab,
+    postCount,
+    followerCount,
+    followingCount
+ }: Props) => {
+
     function handleNPostsOnPress() {
         setTab(0);
     }
@@ -52,7 +61,7 @@ export const Stats = ({ user, tab, setTab }: Props) => {
                         Posts
                     </Text>
                     <Text style={tab === 0 ? styles.textFocused : styles.text}>
-                        {user.postCount}
+                        {postCount}
                     </Text>
                 </Pressable>
             </View>
@@ -62,7 +71,7 @@ export const Stats = ({ user, tab, setTab }: Props) => {
                         Followers
                     </Text>
                     <Text style={tab === 1 ? styles.textFocused : styles.text}>
-                        {user.followerCount}
+                        {followerCount}
                     </Text>
                 </Pressable>
             </View>
@@ -72,7 +81,7 @@ export const Stats = ({ user, tab, setTab }: Props) => {
                         Following
                     </Text>
                     <Text style={tab === 2 ? styles.textFocused : styles.text}>
-                        {user.followingCount}
+                        {followingCount}
                     </Text>
                 </Pressable>
             </View>

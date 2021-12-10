@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, View, Text, ActivityIndicator } from "react-native";
+import { FlatList, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
@@ -36,10 +36,11 @@ export const FollowersFeed = ({
     const isFocused = useIsFocused();
     const [users, setUsers] = useState<Follower[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
-    
+    const showFollowButton = userId == globalCtx.userInfo._id ? true : false;
+
     async function getFollowers() {
         setIsLoading(true);
-        if (userId) {
+        if (userId != globalCtx.userInfo._id) {
             APIKit.get(`/users/followers/${userId}`)
             .then((response) => {
                 setUsers(response.data);
@@ -73,7 +74,8 @@ export const FollowersFeed = ({
     const renderItem = ({ item, index, separators }: any) => (
         <User 
         user={item} 
-        following={item.isMutualFollowers}/>
+        following={item.isMutualFollowers}
+        showFollowButton={showFollowButton} />
     );
 
     return (

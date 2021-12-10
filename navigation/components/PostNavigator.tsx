@@ -68,7 +68,6 @@ export const PostNavigator = ({
             navigation.navigate('FeedTab')    
         }
     }
-    console.log(route.params)
     return (
     <View style={styles.container}>
         <Pressable

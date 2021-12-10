@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { APIKit, onFailure } from '../../shared/APIkit';
@@ -41,11 +41,17 @@ export const styles = StyleSheet.create({
 interface Props {
     userId: string
     following: boolean
+    onMyProfile?: boolean
+    currentCount?: number
+    setCount?: Dispatch<SetStateAction<number>>
 }
 
 export const FollowButton = ({ 
     userId,
-    following = false
+    following = false,
+    onMyProfile = false,
+    currentCount,
+    setCount
 }: Props) => {
     const globalCtx = useContext(AppContext);
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -57,9 +63,10 @@ export const FollowButton = ({
         const payload = { userToFollow: userId }
         APIKit.post("/users/follow", payload)
         .then((response) => {
-            console.log("Successful /users/profile/me response: ")
-            console.log(response.data)
             setIsFollowing(true);
+            if (currentCount && setCount && onMyProfile) {
+                setCount(currentCount+1);
+            }
             setIsLoading(false);
         })
         .catch((error) => {
@@ -75,9 +82,10 @@ export const FollowButton = ({
         const payload = { userToUnfollow: userId }
         APIKit.post("/users/unfollow", payload)
         .then((response) => {
-            console.log("Successful /users/profile/me response: ")
-            console.log(response.data)
             setIsFollowing(false);
+            if (currentCount && setCount && onMyProfile) {
+                setCount(currentCount-1);
+            }
             setIsLoading(false);
         })
         .catch((error) => {
@@ -97,7 +105,6 @@ export const FollowButton = ({
 
     return (
     <View style={styles.container}>
-        {userId === globalCtx.userInfo._id ? null : 
         <Pressable
         onPress={handleOnPress}>
             {isFollowing
@@ -111,7 +118,6 @@ export const FollowButton = ({
             </View>
             }
         </Pressable>
-        }
     </View>
     );
 }
