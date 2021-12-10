@@ -7,7 +7,8 @@ import { SearchResultUser } from '../components/Search/SearchResultUser'
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-    }
+        flex: 1,
+    },
 });
 
 const SearchScreen = () => {
