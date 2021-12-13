@@ -45,7 +45,7 @@ interface Props {
     showComments?: (arg0: Post) => void;
     hideComments?: (arg0: any) => void;
     focusedPostIndex: number | undefined;
-    isPlaying: boolean;
+    isPlaying?: boolean;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
     onRefresh?: () => Promise<void> | undefined;
     refreshing?: boolean | undefined;

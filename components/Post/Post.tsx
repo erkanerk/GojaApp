@@ -84,7 +84,7 @@ export enum PostType {
 }
 interface Props {
     post: Post;
-    isPlaying: boolean;
+    isPlaying?: boolean;
     postType?: PostType;
     index: number;
     focusedPostIndex: number | undefined;
