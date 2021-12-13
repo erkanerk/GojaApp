@@ -4,6 +4,8 @@ import { RootTabParamList } from '../types';
 import { StyleSheet } from 'react-native';
 import { PostFeed } from '../components/PostFeed/PostFeed';
 import { PostType } from '../components/Post/Post';
+import { AnswerInfo } from './postFlow/RecordingScreen';
+
 import { APIKit, onFailure } from '../shared/APIkit';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
 import AppContext from '../shared/AppContext';
@@ -45,7 +47,9 @@ export default function HomeFeed({ route, navigation }: Props) {
     const isFocused = useIsFocused();
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [replyFromComment, setReplyFromComment] = useState<boolean>(false);
-    const [answerInfo, setAnswerInfo] = useState<boolean>(false);
+    const [answerInfo, setAnswerInfo] = useState<AnswerInfo | undefined>(
+        undefined
+    );
 
     const [showCommentsModal, setShowCommentsModal] = useState<
         Post | undefined
@@ -210,6 +214,7 @@ export default function HomeFeed({ route, navigation }: Props) {
             });
         }
         setReplyFromComment(false);
+        setAnswerInfo(undefined);
     }, [replyFromComment]);
 
     async function getMyFeed() {
