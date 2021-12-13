@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
         marginLeft: 20,
     },
     image: {
-        width: 40,
-        height: 40,
+        width: 34,
+        height: 34,
         borderRadius: 20,
     },
 });
