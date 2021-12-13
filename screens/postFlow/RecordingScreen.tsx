@@ -88,10 +88,6 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
         setRecordingURI(null);
         if (recordingScreenType === RecordType.REGISTER) {
             globalCtx.setLoggedIn(true);
-            globalCtx.setUserInfo({
-                ...globalCtx.userInfo,
-                profileAudio: audioUrl,
-            });
         }
     };
 
