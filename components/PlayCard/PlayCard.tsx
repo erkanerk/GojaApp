@@ -51,7 +51,6 @@ export const PlayCard = ({
     >(undefined);
 
     useEffect(() => {
-        console.log('tjenare');
         if (showComments && showCommentsModal) {
             showComments(post);
         }

@@ -45,6 +45,7 @@ interface Props {
     showComments?: (arg0: Post) => void;
     hideComments?: (arg0: any) => void;
     focusedPostIndex: number | undefined;
+    isPlaying: boolean;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
     onRefresh?: () => Promise<void> | undefined;
     refreshing?: boolean | undefined;
@@ -58,6 +59,7 @@ export const PostFeed = ({
     showComments,
     hideComments,
     focusedPostIndex,
+    isPlaying,
     setFocusedPostIndex,
     onRefresh,
     refreshing,
@@ -65,16 +67,6 @@ export const PostFeed = ({
     scrollEnabled,
 }: Props) => {
     const [sound, setSound] = useState<Audio.Sound | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
-    const [soundDuration, setSoundDuration] = useState<number | undefined>(
-        undefined
-    );
-
-    const [isSeeking, setIsSeeking] = useState<boolean>(false);
-
-    const shouldPlayAtEndOfSeek = true;
 
     useEffect(() => {
         return sound
@@ -87,6 +79,7 @@ export const PostFeed = ({
     const renderPost = ({ item, index, separators }: any) => (
         <Post
             post={item}
+            isPlaying={isPlaying}
             postType={postType}
             index={index}
             focusedPostIndex={focusedPostIndex}

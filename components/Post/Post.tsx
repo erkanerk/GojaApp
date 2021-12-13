@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState, useRef } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Likes } from '../Likes/Likes';
 import { Comments } from './subcomponents/Comments';
 import { Reply } from './subcomponents/Reply';
 import CachedImage from 'expo-cached-image';
+import LottieView from "lottie-react-native";
 
 export const styles = StyleSheet.create({
     container: {
@@ -23,6 +24,10 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         color: '#059336',
         fontWeight: 'bold',
+    },
+    animation: {
+        width: 25,
+        marginLeft: 3
     },
     profilePicture: {
         width: 59,
@@ -79,6 +84,7 @@ export enum PostType {
 }
 interface Props {
     post: Post;
+    isPlaying: boolean;
     postType?: PostType;
     index: number;
     focusedPostIndex: number | undefined;
@@ -89,6 +95,7 @@ interface Props {
 
 export const Post = ({
     post,
+    isPlaying,
     postType,
     index,
     focusedPostIndex,
@@ -122,6 +129,8 @@ export const Post = ({
         }
     }, [focusedPostIndex]);
 
+    const lottieRef = useRef<LottieView>(null);
+
     return (
         <View style={styles.container}>
             <Pressable
@@ -143,15 +152,27 @@ export const Post = ({
                         </View>
                     </Pressable>
                     <View style={styles.textView}>
-                        <Text
-                            style={
-                                isFocused
-                                    ? styles.focused_userName
-                                    : styles.userName
+                        <View style={{flexDirection: "row"}}>
+                            <Text
+                                style={
+                                    isFocused
+                                        ? styles.focused_userName
+                                        : styles.userName
+                                }
+                            >
+                                {post.user.userName}
+                            </Text>
+                            {(isFocused  && isPlaying) &&
+                                <LottieView
+                                    autoPlay
+                                    loop={true}
+                                    ref={lottieRef}
+                                    source={require("../../assets/animations/soundwave.json")}
+                                    style={styles.animation}
+                                />
                             }
-                        >
-                            {post.user.userName}
-                        </Text>
+                        </View>
+                        
                         {post.hashtags && (
                             <View style={styles.hashtagView}>
                                 <Text numberOfLines={1}>
