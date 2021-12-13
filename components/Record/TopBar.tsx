@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Feather } from '@expo/vector-icons'; 
+import { Feather } from '@expo/vector-icons';
 import { CancelNavigator } from '../../navigation/components/CancelNavigator';
 import { PostType } from '../../constants/types/PostType';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
-
     },
     postView: {
         flex: 1,
@@ -65,25 +64,25 @@ interface PropTypes {
     recordingScreenType: PostType;
 }
 
-export const TopBar = ({ 
-    postToBackend, 
-    canPost, 
+export const TopBar = ({
+    postToBackend,
+    canPost,
     navigation,
     recordingScreenType,
 }: PropTypes) => {
-
     function handleOnPressClose() {
-        console.log('Left button pressed')
-        navigation.goBack()
+        console.log('Left button pressed');
+        navigation.goBack();
     }
 
-    function handleOnPressPost() {
-        console.log('Right button pressed')
+    async function handleOnPressPost() {
+        console.log('Right button pressed');
         if (canPost) {
-            postToBackend()
+            await postToBackend(); 
             if (recordingScreenType !== PostType.REGISTER){
                 navigation.navigate('FeedTab');
             }
+
         }
     }
 
@@ -130,22 +129,22 @@ export const TopBar = ({
     return (
         <View style={styles.container}>
             <View style={styles.closeView}>
-                <Pressable
-                onPress={handleOnPressClose}>
-                    {recordingScreenType === PostType.REGISTER
-                    ?
-                    <CancelNavigator />
-                    :
-                    <Feather name="x" size={24} color="black" />
-                    }
+                <Pressable onPress={handleOnPressClose}>
+                    {recordingScreenType === PostType.REGISTER ? (
+                        <CancelNavigator />
+                    ) : (
+                        <Feather name="x" size={24} color="black" />
+                    )}
                 </Pressable>
             </View>
             <View style={styles.iconView}>
-                <Image style={styles.icon} source={require('../../assets/images/parrot.png')}/> 
+                <Image
+                    style={styles.icon}
+                    source={require('../../assets/images/parrot.png')}
+                />
             </View>
             <View style={styles.postView}>
-                <Pressable
-                onPress={handleOnPressPost}>
+                <Pressable onPress={handleOnPressPost}>
                     {conditionalRender()}
                 </Pressable>
             </View>
