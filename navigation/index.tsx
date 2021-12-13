@@ -52,7 +52,7 @@ import { RecordNavigator } from './components/RecordNavigator';
 import { RecordingScreen } from '../screens/postFlow/RecordingScreen';
 import { PostNavigator } from './components/PostNavigator';
 import { CancelNavigator } from './components/CancelNavigator';
-import { PostType } from '../constants/types/PostType';
+import { RecordType } from '../constants/types/RecordType';
 
 export default function Navigation({
     colorScheme,
@@ -93,22 +93,19 @@ function AuthNavigator() {
             <AuthStack.Screen
                 name="ChoosePic"
                 component={ChoosePic}
-                options={({ route, navigation }) => ({ 
-                    headerTitle: () => (
-                        <IconNavigator />
-                    ),
+                options={({ route, navigation }) => ({
+                    headerTitle: () => <IconNavigator />,
                     headerTitleAlign: 'center',
                     headerBackVisible: false,
-                    headerLeft: () => (
-                        <CancelNavigator />
-                    ),
+                    headerLeft: () => <CancelNavigator />,
                 })}
-                 />
+            />
             <AuthStack.Screen
                 name="RecordProfileSound"
                 component={RecordingScreen}
-                initialParams={{ recordingScreenType: PostType.REGISTER}}
-                options={{ headerShown: false }} />
+                initialParams={{ recordingScreenType: RecordType.REGISTER }}
+                options={{ headerShown: false }}
+            />
         </AuthStack.Navigator>
     );
 }
@@ -122,57 +119,64 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
     const globalCtx = useContext(AppContext);
     return (
-    <Stack.Navigator>
-        <Stack.Group
-        screenOptions={({ route, navigation }) => ({
-            headerTitle: () => (
-                <IconNavigator />
-            ),
-            headerTitleAlign: 'center'
-        })}>
-            <Stack.Screen
-                name="Root"
-                component={BottomTabNavigator}
-                options={{ headerShown: false }}
-            />
-            
-            <Stack.Screen
-                name="NotFound"
-                component={NotFoundScreen}
-                options={{ title: "Oops!" }}
-            />
+        <Stack.Navigator>
+            <Stack.Group
+                screenOptions={({ route, navigation }) => ({
+                    headerTitle: () => <IconNavigator />,
+                    headerTitleAlign: 'center',
+                })}
+            >
+                <Stack.Screen
+                    name="Root"
+                    component={BottomTabNavigator}
+                    options={{ headerShown: false }}
+                />
 
-            <Stack.Screen
-            name={'ProfileScreen'}
-            component={ProfileScreen} 
-            initialParams={{ userId: undefined}}
-            options={({ route, navigation }) => ({
-                headerRight: () => {
-                    if (route.params.userId != globalCtx.userInfo._id) {
-                        return <NotificationNavigator route={route} navigation={navigation}/>      
-                    } else {
-                        return <LogoutNavigator route={route} navigation={navigation}/>  
-                    }
-                }
-            })}/>
-            
-            <Stack.Screen
-                name="NotificationScreen"
-                component={NotificationScreen}
-            />
+                <Stack.Screen
+                    name="NotFound"
+                    component={NotFoundScreen}
+                    options={{ title: 'Oops!' }}
+                />
 
-        </Stack.Group>
-        
-        <Stack.Group screenOptions={{ presentation: "modal", headerShown: false }}>
-            <Stack.Screen name="Modal" component={ModalScreen} />
-            <Stack.Screen 
-            name="RecordModal" 
-            component={RecordingScreen}
-            />
-        </Stack.Group>
+                <Stack.Screen
+                    name={'ProfileScreen'}
+                    component={ProfileScreen}
+                    initialParams={{ userId: undefined }}
+                    options={({ route, navigation }) => ({
+                        headerRight: () => {
+                            if (route.params.userId != globalCtx.userInfo._id) {
+                                return (
+                                    <NotificationNavigator
+                                        route={route}
+                                        navigation={navigation}
+                                    />
+                                );
+                            } else {
+                                return (
+                                    <LogoutNavigator
+                                        route={route}
+                                        navigation={navigation}
+                                    />
+                                );
+                            }
+                        },
+                    })}
+                />
 
-    </Stack.Navigator>
-  );
+                <Stack.Screen
+                    name="NotificationScreen"
+                    component={NotificationScreen}
+                />
+            </Stack.Group>
+
+            <Stack.Group
+                screenOptions={{ presentation: 'modal', headerShown: false }}
+            >
+                <Stack.Screen name="Modal" component={ModalScreen} />
+                <Stack.Screen name="RecordModal" component={RecordingScreen} />
+            </Stack.Group>
+        </Stack.Navigator>
+    );
 }
 
 /**
@@ -185,69 +189,95 @@ function BottomTabNavigator() {
     const colorScheme = useColorScheme();
 
     return (
-    <BottomTab.Navigator
-        initialRouteName={'FeedTab'}
-        screenOptions={{
-            tabBarActiveTintColor: 'black',
-            tabBarShowLabel: false,
-            tabBarStyle: {
-                height: 65,
-            }
-    }}> 
-        <BottomTab.Group
-        screenOptions={({ route, navigation }) => ({
-            headerRight: () => (
-                <NotificationNavigator route={route} navigation={navigation}/>  
-            ),
-            headerLeft: () => (
-                <ProfileNavigator route={route} navigation={navigation}/>
-            ),
-            headerTitle: () => (
-                <IconNavigator />
-            ),
-            headerTitleAlign: 'center'
-        })}>
-            <BottomTab.Screen
-                name={'FeedTab'}
-                component={HomeFeed}
-                options={({ route, navigation }: RootTabScreenProps<'FeedTab'>) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        return (
-                            <Feather name={'home'} size={size} color={color} />
-                        );
-                    }
+        <BottomTab.Navigator
+            initialRouteName={'FeedTab'}
+            screenOptions={{
+                tabBarActiveTintColor: 'black',
+                tabBarShowLabel: false,
+                tabBarStyle: {
+                    height: 65,
+                },
+            }}
+        >
+            <BottomTab.Group
+                screenOptions={({ route, navigation }) => ({
+                    headerRight: () => (
+                        <NotificationNavigator
+                            route={route}
+                            navigation={navigation}
+                        />
+                    ),
+                    headerLeft: () => (
+                        <ProfileNavigator
+                            route={route}
+                            navigation={navigation}
+                        />
+                    ),
+                    headerTitle: () => <IconNavigator />,
+                    headerTitleAlign: 'center',
                 })}
-              />
-              <BottomTab.Screen
-                name={'RecordTab'}
-                component={RecordNavigator}
-                options={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        return <RecordNavigator />
-                    },
-                })}
-                listeners={({ route, navigation }: RootTabScreenProps<'RecordTab'>) => ({
-                    tabPress: event => {
-                        event.preventDefault()
-                        navigation.navigate('RecordModal', { recordingScreenType: PostType.POST })
-                    }
-                })}
-                
-            />
-            <BottomTab.Screen
-                name={'SearchTab'}
-                component={SearchScreen}
-                options={({ route, navigation }: RootTabScreenProps<'SearchTab'>) => ({
-                    tabBarShowLabel: false,
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Feather name={'search'} size={size} color={color} />
-                    )
-                })}
-            />
-        </BottomTab.Group>
-    </BottomTab.Navigator>
-  );
-
+            >
+                <BottomTab.Screen
+                    name={'FeedTab'}
+                    component={HomeFeed}
+                    options={({
+                        route,
+                        navigation,
+                    }: RootTabScreenProps<'FeedTab'>) => ({
+                        tabBarIcon: ({ focused, color, size }) => {
+                            return (
+                                <Feather
+                                    name={'home'}
+                                    size={size}
+                                    color={color}
+                                />
+                            );
+                        },
+                    })}
+                />
+                <BottomTab.Screen
+                    name={'RecordTab'}
+                    component={RecordNavigator}
+                    options={({
+                        route,
+                        navigation,
+                    }: RootTabScreenProps<'RecordTab'>) => ({
+                        tabBarIcon: ({ focused, color, size }) => {
+                            return <RecordNavigator />;
+                        },
+                    })}
+                    listeners={({
+                        route,
+                        navigation,
+                    }: RootTabScreenProps<'RecordTab'>) => ({
+                        tabPress: (event) => {
+                            event.preventDefault();
+                            navigation.navigate('RecordModal', {
+                                recordingScreenType: RecordType.POST,
+                            });
+                        },
+                    })}
+                />
+                <BottomTab.Screen
+                    name={'SearchTab'}
+                    component={SearchScreen}
+                    options={({
+                        route,
+                        navigation,
+                    }: RootTabScreenProps<'SearchTab'>) => ({
+                        tabBarShowLabel: false,
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <Feather
+                                name={'search'}
+                                size={size}
+                                color={color}
+                            />
+                        ),
+                    })}
+                />
+            </BottomTab.Group>
+        </BottomTab.Navigator>
+    );
 }
 
 /**

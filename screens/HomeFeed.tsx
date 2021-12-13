@@ -4,6 +4,8 @@ import { RootTabParamList } from '../types';
 import { StyleSheet } from 'react-native';
 import { PostFeed } from '../components/PostFeed/PostFeed';
 import { PostType } from '../components/Post/Post';
+import { AnswerInfo } from './postFlow/RecordingScreen';
+
 import { APIKit, onFailure } from '../shared/APIkit';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
 import AppContext from '../shared/AppContext';
@@ -13,6 +15,7 @@ import { AVPlaybackStatus } from 'expo-av';
 import useAudio from '../hooks/useAudio';
 import { FadeText } from '../components/FadeText/FadeText';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RecordType } from '../constants/types/RecordType';
 
 export const styles = StyleSheet.create({
     container: {
@@ -38,14 +41,16 @@ interface Props {
     navigation: NativeStackNavigationProp<RootTabParamList, 'FeedTab'>;
 }
 
-export default function HomeFeed({
-    route,
-    navigation,
-}:Props) {
+export default function HomeFeed({ route, navigation }: Props) {
     const globalCtx = useContext(AppContext);
     const [posts, setPosts] = useState<Post[] | undefined>(undefined);
     const isFocused = useIsFocused();
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [replyFromComment, setReplyFromComment] = useState<boolean>(false);
+    const [answerInfo, setAnswerInfo] = useState<AnswerInfo | undefined>(
+        undefined
+    );
+
     const [showCommentsModal, setShowCommentsModal] = useState<
         Post | undefined
     >(undefined);
@@ -188,20 +193,37 @@ export default function HomeFeed({
         setModalVisible(true);
         setShowCommentsModal(post);
     };
+    const hideComments = (answerInfo) => {
+        setModalVisible(false);
+        setAnswerInfo(answerInfo);
+    };
 
-      useEffect(() => {
-        if(!posts || posts.length < 1){
-          getMyFeed();
+    useEffect(() => {
+        if (!posts || posts.length < 1) {
+            getMyFeed();
         }
-      }, [isFocused]);
+    }, [isFocused]);
+
+    useEffect(() => {
+        if (!modalVisible && answerInfo) {
+            console.log(modalVisible);
+            console.log(answerInfo);
+            navigation.navigate('RecordModal', {
+                recordingScreenType: RecordType.ANSWER,
+                answerInfo: answerInfo,
+            });
+        }
+        setReplyFromComment(false);
+        setAnswerInfo(undefined);
+    }, [replyFromComment]);
 
     async function getMyFeed() {
         setIsRefreshing(true);
         APIKit.get('/posts/my-feed')
             .then((response) => {
-                const onlyOriginalPosts = response.data.filter( post => 
-                    post.inReplyToPostId == null
-                  );
+                const onlyOriginalPosts = response.data.filter(
+                    (post) => post.inReplyToPostId == null
+                );
                 setPosts(onlyOriginalPosts);
                 setIsRefreshing(false);
             })
@@ -220,9 +242,9 @@ export default function HomeFeed({
         const minDate = posts[posts.length - 1]['created_at'];
         APIKit.get('/posts/my-feed/more/' + minDate)
             .then((response) => {
-                const onlyOriginalPosts = response.data.filter( post => 
-                    post.inReplyToPostId == null
-                  );
+                const onlyOriginalPosts = response.data.filter(
+                    (post) => post.inReplyToPostId == null
+                );
                 setPosts(posts.concat(onlyOriginalPosts));
                 setIsLoadingMore(false);
             })
@@ -259,6 +281,8 @@ export default function HomeFeed({
                     post={showCommentsModal}
                     setModalVisible={setModalVisible}
                     modalVisible={modalVisible}
+                    hideComments={hideComments}
+                    setReplyFromComment={setReplyFromComment}
                 />
             ) : null}
 
@@ -279,6 +303,8 @@ export default function HomeFeed({
                             playPausePost={playPausePost}
                             playNextPost={playNextPost}
                             playPreviousPost={playPreviousPost}
+                            setReplyFromComment={setReplyFromComment}
+                            showComments={showComments}
                         />
                     ) : null}
                 </View>

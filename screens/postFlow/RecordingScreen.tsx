@@ -17,7 +17,7 @@ import AppContext from '../../shared/AppContext';
 import { hashtagHandler } from '../../components/Record/utils/hashtagHandler';
 import { TopBar } from '../../components/Record/TopBar';
 import Constants from 'expo-constants';
-import { PostType } from '../../constants/types/PostType';
+import { RecordType } from '../../constants/types/RecordType';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList, RootTabParamList } from '../../types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -64,7 +64,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
     let lengthOfAudioClip = 10;
 
     let endPoint = '/posts';
-    if (recordingScreenType === PostType.REGISTER) {
+    if (recordingScreenType === RecordType.REGISTER) {
         endPoint = '/users/add-profile-audio';
         lengthOfAudioClip = 3;
     }
@@ -86,7 +86,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
         setHashtags('');
         setCanPost(false);
         setRecordingURI(null);
-        if (recordingScreenType === PostType.REGISTER) {
+        if (recordingScreenType === RecordType.REGISTER) {
             globalCtx.setLoggedIn(true);
             globalCtx.setUserInfo({
                 ...globalCtx.userInfo,
@@ -96,6 +96,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
     };
 
     useEffect(() => {
+        console.log('recording screen');
         if (recordingURI !== null) {
             setCanPost(true);
         } else {
@@ -119,14 +120,14 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
                 </View>
 
                 <View style={styles.informationView}>
-                    {recordingScreenType === PostType.POST && profilePic && (
+                    {recordingScreenType === RecordType.POST && profilePic && (
                         <OnlyPicture pictureUrl={profilePic} />
                     )}
-                    {recordingScreenType === PostType.REGISTER &&
+                    {recordingScreenType === RecordType.REGISTER &&
                         profilePic && (
                             <TextAndPictures pictureUrl={profilePic} />
                         )}
-                    {recordingScreenType === PostType.ANSWER && (
+                    {recordingScreenType === RecordType.ANSWER && (
                         <AnswerTo
                             imageUrl={answerInfo?.imageUrl}
                             username={answerInfo?.username}
@@ -136,7 +137,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
                 </View>
 
                 <View style={styles.hashtagsView}>
-                    {recordingScreenType === PostType.POST && (
+                    {recordingScreenType === RecordType.POST && (
                         <Hashtags
                             hashtagSetter={setHashtags}
                             hashtags={hashtags}

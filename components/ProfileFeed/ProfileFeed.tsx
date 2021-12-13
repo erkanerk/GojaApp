@@ -9,7 +9,9 @@ import { useIsFocused } from '@react-navigation/native';
 import { FadeText } from '../FadeText/FadeText';
 import useAudio from '../../hooks/useAudio';
 import { CommentsModal } from '../CommentsModal/CommentsModal';
-
+import { AnswerInfo } from '../../screens/postFlow/RecordingScreen';
+import { useNavigation } from '@react-navigation/native';
+import { RecordType } from '../../constants/types/RecordType';
 
 export const styles = StyleSheet.create({
     container: {
@@ -43,21 +45,46 @@ export const ProfileFeed = ({ userId }: Props) => {
     const sound = useAudio(focusedPostIndex, posts);
 
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const [showCommentsModal, setShowCommentsModal] = useState<Post | undefined>(undefined);
+    const [showCommentsModal, setShowCommentsModal] = useState<
+        Post | undefined
+    >(undefined);
+    const [answerInfo, setAnswerInfo] = useState<AnswerInfo | undefined>(
+        undefined
+    );
+    const [replyFromComment, setReplyFromComment] = useState<boolean>(false);
+
+    const navigation = useNavigation();
 
     const showComments = (post) => {
         setModalVisible(true);
         setShowCommentsModal(post);
     };
+    const hideComments = (answerInfo) => {
+        setModalVisible(false);
+        setAnswerInfo(answerInfo);
+    };
+
+    useEffect(() => {
+        if (!modalVisible && answerInfo) {
+            console.log(modalVisible);
+            console.log(answerInfo);
+            navigation.navigate('RecordModal', {
+                recordingScreenType: RecordType.ANSWER,
+                answerInfo: answerInfo,
+            });
+        }
+        setReplyFromComment(false);
+        setAnswerInfo(undefined);
+    }, [replyFromComment]);
 
     async function getPosts() {
         setIsLoading(true);
         if (userId !== globalCtx.userInfo._id) {
             APIKit.get(`/posts/by-user/${userId}`)
                 .then((response) => {
-                    const onlyOriginalPosts = response.data.filter( post => 
-                        post.inReplyToPostId == null
-                      );
+                    const onlyOriginalPosts = response.data.filter(
+                        (post) => post.inReplyToPostId == null
+                    );
                     setPosts(onlyOriginalPosts);
                     setIsLoading(false);
                 })
@@ -69,9 +96,9 @@ export const ProfileFeed = ({ userId }: Props) => {
         } else {
             APIKit.get('/posts/by-user/me')
                 .then((response) => {
-                    const onlyOriginalPosts = response.data.filter( post => 
-                        post.inReplyToPostId == null
-                      );
+                    const onlyOriginalPosts = response.data.filter(
+                        (post) => post.inReplyToPostId == null
+                    );
                     setPosts(onlyOriginalPosts);
                     setIsLoading(false);
                 })
@@ -113,6 +140,8 @@ export const ProfileFeed = ({ userId }: Props) => {
                     post={showCommentsModal}
                     setModalVisible={setModalVisible}
                     modalVisible={modalVisible}
+                    hideComments={hideComments}
+                    setReplyFromComment={setReplyFromComment}
                 />
             ) : null}
         </View>

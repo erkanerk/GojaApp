@@ -84,6 +84,7 @@ interface Props {
     focusedPostIndex: number | undefined;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
     showComments?: (arg0: Post) => void;
+    hideComments?: (arg0: any) => void;
 }
 
 export const Post = ({
@@ -93,6 +94,7 @@ export const Post = ({
     focusedPostIndex,
     setFocusedPostIndex,
     showComments,
+    hideComments,
 }: Props) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const navigation = useNavigation();
@@ -199,7 +201,10 @@ export const Post = ({
                                 />
                             </View>
                             <View style={styles.actionButton}>
-                                <Reply post={post} />
+                                <Reply
+                                    post={post}
+                                    hideComments={hideComments}
+                                />
                             </View>
                         </View>
                     )}

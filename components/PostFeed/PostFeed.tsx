@@ -43,26 +43,31 @@ interface Props {
     posts: Post[] | undefined;
     postType?: PostType;
     showComments?: (arg0: Post) => void;
+    hideComments?: (arg0: any) => void;
     focusedPostIndex: number | undefined;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
     onRefresh?: () => Promise<void> | undefined;
     refreshing?: boolean | undefined;
     onEndReached?: () => Promise<void> | undefined;
+    scrollEnabled?: boolean;
 }
 
 export const PostFeed = ({
     posts,
     postType,
     showComments,
+    hideComments,
     focusedPostIndex,
     setFocusedPostIndex,
     onRefresh,
     refreshing,
     onEndReached,
+    scrollEnabled,
 }: Props) => {
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
     const [soundDuration, setSoundDuration] = useState<number | undefined>(
         undefined
     );
@@ -87,6 +92,7 @@ export const PostFeed = ({
             focusedPostIndex={focusedPostIndex}
             setFocusedPostIndex={setFocusedPostIndex}
             showComments={showComments}
+            hideComments={hideComments}
         />
     );
 
@@ -94,6 +100,7 @@ export const PostFeed = ({
         <View style={styles.container}>
             <View style={styles.feedView}>
                 <FlatList
+                    scrollEnabled={scrollEnabled ?? true}
                     data={posts}
                     keyExtractor={(post) => post._id}
                     renderItem={renderPost}
