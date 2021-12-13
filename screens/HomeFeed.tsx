@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { RootTabParamList } from '../types';
 import { StyleSheet } from 'react-native';
 import { PostFeed } from '../components/PostFeed/PostFeed';
@@ -211,6 +211,14 @@ export default function HomeFeed({
                 setIsRefreshing(false);
             });
     }
+    const placeHolder = ({ item, index, separators }: any) => (
+        <View style={styles.textView}>
+            <FadeText style={styles.text}>
+                Your feed is empty, try following some people through the search
+                tab!
+            </FadeText>
+        </View>
+    );
 
     async function getMyFeedMore() {
         if (!posts) {
@@ -232,6 +240,7 @@ export default function HomeFeed({
                 setIsLoadingMore(false);
             });
     }
+    
 
     return (
         <View style={styles.container}>
@@ -247,12 +256,13 @@ export default function HomeFeed({
                     onEndReached={getMyFeedMore}
                 />
             ) : (
-                <View style={styles.textView}>
-                    <FadeText style={styles.text}>
-                        Your feed is empty, try following some people through
-                        the search tab!
-                    </FadeText>
-                </View>
+                <FlatList
+                    data={[1]
+                    }
+                    renderItem={placeHolder}
+                    onRefresh={getMyFeed}
+                    refreshing={isRefreshing}
+                ></FlatList>
             )}
             {posts && showCommentsModal ? (
                 <CommentsModal
