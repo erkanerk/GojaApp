@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
 import { CancelNavigator } from '../../navigation/components/CancelNavigator';
-import { PostType } from '../../constants/types/PostType';
+import { RecordType } from '../../constants/types/RecordType';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootTabParamList } from '../../types';
 
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
-
     },
     postView: {
         flex: 1,
@@ -62,61 +61,60 @@ interface PropTypes {
     postToBackend: () => Promise<void>;
     canPost: boolean;
     navigation: NativeStackNavigationProp<RootTabParamList, 'FeedTab'>;
-    recordingScreenType: PostType;
+    recordingScreenType: RecordType;
 }
 
-export const TopBar = ({ 
-    postToBackend, 
-    canPost, 
+export const TopBar = ({
+    postToBackend,
+    canPost,
     navigation,
     recordingScreenType,
 }: PropTypes) => {
-
     function handleOnPressClose() {
-        console.log('Left button pressed')
-        navigation.goBack()
+        console.log('Left button pressed');
+        navigation.goBack();
     }
 
     function handleOnPressPost() {
-        console.log('Right button pressed')
+        console.log('Right button pressed');
         if (canPost) {
-            postToBackend()
-            navigation.navigate('FeedTab')
+            postToBackend();
+            navigation.navigate('FeedTab');
         }
     }
 
     function conditionalRender() {
-        if (recordingScreenType === PostType.REGISTER && !canPost) {
+        if (recordingScreenType === RecordType.REGISTER && !canPost) {
             return (
                 <View style={styles.notReadyView}>
                     <Text style={styles.notReadyText}>Done</Text>
                 </View>
             );
-        } else if (recordingScreenType === PostType.REGISTER && canPost) {
+        } else if (recordingScreenType === RecordType.REGISTER && canPost) {
             return (
                 <View style={styles.readyView}>
                     <Text style={styles.readyText}>Done</Text>
                 </View>
             );
-        } else if (recordingScreenType === PostType.POST && canPost) {
+        } else if (recordingScreenType === RecordType.POST && canPost) {
             return (
                 <View style={styles.readyView}>
                     <Text style={styles.readyText}>Post</Text>
                 </View>
             );
-        } else if (recordingScreenType === PostType.POST && !canPost) {
+        } else if (recordingScreenType === RecordType.POST && !canPost) {
             return (
                 <View style={styles.notReadyView}>
                     <Text style={styles.notReadyText}>Post</Text>
                 </View>
             );
-        } else if (recordingScreenType === PostType.ANSWER && canPost) {
+        } else if (recordingScreenType === RecordType.ANSWER && canPost) {
             return (
                 <View style={styles.readyView}>
                     <Text style={styles.readyText}>Reply</Text>
                 </View>
             );
-        } else if (recordingScreenType === PostType.ANSWER && !canPost) {
+        } else if (recordingScreenType === RecordType.ANSWER && !canPost) {
             return (
                 <View style={styles.notReadyView}>
                     <Text style={styles.notReadyText}>Reply</Text>
@@ -128,22 +126,22 @@ export const TopBar = ({
     return (
         <View style={styles.container}>
             <View style={styles.closeView}>
-                <Pressable
-                onPress={handleOnPressClose}>
-                    {recordingScreenType === PostType.REGISTER
-                    ?
-                    <CancelNavigator />
-                    :
-                    <Feather name="x" size={24} color="black" />
-                    }
+                <Pressable onPress={handleOnPressClose}>
+                    {recordingScreenType === RecordType.REGISTER ? (
+                        <CancelNavigator />
+                    ) : (
+                        <Feather name="x" size={24} color="black" />
+                    )}
                 </Pressable>
             </View>
             <View style={styles.iconView}>
-                <Image style={styles.icon} source={require('../../assets/images/parrot.png')}/> 
+                <Image
+                    style={styles.icon}
+                    source={require('../../assets/images/parrot.png')}
+                />
             </View>
             <View style={styles.postView}>
-                <Pressable
-                onPress={handleOnPressPost}>
+                <Pressable onPress={handleOnPressPost}>
                     {conditionalRender()}
                 </Pressable>
             </View>

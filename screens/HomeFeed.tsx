@@ -13,6 +13,7 @@ import { AVPlaybackStatus } from 'expo-av';
 import useAudio from '../hooks/useAudio';
 import { FadeText } from '../components/FadeText/FadeText';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RecordType } from '../constants/types/RecordType';
 
 export const styles = StyleSheet.create({
     container: {
@@ -38,10 +39,7 @@ interface Props {
     navigation: NativeStackNavigationProp<RootTabParamList, 'FeedTab'>;
 }
 
-export default function HomeFeed({
-    route,
-    navigation,
-}:Props) {
+export default function HomeFeed({ route, navigation }: Props) {
     const globalCtx = useContext(AppContext);
     const [posts, setPosts] = useState<Post[] | undefined>(undefined);
     const isFocused = useIsFocused();
@@ -207,7 +205,7 @@ export default function HomeFeed({
             console.log(modalVisible);
             console.log(answerInfo);
             navigation.navigate('RecordModal', {
-                recordingScreenType: PostType.ANSWER,
+                recordingScreenType: RecordType.ANSWER,
                 answerInfo: answerInfo,
             });
         }
@@ -300,6 +298,8 @@ export default function HomeFeed({
                             playPausePost={playPausePost}
                             playNextPost={playNextPost}
                             playPreviousPost={playPreviousPost}
+                            setReplyFromComment={setReplyFromComment}
+                            showComments={showComments}
                         />
                     ) : null}
                 </View>

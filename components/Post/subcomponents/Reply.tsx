@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import { PostType } from '../../../constants/types/PostType';
+import { RecordType } from '../../../constants/types/RecordType';
 
 const styles = StyleSheet.create({
     container: {
@@ -36,7 +36,7 @@ export const Reply = ({ post, hideComments }: Props) => {
             hideComments(answerInfo);
         } else {
             navigation.navigate('RecordModal', {
-                recordingScreenType: PostType.ANSWER,
+                recordingScreenType: RecordType.ANSWER,
                 answerInfo: answerInfo,
             });
         }
