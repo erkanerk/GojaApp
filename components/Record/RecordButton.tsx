@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { Audio, AVPlaybackStatus } from 'expo-av';
-import { Feather } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons'; 
+import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
     container: {
@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-
     },
     recordView: {
         flex: 1,
@@ -47,16 +46,33 @@ const styles = StyleSheet.create({
 interface PropTypes {
     recordingURISetter: any;
     recordingURIP: any;
+    lengthOfAudio?: number;
 }
 
 export const RecordButton = ({
     recordingURISetter,
     recordingURIP,
+    lengthOfAudio = 10,
 }: PropTypes) => {
     const [recording, setRecording] = useState<any | null>(null);
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
-    
+    const [timer, setTimer] = useState<number | null>(null);
+    let onionTime;
+
+    useEffect(() => {
+        if (timer !== null && timer > 0) {
+            onionTime = setTimeout(() => setTimer(timer - 1), 1000);
+        } else if (timer === 0 && recording !== undefined) {
+            stopRecording();
+        } else {
+            console.log('Time is out');
+        }
+        return () => {
+            clearTimeout(onionTime);
+        };
+    }, [recording, timer]);
+
     function onPlaybackStatusUpdate(playbackStatus: AVPlaybackStatus) {
         if (!playbackStatus.isLoaded) {
             // Updating UI for the unloaded state
@@ -85,6 +101,7 @@ export const RecordButton = ({
             );
             setRecording(recording);
             console.log('Recording started');
+            setTimer(lengthOfAudio);
         } catch (err) {
             console.error('Failed to start recording', err);
         }
@@ -97,6 +114,7 @@ export const RecordButton = ({
         const uri = recording.getURI();
         recordingURISetter(uri);
         console.log('Recording stopped and stored at', uri);
+        setTimer(null);
     }
 
     async function playSound() {
@@ -140,33 +158,59 @@ export const RecordButton = ({
         <View style={styles.container}>
             <View style={styles.iconsView}>
                 <View style={styles.deleteView}>
-                    {recordingURIP ?
-                    <Pressable
-                    onPress={deleteSound}>
-                        <Feather name="trash-2" size={40} color="red" />
-                    </Pressable>
-                        
-                    : null}
+                    {recordingURIP ? (
+                        <Pressable onPress={deleteSound}>
+                            <Feather name="trash-2" size={40} color="red" />
+                        </Pressable>
+                    ) : null}
                 </View>
                 <View style={styles.recordView}>
-                    {recordingURIP ?
-                    <Pressable onPress={isPlaying ? pauseSound : playSound}>  
-                        <FontAwesome name={isPlaying ? 'pause' : 'play'} size={70} color="red" />
-                    </Pressable>                  
-                    :
-                    <Pressable
-                    style={styles.recordIcon}
-                    onPress={recording ? stopRecording : startRecording} />
-                    }
+                    {recordingURIP ? (
+                        <Pressable onPress={isPlaying ? pauseSound : playSound}>
+                            <FontAwesome
+                                name={isPlaying ? 'pause' : 'play'}
+                                size={70}
+                                color="red"
+                            />
+                        </Pressable>
+                    ) : (
+                        <Pressable
+                            style={styles.recordIcon}
+                            onPress={recording ? stopRecording : startRecording}
+                        >
+                            <View
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    paddingTop: 15,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: 30,
+                                        color: '#2ECA6F',
+                                    }}
+                                >
+                                    {timer && timer}
+                                </Text>
+                            </View>
+                        </Pressable>
+                    )}
                 </View>
                 <View style={styles.spaceView} />
             </View>
             <View style={styles.textView}>
-                {recordingURIP ?
-                <Text style={styles.text}>{isPlaying ? 'Pause' : 'Play recording'}</Text>
-                :
-                <Text style={styles.text}>{recording ? 'Stop Recording' : 'Tap to record'}</Text>
-                }
+                {recordingURIP ? (
+                    <Text style={styles.text}>
+                        {isPlaying ? 'Pause' : 'Play recording'}
+                    </Text>
+                ) : (
+                    <Text style={styles.text}>
+                        {recording ? 'Stop Recording' : 'Tap to record'}
+                    </Text>
+                )}
             </View>
         </View>
     );
