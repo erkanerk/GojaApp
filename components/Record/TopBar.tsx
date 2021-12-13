@@ -78,8 +78,11 @@ export const TopBar = ({
     async function handleOnPressPost() {
         console.log('Right button pressed');
         if (canPost) {
-            await postToBackend();
-            navigation.navigate('FeedTab');
+            await postToBackend(); 
+            if (recordingScreenType !== PostType.REGISTER){
+                navigation.navigate('FeedTab');
+            }
+
         }
     }
 
