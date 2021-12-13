@@ -81,7 +81,9 @@ export const TopBar = ({
         console.log('Right button pressed')
         if (canPost) {
             postToBackend()
-            navigation.navigate('FeedTab')
+            if (recordingScreenType !== PostType.REGISTER){
+                navigation.navigate('FeedTab');
+            }
         }
     }
 
