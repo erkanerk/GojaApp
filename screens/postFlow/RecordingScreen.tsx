@@ -61,9 +61,12 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
     const recordingScreenType = route.params.recordingScreenType;
     const answerInfo = route.params.answerInfo;
 
+    let lengthOfAudioClip = 10;
+
     let endPoint = '/posts';
     if (recordingScreenType === RecordType.REGISTER) {
         endPoint = '/users/add-profile-audio';
+        lengthOfAudioClip = 3;
     }
     const profilePic = globalCtx.userInfo.profilePicture;
 
@@ -146,6 +149,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
                     <RecordButton
                         recordingURISetter={setRecordingURI}
                         recordingURIP={recordingURI}
+                        lengthOfAudio={lengthOfAudioClip}
                     />
                 </View>
             </KeyboardAvoidingView>

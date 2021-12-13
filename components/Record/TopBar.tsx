@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Feather } from '@expo/vector-icons'; 
+import { Feather } from '@expo/vector-icons';
 import { CancelNavigator } from '../../navigation/components/CancelNavigator';
 import { RecordType } from '../../constants/types/RecordType';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -75,11 +75,13 @@ export const TopBar = ({
         navigation.goBack();
     }
 
-    function handleOnPressPost() {
+    async function handleOnPressPost() {
         console.log('Right button pressed');
         if (canPost) {
-            postToBackend();
-            navigation.navigate('FeedTab');
+            await postToBackend();
+            if (recordingScreenType !== RecordType.REGISTER) {
+                navigation.navigate('FeedTab');
+            }
         }
     }
 
