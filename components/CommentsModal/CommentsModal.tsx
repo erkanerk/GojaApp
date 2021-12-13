@@ -104,6 +104,7 @@ export const CommentsModal = ({
     return (
         <View>
             <Modal
+                propagateSwipe
                 style={styles.modalStyle}
                 isVisible={modalVisible}
                 swipeDirection="down"
@@ -121,6 +122,7 @@ export const CommentsModal = ({
                             focusedPostIndex={focusedPostIndexRoot}
                             setFocusedPostIndex={setFocusedPostIndexRoot}
                             hideComments={hideComments}
+                            scrollEnabled={false}
                         />
                     </View>
                     <View style={styles.replies}>

@@ -49,6 +49,7 @@ interface Props {
     onRefresh?: () => Promise<void> | undefined;
     refreshing?: boolean | undefined;
     onEndReached?: () => Promise<void> | undefined;
+    scrollEnabled?: boolean;
 }
 
 export const PostFeed = ({
@@ -61,10 +62,12 @@ export const PostFeed = ({
     onRefresh,
     refreshing,
     onEndReached,
+    scrollEnabled,
 }: Props) => {
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
     const [soundDuration, setSoundDuration] = useState<number | undefined>(
         undefined
     );
@@ -97,6 +100,7 @@ export const PostFeed = ({
         <View style={styles.container}>
             <View style={styles.feedView}>
                 <FlatList
+                    scrollEnabled={scrollEnabled ?? true}
                     data={posts}
                     keyExtractor={(post) => post._id}
                     renderItem={renderPost}
