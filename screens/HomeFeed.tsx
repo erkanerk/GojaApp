@@ -46,6 +46,9 @@ export default function HomeFeed({
     const [posts, setPosts] = useState<Post[] | undefined>(undefined);
     const isFocused = useIsFocused();
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [replyFromComment, setReplyFromComment] = useState<boolean>(false);
+    const [answerInfo, setAnswerInfo] = useState<boolean>(false);
+
     const [showCommentsModal, setShowCommentsModal] = useState<
         Post | undefined
     >(undefined);
@@ -188,20 +191,36 @@ export default function HomeFeed({
         setModalVisible(true);
         setShowCommentsModal(post);
     };
+    const hideComments = (answerInfo) => {
+        setModalVisible(false);
+        setAnswerInfo(answerInfo);
+    };
 
-      useEffect(() => {
-        if(!posts || posts.length < 1){
-          getMyFeed();
+    useEffect(() => {
+        if (!posts || posts.length < 1) {
+            getMyFeed();
         }
-      }, [isFocused]);
+    }, [isFocused]);
+
+    useEffect(() => {
+        if (!modalVisible && answerInfo) {
+            console.log(modalVisible);
+            console.log(answerInfo);
+            navigation.navigate('RecordModal', {
+                recordingScreenType: PostType.ANSWER,
+                answerInfo: answerInfo,
+            });
+        }
+        setReplyFromComment(false);
+    }, [replyFromComment]);
 
     async function getMyFeed() {
         setIsRefreshing(true);
         APIKit.get('/posts/my-feed')
             .then((response) => {
-                const onlyOriginalPosts = response.data.filter( post => 
-                    post.inReplyToPostId == null
-                  );
+                const onlyOriginalPosts = response.data.filter(
+                    (post) => post.inReplyToPostId == null
+                );
                 setPosts(onlyOriginalPosts);
                 setIsRefreshing(false);
             })
@@ -220,9 +239,9 @@ export default function HomeFeed({
         const minDate = posts[posts.length - 1]['created_at'];
         APIKit.get('/posts/my-feed/more/' + minDate)
             .then((response) => {
-                const onlyOriginalPosts = response.data.filter( post => 
-                    post.inReplyToPostId == null
-                  );
+                const onlyOriginalPosts = response.data.filter(
+                    (post) => post.inReplyToPostId == null
+                );
                 setPosts(posts.concat(onlyOriginalPosts));
                 setIsLoadingMore(false);
             })
@@ -259,6 +278,8 @@ export default function HomeFeed({
                     post={showCommentsModal}
                     setModalVisible={setModalVisible}
                     modalVisible={modalVisible}
+                    hideComments={hideComments}
+                    setReplyFromComment={setReplyFromComment}
                 />
             ) : null}
 

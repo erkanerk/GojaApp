@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
@@ -19,19 +19,27 @@ const styles = StyleSheet.create({
 
 interface Props {
     post: Post;
+    hideComments?: (arg0: any) => void;
 }
 
-export const Reply = ({ post }: Props) => {
+export const Reply = ({ post, hideComments }: Props) => {
     const navigation = useNavigation();
 
     const answerInfo = {
         answerId: post._id,
         imageUrl: post.user.profilePicture,
         username: post.user.userName,
-        hashtags: post.hashtags
+        hashtags: post.hashtags,
     };
     function handleOnPress() {
-        navigation.navigate('RecordModal', { recordingScreenType: PostType.ANSWER, answerInfo:answerInfo })
+        if (hideComments) {
+            hideComments(answerInfo);
+        } else {
+            navigation.navigate('RecordModal', {
+                recordingScreenType: PostType.ANSWER,
+                answerInfo: answerInfo,
+            });
+        }
     }
 
     return (

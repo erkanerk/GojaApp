@@ -43,6 +43,7 @@ interface Props {
     posts: Post[] | undefined;
     postType?: PostType;
     showComments?: (arg0: Post) => void;
+    hideComments?: (arg0: any) => void;
     focusedPostIndex: number | undefined;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
     onRefresh?: () => Promise<void> | undefined;
@@ -54,6 +55,7 @@ export const PostFeed = ({
     posts,
     postType,
     showComments,
+    hideComments,
     focusedPostIndex,
     setFocusedPostIndex,
     onRefresh,
@@ -87,6 +89,7 @@ export const PostFeed = ({
             focusedPostIndex={focusedPostIndex}
             setFocusedPostIndex={setFocusedPostIndex}
             showComments={showComments}
+            hideComments={hideComments}
         />
     );
 

@@ -29,16 +29,16 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     topBarView: {
-        marginTop: Constants.statusBarHeight*1.2,
+        marginTop: Constants.statusBarHeight * 1.2,
     },
-    informationView: { 
-        marginTop: 50 
+    informationView: {
+        marginTop: 50,
     },
-    recordButtonView: { 
-        marginBottom: 20 
+    recordButtonView: {
+        marginBottom: 20,
     },
-    hashtagsView: { 
-        marginBottom: 20 
+    hashtagsView: {
+        marginBottom: 20,
     },
 });
 
@@ -53,10 +53,7 @@ interface PropTypes {
     navigation: NativeStackNavigationProp<RootTabParamList, 'FeedTab'>;
 }
 
-export const RecordingScreen = ({
-    route,
-    navigation,
-}: PropTypes) => {
+export const RecordingScreen = ({ route, navigation }: PropTypes) => {
     const [hashtags, setHashtags] = useState<string>('');
     const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
     const [canPost, setCanPost] = useState<boolean>(false);
@@ -87,7 +84,7 @@ export const RecordingScreen = ({
         setCanPost(false);
         setRecordingURI(null);
         if (recordingScreenType === PostType.REGISTER) {
-            globalCtx.setLoggedIn(true)
+            globalCtx.setLoggedIn(true);
             globalCtx.setUserInfo({
                 ...globalCtx.userInfo,
                 profileAudio: audioUrl,
@@ -96,6 +93,7 @@ export const RecordingScreen = ({
     };
 
     useEffect(() => {
+        console.log('recording screen');
         if (recordingURI !== null) {
             setCanPost(true);
         } else {
@@ -104,9 +102,11 @@ export const RecordingScreen = ({
     }, [recordingURI]);
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>           
-            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
-
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            >
                 <View style={styles.topBarView}>
                     <TopBar
                         postToBackend={postPostToBackend}
@@ -120,9 +120,10 @@ export const RecordingScreen = ({
                     {recordingScreenType === PostType.POST && profilePic && (
                         <OnlyPicture pictureUrl={profilePic} />
                     )}
-                    {recordingScreenType === PostType.REGISTER && profilePic && (
-                        <TextAndPictures pictureUrl={profilePic} />
-                    )}
+                    {recordingScreenType === PostType.REGISTER &&
+                        profilePic && (
+                            <TextAndPictures pictureUrl={profilePic} />
+                        )}
                     {recordingScreenType === PostType.ANSWER && (
                         <AnswerTo
                             imageUrl={answerInfo?.imageUrl}

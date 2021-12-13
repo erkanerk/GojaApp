@@ -53,12 +53,16 @@ interface Props {
     post: Post;
     setModalVisible: Dispatch<SetStateAction<boolean>>;
     modalVisible: boolean;
+    hideComments?: (arg0: any) => void;
+    setReplyFromComment: Dispatch<SetStateAction<boolean>>;
 }
 
 export const CommentsModal = ({
     post,
     setModalVisible,
     modalVisible,
+    hideComments,
+    setReplyFromComment,
 }: Props) => {
     const [replies, setReplies] = useState<Post[] | undefined>(undefined);
     const [focusedPostIndexReplies, setFocusedPostIndexReplies] = useState<
@@ -105,6 +109,7 @@ export const CommentsModal = ({
                 swipeDirection="down"
                 onSwipeComplete={() => setModalVisible(false)}
                 onBackdropPress={() => setModalVisible(false)}
+                onModalHide={() => setReplyFromComment(true)}
                 backdropOpacity={0}
                 hasBackdrop={true}
             >
@@ -115,6 +120,7 @@ export const CommentsModal = ({
                             postType={PostType.COMMENT_PARENT}
                             focusedPostIndex={focusedPostIndexRoot}
                             setFocusedPostIndex={setFocusedPostIndexRoot}
+                            hideComments={hideComments}
                         />
                     </View>
                     <View style={styles.replies}>
