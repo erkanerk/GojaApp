@@ -20,7 +20,7 @@ async function createPost(
     const uriParts = recordingURIP.split('.');
     const fileType = '.' + uriParts[uriParts.length - 1];
 
-    FileSystem.uploadAsync(apiUrl, recordingURIP, {
+    return FileSystem.uploadAsync(apiUrl, recordingURIP, {
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
         fieldName: 'file',
         headers: {
@@ -51,9 +51,9 @@ async function createPost(
                     url: urlNoQuotes,
                 };
             }
-            APIKit.post(endPoint, payload)
-                .then((response) => {
-                    return response.data.url;
+            return APIKit.post(endPoint, payload)
+                .then(() => {
+                    return urlNoQuotes;
                 })
                 .catch((error) => {
                     onFailure(error, c);
