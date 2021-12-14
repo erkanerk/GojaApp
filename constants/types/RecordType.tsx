@@ -1,4 +1,4 @@
-export enum PostType {
+export enum RecordType {
     REGISTER,
     POST,
     ANSWER,
