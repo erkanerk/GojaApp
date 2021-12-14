@@ -6,6 +6,8 @@ import AppContext from "../../shared/AppContext";
 import { useIsFocused } from "@react-navigation/native";
 import { FadeText } from "../FadeText/FadeText";
 import { User } from "../User/User";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types";
 
 export const styles = StyleSheet.create({
     container: {
@@ -27,16 +29,18 @@ export const styles = StyleSheet.create({
 
 interface Props {
     userId: string | undefined
+    navigation: NativeStackNavigationProp<RootStackParamList, "ProfileScreen">
 }
 
 export const FollowersFeed = ({
-    userId
+    userId,
+    navigation,
 }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const isFocused = useIsFocused();
     const [users, setUsers] = useState<Follower[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
-    const showFollowButton = userId == globalCtx.userInfo._id ? true : false;
+    const myProfilePage = userId == globalCtx.userInfo._id ? true : false;
 
     async function getFollowers() {
         setIsLoading(true);
@@ -75,7 +79,8 @@ export const FollowersFeed = ({
         <User 
         user={item} 
         following={item.isMutualFollowers}
-        showFollowButton={showFollowButton} />
+        showFollowButton={myProfilePage} 
+        navigation={navigation}/>
     );
 
     return (
@@ -89,7 +94,9 @@ export const FollowersFeed = ({
             </View>
             ) : (
             <View style={styles.textView}>
-                <FadeText style={styles.text}>Your followers will show up here!</FadeText>
+                <FadeText style={styles.text}>
+                {myProfilePage ? 'Your followers will show up here!' : 'The users has no followers'}
+                </FadeText>
             </View>
             )}
         </View>

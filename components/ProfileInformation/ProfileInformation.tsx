@@ -12,6 +12,12 @@ export const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
     },
+    spinner: {
+        marginTop: 100,
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     image: {
         width: 120,
         height: 120,
@@ -102,8 +108,12 @@ export const ProfileInformation = ({
         } 
     }, [isFocused]);
 
-    if (!profile) {
-        return <ActivityIndicator size="large" color={'lightgray'} />;
+    if (!profile || isLoading) {
+        return (
+            <View style={styles.spinner}>
+                <ActivityIndicator size="large" color={'lightgray'} />
+            </View>
+        )
     }
 
     return (

@@ -15,7 +15,7 @@ export const FadeText = ({
     const config  = {
         toValue: 1,
         duration: 350,
-        delay: 50,
+        delay: 100,
         useNativeDriver: true,
     }
     Animated.timing(fadeAnim, config).start();

@@ -43,7 +43,7 @@ export const ProfileFeed = ({ userId }: Props) => {
         number | undefined
     >(undefined);
     const sound = useAudio(focusedPostIndex, posts);
-
+    const myProfilePage = userId == globalCtx.userInfo._id ? true : false;
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [showCommentsModal, setShowCommentsModal] = useState<
         Post | undefined
@@ -131,7 +131,7 @@ export const ProfileFeed = ({ userId }: Props) => {
             ) : (
                 <View style={styles.textView}>
                     <FadeText style={styles.text}>
-                        Record some audio and see all your posts here!
+                    {myProfilePage ? 'Record some audio and see all your posts here!' : 'The users has no posts'}
                     </FadeText>
                 </View>
             )}
