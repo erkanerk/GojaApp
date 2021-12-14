@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
     },
     feedView: {
-
+        flex: 1,
     },
     text: {
         fontSize: 12,
