@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { View } from "react-native";
-import { PostType } from "../../constants/types/PostType";
+import { RecordType } from "../../constants/types/RecordType";
 import { RootTabParamList, RootTabScreenProps } from "../../types";
 import { RecordNavigator } from "../components/RecordNavigator";
 import { HomeStackScreen } from "./HomeStackScreen";
@@ -52,7 +52,7 @@ export function BottomTabNavigator() {
             listeners={({ navigation }: RootTabScreenProps<'RecordTab'>) => ({
                 tabPress: (e) => {
                     e.preventDefault()
-                    navigation.navigate('RecordModal', { recordingScreenType: PostType.POST })
+                    navigation.navigate('RecordModal', { recordingScreenType: RecordType.POST })
                 },
                 })}
             />

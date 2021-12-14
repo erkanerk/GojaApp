@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { PostType } from "../../constants/types/PostType";
+import { RecordType } from "../../constants/types/RecordType";
 import AuthScreen from "../../screens/AuthScreen";
 import ChoosePic from "../../screens/ChoosePic";
 import { RecordingScreen } from "../../screens/postFlow/RecordingScreen";
@@ -35,7 +35,7 @@ export function AuthNavigator() {
             <AuthStack.Screen
                 name="RecordProfileSound"
                 component={RecordingScreen}
-                initialParams={{ recordingScreenType: PostType.REGISTER}}
+                initialParams={{ recordingScreenType: RecordType.REGISTER }}
                 options={{ headerShown: false }} />
         </AuthStack.Navigator>
     );

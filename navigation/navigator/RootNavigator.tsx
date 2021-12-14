@@ -1,11 +1,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { PostType } from "../../constants/types/PostType";
 import ModalScreen from "../../screens/ModalScreen";
 import NotFoundScreen from "../../screens/NotFoundScreen";
 import { RecordingScreen } from "../../screens/postFlow/RecordingScreen";
 import { RootStackParamList } from "../../types";
 import { BottomTabNavigator } from "./BottomTabNavigator";
+import { RecordType } from '../../constants/types/RecordType';
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -30,7 +30,7 @@ export function RootNavigator() {
 
             <Stack.Screen 
                 name={'RecordModal'}
-                initialParams={{  recordingScreenType: PostType.POST }}
+                initialParams={{  recordingScreenType: RecordType.POST }}
                 component={RecordingScreen}
                 options={{ headerShown: false }}
             />
