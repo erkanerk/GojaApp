@@ -58,12 +58,15 @@ export const FollowButton = ({
     const [isFollowing, setIsFollowing] = useState<boolean>(following)
     
     async function followUser() {
-        setIsLoading(true)
-        console.log('Following user')
+        if (isLoading) {
+            return;
+        }
+        setIsFollowing(true);
+        setIsLoading(true);
+        console.log('Following user');
         const payload = { userToFollow: userId }
         APIKit.post("/users/follow", payload)
         .then((response) => {
-            setIsFollowing(true);
             if (currentCount && setCount && onMyProfile) {
                 setCount(currentCount+1);
             }
@@ -73,16 +76,20 @@ export const FollowButton = ({
             onFailure(error, globalCtx);
             console.log(error && error);
             setIsLoading(false);
+            setIsFollowing(false);
         });
     }
 
     async function unfollowUser() {
+        if (isLoading){
+            return;
+        }
+        setIsFollowing(false);
         setIsLoading(true)
         console.log('Unfollowing user')
         const payload = { userToUnfollow: userId }
         APIKit.post("/users/unfollow", payload)
         .then((response) => {
-            setIsFollowing(false);
             if (currentCount && setCount && onMyProfile) {
                 setCount(currentCount-1);
             }
@@ -92,6 +99,7 @@ export const FollowButton = ({
             onFailure(error, globalCtx);
             console.log(error && error);
             setIsLoading(false);
+            setIsFollowing(true);
         });
     }
 

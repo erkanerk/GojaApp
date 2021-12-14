@@ -1,8 +1,15 @@
 import React, { useContext } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import { Keyboard, View, Text, FlatList } from 'react-native';
 import AppContext from '../../shared/AppContext';
 import { User } from '../User/User';
 import {UserFromSearch} from './data_models/User'
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+    feedView: {
+        flex: 1,
+    },
+});
 
 interface PropTypes {
     UsersToRender: UserFromSearch[]
@@ -19,12 +26,14 @@ export const SearchResultUser = ({UsersToRender}: PropTypes) => {
     );
 
     return (
-        <View>
+        <View style={styles.feedView}>
             {UsersToRender ? (
                 <FlatList
                     data={UsersToRender}
                     keyExtractor={(user) => user.userId}
                     renderItem={renderItem}
+                    keyboardDismissMode="on-drag"
+                    keyboardShouldPersistTaps="handled"
                 />
             ) : (
                 <Text>NO Search results</Text>

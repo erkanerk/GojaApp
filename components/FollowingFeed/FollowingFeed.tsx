@@ -16,7 +16,9 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    feedView: {},
+    feedView: {
+        flex: 1,
+    },
     text: {
         fontSize: 12,
         color: 'gray',

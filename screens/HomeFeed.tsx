@@ -279,10 +279,10 @@ export default function HomeFeed({ route, navigation }: Props) {
                 />
             ) : (
                 <FlatList
-                    data={[1]
-                    }
+                    data={[1]}
                     renderItem={placeHolder}
                     onRefresh={getMyFeed}
+                    keyExtractor={(item,index) => index.toString()}
                     refreshing={isRefreshing}
                 ></FlatList>
             )}
