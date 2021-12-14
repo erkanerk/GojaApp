@@ -36,9 +36,6 @@ export const Likes = ({
     const [likes, setLikes] = useState<number>(post.likes)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    // TODO: The name of the user of the application is not currently implemented
-    const tempUserName = "Yourself"
-
     // TODO: Maybe move this functionality to backend, preferably have it on post: post.isLikedByUser
     function likedByUser() {
       for (const like of post.likedByUsers) {
