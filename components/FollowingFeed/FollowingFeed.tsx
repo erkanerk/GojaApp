@@ -1,11 +1,13 @@
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
 import { useIsFocused } from "@react-navigation/native";
 import { FadeText } from "../FadeText/FadeText";
 import { User } from "../User/User";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types";
 
 export const styles = StyleSheet.create({
     container: {
@@ -27,18 +29,20 @@ interface Props {
     userId: string | undefined
     currentCount: number
     setCount: Dispatch<SetStateAction<number>>
+    navigation: NativeStackNavigationProp<RootStackParamList, "ProfileScreen">
 }
 
 export const FollowingFeed = ({
     userId,
     currentCount,
-    setCount
+    setCount,
+    navigation,
 }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const isFocused = useIsFocused();
     const [users, setUsers] = useState<Following[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
-    const showFollowButton = userId == globalCtx.userInfo._id ? true : false;
+    const myProfilePage = userId == globalCtx.userInfo._id ? true : false;
 
     async function getFollowing() {
         setIsLoading(true)
@@ -80,7 +84,8 @@ export const FollowingFeed = ({
         following={true}
         currentCount={currentCount}
         setCount={setCount} 
-        showFollowButton={showFollowButton} />
+        showFollowButton={myProfilePage} 
+        navigation={navigation}/>
     );
 
     return (
@@ -94,7 +99,9 @@ export const FollowingFeed = ({
             </View>
             ) : (
             <View style={styles.textView}>
-                <FadeText style={styles.text}>When you follow your friends they will show up here!</FadeText>
+                <FadeText style={styles.text}>
+                {myProfilePage ? 'When you follow your friends they will show up here!' : 'The users is not following any users'}
+                </FadeText>
             </View>
             )}
         </View>

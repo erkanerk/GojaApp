@@ -52,6 +52,7 @@ interface Props {
     showFollowButton?: boolean
     currentCount?: number
     setCount?: Dispatch<SetStateAction<number>>
+    navigation: any
 }
 
 export const User = ({ 
@@ -59,11 +60,11 @@ export const User = ({
     following = false,
     showFollowButton = true,
     currentCount,
-    setCount
+    setCount,
+    navigation
 }: Props) => {
-    const navigation = useNavigation();
     function handleOnPress() {
-        navigation.navigate('ProfileScreen', {userId: user.userId})
+        navigation.push('ProfileScreen', { userId: user.userId })
     }
 
     return (

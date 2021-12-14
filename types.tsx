@@ -31,6 +31,8 @@ export type RootStackParamList = {
     RecordProfileSound: { recordingScreenType: PostType};
     NotificationScreen: undefined;
     ProfileScreen: { userId: string };
+    SearchScreen: undefined;
+    HomeScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

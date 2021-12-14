@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { RootStackParamList } from "../types";
 import { StyleSheet } from "react-native";
 import { ProfileInformation } from "../components/ProfileInformation/ProfileInformation";
@@ -43,14 +43,16 @@ export default function ProfileScreen({ route, navigation }: Props) {
         if (tab == 0) {
             return (
                 <View style={styles.postsView}>
-                    <ProfileFeed userId={userId} />
+                    <ProfileFeed 
+                    userId={userId} />
                 </View>
             );
         } else if (tab == 1) {
             return (
                 <View style={styles.followersView}>
                     <FollowersFeed 
-                    userId={userId} />
+                    userId={userId} 
+                    navigation={navigation} />
                 </View>
             );
         } else if (tab == 2) {
@@ -59,12 +61,12 @@ export default function ProfileScreen({ route, navigation }: Props) {
                     <FollowingFeed 
                     userId={userId}
                     currentCount={followingCount}
-                    setCount={setFollowingCount} />
+                    setCount={setFollowingCount} 
+                    navigation={navigation} />
                 </View>
             );
         }
     }
-
     return (
         <View style={styles.container}>
             <View style={styles.profileView}>

@@ -15,13 +15,22 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: 'red',
     },
+    focusedRecordIcon: {
+        borderRadius: 25,
+        width: 50,
+        height: 50,
+        backgroundColor: 'red',
+    },
 }); 
 
+interface Props {
+    isFocused: boolean
+}
 
-export const RecordNavigator = () => {
+export const RecordNavigator = ({ isFocused }: Props) => {
     return (
     <View style={styles.container}>
-        <View style={styles.recordIcon}/>
+        <View style={isFocused ? styles.focusedRecordIcon : styles.recordIcon}/>
     </View>
     );
 }; 
