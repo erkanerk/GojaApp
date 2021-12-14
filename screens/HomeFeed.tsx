@@ -269,6 +269,7 @@ export default function HomeFeed({ route, navigation }: Props) {
             {posts && posts.length > 0 ? (
                 <PostFeed
                     focusedPostIndex={focusedPostIndex}
+                    isPlaying={isPlaying}
                     setFocusedPostIndex={setFocusedPostIndex}
                     showComments={showComments}
                     posts={posts}
