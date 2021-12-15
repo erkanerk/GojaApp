@@ -103,7 +103,7 @@ export const ProfileInformation = ({
     }
 
     useEffect(() => {
-        if (isFocused) {
+        if (isFocused && profile == undefined) {
             getProfileInformation()
         } 
     }, [isFocused]);
