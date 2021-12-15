@@ -71,7 +71,7 @@ export const ProfileInformation = ({
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        if (isFocused) {
+        if (isFocused && profile == undefined) {
             getProfileInformation()
         }
     }, [isFocused]);

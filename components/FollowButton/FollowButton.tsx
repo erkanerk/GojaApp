@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { Keyboard, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { APIKit, onFailure } from '../../shared/APIkit';
 import AppContext from '../../shared/AppContext';
@@ -54,6 +54,7 @@ export const FollowButton = ({
     const [isFollowing, setIsFollowing] = useState<boolean>(following)
     
     async function followUser() {
+        Keyboard.dismiss();
         if (isLoading) {
             return;
         }
@@ -74,6 +75,7 @@ export const FollowButton = ({
     }
 
     async function unfollowUser() {
+        Keyboard.dismiss();
         if (isLoading){
             return;
         }

@@ -219,6 +219,7 @@ export default function HomeFeed({ route, navigation }: Props) {
 
     async function getMyFeed() {
         setIsRefreshing(true);
+        setFocusedPostIndex(undefined);
         APIKit.get('/posts/my-feed')
             .then((response) => {
                 const onlyOriginalPosts = response.data.filter(

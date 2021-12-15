@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Keyboard, View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import AppContext from '../../shared/AppContext';
 import { User } from '../User/User';
 import {UserFromSearch} from './data_models/User'
