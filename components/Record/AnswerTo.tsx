@@ -39,7 +39,6 @@ export const AnswerTo = ({ imageUrl, username, hashtags }: PropTypes) => {
                         style={{
                             flexDirection: 'row',
                             justifyContent: 'center',
-                            alignItems: 'center',
                         }}
                     >
                         <Image
@@ -52,8 +51,8 @@ export const AnswerTo = ({ imageUrl, username, hashtags }: PropTypes) => {
                         />
                         <View style={{ marginLeft: 10 }}>
                             <Text style={{ marginBottom: 10 }}>{username}</Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                {hashtags.map((hashtag) => {
+                            <View style={{ flexDirection: 'row', maxWidth: 180, flexWrap: 'wrap' }}>
+                                {hashtags?.map((hashtag) => {
                                     return (
                                         <Text key={hashtag}>#{hashtag} </Text>
                                     );
