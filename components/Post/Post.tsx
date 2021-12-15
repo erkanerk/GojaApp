@@ -85,6 +85,7 @@ export enum PostType {
 interface Props {
     post: Post;
     isPlaying?: boolean;
+    isPaused?: boolean;
     postType?: PostType;
     index: number;
     focusedPostIndex: number | undefined;
@@ -96,6 +97,7 @@ interface Props {
 export const Post = ({
     post,
     isPlaying,
+    isPaused,
     postType,
     index,
     focusedPostIndex,
@@ -128,6 +130,16 @@ export const Post = ({
             setIsFocused(false);
         }
     }, [focusedPostIndex]);
+
+    useEffect(() => {
+        console.log(isFocused)
+        console.log(isPlaying)
+        console.log(isPaused)
+        if (isFocused && !isPlaying && !isPaused) {
+            console.log(index)
+            setFocusedPostIndex(index + 1)
+        }
+    }, [isPlaying]);
 
     const lottieRef = useRef<LottieView>(null);
 

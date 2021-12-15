@@ -55,6 +55,7 @@ export default function HomeFeed({ route, navigation }: Props) {
         Post | undefined
     >(undefined);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const [isPaused, setIsPaused] = useState<boolean>(false);
     const [soundDuration, setSoundDuration] = useState<number | undefined>(
         undefined
     );
@@ -143,6 +144,7 @@ export default function HomeFeed({ route, navigation }: Props) {
 
     async function playPost() {
         if (sound?._loaded) {
+            setIsPaused(false);
             await sound.playAsync();
         } else {
             console.log('error playing post');
@@ -159,6 +161,7 @@ export default function HomeFeed({ route, navigation }: Props) {
 
     async function pausePost() {
         if (sound?._loaded) {
+            setIsPaused(true);
             await sound.pauseAsync();
         } else {
             console.log('error pausing post');
@@ -270,6 +273,7 @@ export default function HomeFeed({ route, navigation }: Props) {
                 <PostFeed
                     focusedPostIndex={focusedPostIndex}
                     isPlaying={isPlaying}
+                    isPaused={isPaused}
                     setFocusedPostIndex={setFocusedPostIndex}
                     showComments={showComments}
                     posts={posts}

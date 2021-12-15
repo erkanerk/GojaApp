@@ -46,6 +46,7 @@ interface Props {
     hideComments?: (arg0: any) => void;
     focusedPostIndex: number | undefined;
     isPlaying?: boolean;
+    isPaused?: boolean;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
     onRefresh?: () => Promise<void> | undefined;
     refreshing?: boolean | undefined;
@@ -60,6 +61,7 @@ export const PostFeed = ({
     hideComments,
     focusedPostIndex,
     isPlaying,
+    isPaused,
     setFocusedPostIndex,
     onRefresh,
     refreshing,
@@ -80,6 +82,7 @@ export const PostFeed = ({
         <Post
             post={item}
             isPlaying={isPlaying}
+            isPaused={isPaused}
             postType={postType}
             index={index}
             focusedPostIndex={focusedPostIndex}

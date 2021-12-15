@@ -74,8 +74,7 @@ export const PlayCard = ({
             <View>
                 <SoundController
                     isLoading={isLoading}
-                    isPlaying={isPlaying}
-                    playPreviousPost={playPreviousPost}
+                    isPlaying={isPlaying}                    playPreviousPost={playPreviousPost}
                     playNextPost={playNextPost}
                     playPausePost={playPausePost}
                 />
