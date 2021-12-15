@@ -107,6 +107,7 @@ export const ProfileInformation = ({
     async function handleOnPressPicture() {
         if (profile) {
             const url = profile.profileAudio;
+            const fileType = profile.profileAudioFileType;
             const splitUrl = url.split('/');
             const lastItem = splitUrl[splitUrl.length - 1];
 
@@ -114,15 +115,17 @@ export const ProfileInformation = ({
                 allowsRecordingIOS: false,
                 playsInSilentModeIOS: true,
             });
-
-            const { uri } = await FileSystem.downloadAsync(url, FileSystem.documentDirectory + lastItem);
-            
-            const source = { uri: uri };
-            const { sound } = await Audio.Sound.createAsync(
-                { uri: source.uri },
-            );
-            await sound.playAsync();
-                
+            if (url && fileType) {
+                const { uri } = await FileSystem.downloadAsync(url, FileSystem.documentDirectory + lastItem + fileType);
+                console.log(uri);
+                const source = { uri: uri };
+                const { sound } = await Audio.Sound.createAsync(
+                    { uri: source.uri },
+                );
+                await sound.playAsync();
+            } else {
+                console.log("No profile audio availible");
+            }
         }
     }
     useEffect(() => {

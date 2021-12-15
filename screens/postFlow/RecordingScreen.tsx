@@ -76,7 +76,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
-        let audioUrl = await createPost(
+        let post = await createPost(
             recordingURI,
             arrayHashtags,
             endPoint,
@@ -90,7 +90,8 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
             globalCtx.setLoggedIn(true);
             globalCtx.setUserInfo({
                 ...globalCtx.userInfo,
-                profileAudio: audioUrl,
+                profileAudio: post?.url,
+                profileAudioFileType: post?.fileType 
             });
         }
     };

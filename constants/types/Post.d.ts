@@ -4,6 +4,7 @@ interface PostUser {
     userName: string;
     email: string;
     profileAudio: string;
+    profileAudioFileType: string;
     profilePicture: string;
 }
 interface Like {
