@@ -1,12 +1,11 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     nPostsView: {
         flex: 1,
@@ -26,62 +25,66 @@ export const styles = StyleSheet.create({
         color: 'black',
         fontWeight: 'bold',
         textAlign: 'center',
-    }
+    },
 });
 
 interface Props {
-    user: User
+    tab: number;
+    setTab: Dispatch<SetStateAction<number>>;
+    postCount: number;
+    followerCount: number;
+    followingCount: number;
 }
+
 export const Stats = ({ 
-    user
-}: Props) => {
-    const [nPostsIsPressed, setNPostsIsPressed] = useState<boolean>(true)
-    const [nFollowingIsPressed, setNFollowingIsPressed] = useState<boolean>(false)
-    const [nFollowersIsPressed, setNFollowersIsPressed] = useState<boolean>(false)
+    tab, 
+    setTab,
+    postCount,
+    followerCount,
+    followingCount
+ }: Props) => {
 
     function handleNPostsOnPress() {
-        console.log("Number of post button pressed")
-        setNPostsIsPressed(true)
-        setNFollowersIsPressed(false)
-        setNFollowingIsPressed(false)
+        setTab(0);
     }
     function handleNFollowersOnPress() {
-        console.log("Number of followers button pressed")
-        setNPostsIsPressed(false)
-        setNFollowersIsPressed(true)
-        setNFollowingIsPressed(false)
+        setTab(1);
     }
     function handleNFollowingOnPress() {
-        console.log("Number of following button pressed")
-        setNPostsIsPressed(false)
-        setNFollowersIsPressed(false)
-        setNFollowingIsPressed(true)
+        setTab(2);
     }
     return (
-    <View style={styles.container}>
-        <View style={styles.nPostsView}>
-            <Pressable
-            onPress={handleNPostsOnPress}>
-                <Text style={nPostsIsPressed ? styles.textFocused : styles.text}>Posts</Text>
-                <Text style={nPostsIsPressed ? styles.textFocused : styles.text}>{user.nPosts}</Text>
-            </Pressable>
+        <View style={styles.container}>
+            <View style={styles.nPostsView}>
+                <Pressable onPress={handleNPostsOnPress}>
+                    <Text style={tab === 0 ? styles.textFocused : styles.text}>
+                        Posts
+                    </Text>
+                    <Text style={tab === 0 ? styles.textFocused : styles.text}>
+                        {postCount}
+                    </Text>
+                </Pressable>
+            </View>
+            <View style={styles.nFollowersView}>
+                <Pressable onPress={handleNFollowersOnPress}>
+                    <Text style={tab === 1 ? styles.textFocused : styles.text}>
+                        Followers
+                    </Text>
+                    <Text style={tab === 1 ? styles.textFocused : styles.text}>
+                        {followerCount}
+                    </Text>
+                </Pressable>
+            </View>
+            <View style={styles.nFollowingView}>
+                <Pressable onPress={handleNFollowingOnPress}>
+                    <Text style={tab === 2 ? styles.textFocused : styles.text}>
+                        Following
+                    </Text>
+                    <Text style={tab === 2 ? styles.textFocused : styles.text}>
+                        {followingCount}
+                    </Text>
+                </Pressable>
+            </View>
         </View>
-        <View style={styles.nFollowersView}>
-            <Pressable
-            onPress={handleNFollowersOnPress}>
-                <Text style={nFollowersIsPressed ? styles.textFocused : styles.text}>Followers</Text>
-                <Text style={nFollowersIsPressed ? styles.textFocused : styles.text}>{user.nFollowers}</Text>
-            </Pressable>
-            
-        </View>
-        <View style={styles.nFollowingView}>
-            <Pressable
-            onPress={handleNFollowingOnPress}>
-                <Text style={nFollowingIsPressed ? styles.textFocused : styles.text}>Following</Text>
-                <Text style={nFollowingIsPressed ? styles.textFocused : styles.text}>{user.nFollowing}</Text>
-            </Pressable>
-        </View>
-    </View>
     );
-}
-
+};

@@ -1,21 +1,48 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React, { useContext } from 'react'
+import { Keyboard, View, Text, FlatList } from 'react-native';
+import AppContext from '../../shared/AppContext';
+import { User } from '../User/User';
 import {UserFromSearch} from './data_models/User'
+import { StyleSheet } from 'react-native';
 
-
-//THIS IS ONLY BOILERPLATE FOR RENDERING USERS, EVERYTHING WILL CHANGE in 
-//In this component
+export const styles = StyleSheet.create({
+    feedView: {
+        flex: 1,
+    },
+});
 
 interface PropTypes {
     UsersToRender: UserFromSearch[]
+    navigation: any
 }
 
-export const SearchResultUser = ({UsersToRender}: PropTypes) => {
+export const SearchResultUser = ({
+    UsersToRender,
+    navigation
+}: PropTypes) => {
+    const globalCtx = useContext(AppContext);
+
+    const renderItem = ({ item, index, separators }: any) => (
+        <User 
+        user={item} 
+        following={item.isFollowing}
+        showFollowButton={item.userId == globalCtx.userInfo._id ? false : true}
+        navigation={navigation}/>
+    );
+
     return (
-        <View>
-            {UsersToRender.length > 0 ? (UsersToRender.map((oneUser)=>{
-               return <Text key={oneUser._id}>{oneUser.userName}</Text>
-            })): (<Text>NO Search results</Text>)}
+        <View style={styles.feedView}>
+            {UsersToRender ? (
+                <FlatList
+                    data={UsersToRender}
+                    keyExtractor={(user) => user.userId}
+                    renderItem={renderItem}
+                    keyboardDismissMode="on-drag"
+                    keyboardShouldPersistTaps="handled"
+                />
+            ) : (
+                <Text>NO Search results</Text>
+            )}
         </View>
-    )
+    );  
 }

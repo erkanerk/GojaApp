@@ -1,141 +1,257 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { Dispatch, SetStateAction, useEffect, useState, useRef } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Likes } from '../Likes/Likes';
-import { Comments } from "./subcomponents/Comments";
+import { Comments } from './subcomponents/Comments';
+import { Reply } from './subcomponents/Reply';
+import CachedImage from 'expo-cached-image';
+import LottieView from "lottie-react-native";
 
 export const styles = StyleSheet.create({
     container: {
-        justifyContent: "center",
-        padding: 5,
-        margin: 10,
+        justifyContent: 'center',
+        padding: 12,
         borderRadius: 5,
         flexDirection: 'column',
+        backgroundColor: 'transparent',
     },
     userName: {
-        fontSize: 12,
+        fontSize: 18,
+        color: 'black',
     },
     focused_userName: {
-        fontSize: 12,
-        fontWeight: 'bold'
+        fontSize: 18,
+        color: '#059336',
+        fontWeight: 'bold',
+    },
+    animation: {
+        width: 25,
+        marginLeft: 3
     },
     profilePicture: {
-        width: 50,
-        height: 50,
+        width: 59,
+        height: 59,
+        borderRadius: 15,
     },
     pressableView: {
-        flexDirection: "row",    
+        flexDirection: 'row',
+        paddingBottom: 15,
+        backgroundColor: 'transparent',
     },
     hashtagView: {
-        flexDirection: "row",
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'flex-end',
     },
     hashtag: {
-        fontSize: 10,
+        fontSize: 15,
+        color: 'black',
     },
     focused_hashtag: {
-        fontSize: 10,
-        fontWeight: 'bold'
+        fontSize: 15,
+        color: '#059336',
+        fontWeight: 'bold',
     },
     pictureView: {
         flex: 2,
     },
     textView: {
-        flexDirection: "column",
+        flexDirection: 'column',
         flex: 7,
-        margin: 5,
+        marginLeft: 20,
     },
-    commentsView: {
-        flex: 2,
+    actionButton: {
         margin: 5,
+        justifyContent: 'flex-end',
     },
-    likesView: {
-        flex: 2,
-        margin: 5,
+    funkyStatus: {
+        fontSize: 20,
     },
     line: {
         borderBottomColor: 'lightgray',
+        opacity: 0.3,
         borderBottomWidth: 1,
-    }
-  }); 
+        width: 1,
+    },
+});
 
+export enum PostType {
+    MAIN,
+    COMMENT_PARENT,
+    COMMENT_CHILD,
+    PROFILE,
+}
 interface Props {
-    post: Post
-    index: number
-    focusedPostIndex: number | undefined
-    setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>
+    post: Post;
+    isPlaying?: boolean;
+    postType?: PostType;
+    index: number;
+    focusedPostIndex: number | undefined;
+    setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
+    showComments?: (arg0: Post) => void;
+    hideComments?: (arg0: any) => void;
 }
 
-export const Post = ({ 
+export const Post = ({
     post,
+    isPlaying,
+    postType,
     index,
     focusedPostIndex,
     setFocusedPostIndex,
+    showComments,
+    hideComments,
 }: Props) => {
-    const [isFocused, setIsFocused] = useState<boolean>(false)
+    const [isFocused, setIsFocused] = useState<boolean>(false);
+    const navigation = useNavigation();
 
-    function handleOnPress() {
+    function handleOnPressPicture() {
+        navigation.navigate('ProfileScreen', { userId: post.user._id });
+    }
+
+    function handleOnPressPost() {
         if (isFocused) {
-            console.log("Post pressed again, pausing sound")
-            setIsFocused(false)
-            setFocusedPostIndex(undefined)
+            setIsFocused(false);
+            setFocusedPostIndex(undefined);
         } else {
-            console.log("Post pressed, loading and playing sound")
-            setIsFocused(true)
-            setFocusedPostIndex(index)
+            setIsFocused(true);
+            setFocusedPostIndex(index);
         }
     }
 
     // TODO: Might not be the most optimal way of finding the focused post.
     useEffect(() => {
         if (focusedPostIndex == index) {
-            setIsFocused(true)
+            setIsFocused(true);
         } else {
-            setIsFocused(false)
+            setIsFocused(false);
         }
     }, [focusedPostIndex]);
 
+    const lottieRef = useRef<LottieView>(null);
+
     return (
-    <View style={styles.container}>
-        <Pressable
-        onPress={handleOnPress}
-        style={({ pressed }) => [
-            {backgroundColor: pressed
-                ? '#edf7fd'
-                : 'white'
-                }]}>
-            <View style={styles.pressableView}>
-                <View style={styles.pictureView}>
-                    <Image
-                    style={styles.profilePicture}
-                    source={{
-                        uri: post.user.profilePicture,
-                    }} 
-                    /> 
-                </View>
-                <View style={styles.textView}>
-                    <Text style={isFocused ? styles.focused_userName : styles.userName}>{post.user.userName}</Text>
-                    {post.hashtags && 
-                        <View style={styles.hashtagView}>
-                        {post.hashtags.map((hashtag, index) => 
-                            <Text key={index} style={isFocused ? styles.focused_hashtag : styles.hashtag}>#{hashtag}</Text>
+        <View style={styles.container}>
+            <Pressable
+                onPress={handleOnPressPost}
+                style={({ pressed }) => [
+                    { backgroundColor: pressed ? '#edf7fd' : 'transparent' },
+                ]}
+            >
+                <View style={styles.pressableView}>
+                    <Pressable onPress={handleOnPressPicture}>
+                        <View style={styles.pictureView}>
+                            <CachedImage
+                                style={styles.profilePicture}
+                                source={{
+                                    uri: post.user.profilePicture,
+                                }}
+                                cacheKey={post.user._id}
+                            />
+                        </View>
+                    </Pressable>
+                    <View style={styles.textView}>
+                        <View style={{flexDirection: "row"}}>
+                            <Text
+                                style={
+                                    isFocused
+                                        ? styles.focused_userName
+                                        : styles.userName
+                                }
+                            >
+                                {post.user.userName}
+                            </Text>
+                            {(isFocused  && isPlaying) &&
+                                <LottieView
+                                    autoPlay
+                                    loop={true}
+                                    ref={lottieRef}
+                                    source={require("../../assets/animations/soundwave.json")}
+                                    style={styles.animation}
+                                />
+                            }
+                        </View>
+                        
+                        {post.hashtags && (
+                            <View style={styles.hashtagView}>
+                                <Text numberOfLines={1}>
+                                    {post.hashtags.map((hashtag, index) => (
+                                        <Text
+                                            key={index}
+                                            style={
+                                                isFocused
+                                                    ? styles.focused_hashtag
+                                                    : styles.hashtag
+                                            }
+                                            numberOfLines={1}
+                                        >
+                                            #{hashtag}
+                                        </Text>
+                                    ))}
+                                </Text>
+                            </View>
                         )}
                     </View>
-                    }
+                    {postType == PostType.MAIN && (
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.actionButton}>
+                                <Comments
+                                    post={post}
+                                    showComments={showComments}
+                                />
+                            </View>
+                            {post.funkyStatus && (
+                                <View style={styles.actionButton}>
+                                    <Text style={styles.funkyStatus}>
+                                        {post.funkyStatus}
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+                    )}
+                    {postType == PostType.COMMENT_PARENT && (
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.actionButton}>
+                                <Likes post={post} />
+                            </View>
+                            <View style={styles.actionButton}>
+                                <Comments
+                                    post={post}
+                                    showComments={showComments}
+                                />
+                            </View>
+                            <View style={styles.actionButton}>
+                                <Reply
+                                    post={post}
+                                    hideComments={hideComments}
+                                />
+                            </View>
+                        </View>
+                    )}
+                    {postType == PostType.COMMENT_CHILD && (
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.actionButton}>
+                                <Likes post={post} />
+                            </View>
+                        </View>
+                    )}
+                    {postType == PostType.PROFILE && (
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.actionButton}>
+                                <Likes post={post} />
+                            </View>
+                            <View style={styles.actionButton}>
+                                <Comments
+                                    post={post}
+                                    showComments={showComments}
+                                />
+                            </View>
+                        </View>
+                    )}
                 </View>
-                <View style={styles.commentsView}>
-                    <Comments 
-                    post={post}
-                    />
-                </View>
-                <View style={styles.likesView}>
-                    <Likes 
-                    post={post}
-                    />
-                </View>
-            </View>
-        </Pressable>
-        <View style={styles.line} />
-    </View>
+            </Pressable>
+            <View style={styles.line} />
+        </View>
     );
-}; 
-
+};

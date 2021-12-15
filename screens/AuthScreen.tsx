@@ -9,39 +9,39 @@ import {
     TouchableWithoutFeedback,
 } from "react-native";
 
-import { RegisterForm } from "../components/Forms/RegisterForm/RegisterForm";
-import { LoginForm } from "../components/Forms/LoginForm/LoginForm";
-import { Text, View } from "../components/Themed";
+import { RegisterForm } from '../components/Forms/RegisterForm/RegisterForm';
+import { LoginForm } from '../components/Forms/LoginForm/LoginForm';
+import { Text, View } from '../components/Themed';
 
-export default function AuthScreen() {
+export default function AuthScreen({ navigation }) {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.container}
             >
                 <Image
                     style={styles.bigLogo}
-                    source={require("../assets/images/parrot.png")}
+                    source={require('../assets/images/parrot.png')}
                 />
                 <View style={styles.titleBox}>
                     <Text style={styles.title}>Goja</Text>
                 </View>
-                <FormTypeSwitcher />
+                <FormTypeSwitcher navigation={navigation} />
             </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     );
 }
 
-function FormTypeSwitcher() {
-    const [formType, setFormType] = useState("Login");
-    if (formType == "Login") {
+function FormTypeSwitcher({ navigation }) {
+    const [formType, setFormType] = useState('Login');
+    if (formType == 'Login') {
         return (
             <>
                 <LoginForm />
                 <Pressable
                     style={styles.button}
-                    onPress={() => setFormType("Register")}
+                    onPress={() => setFormType('Register')}
                 >
                     <Text style={styles.buttonText}>Register</Text>
                 </Pressable>
@@ -50,10 +50,10 @@ function FormTypeSwitcher() {
     } else {
         return (
             <>
-                <RegisterForm />
+                <RegisterForm navigation={navigation} />
                 <Pressable
                     style={styles.button}
-                    onPress={() => setFormType("Login")}
+                    onPress={() => setFormType('Login')}
                 >
                     <Text style={styles.buttonText}>Log in</Text>
                 </Pressable>

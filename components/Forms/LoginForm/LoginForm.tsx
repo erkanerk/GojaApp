@@ -12,6 +12,7 @@ export const LoginForm = () => {
     const [email, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [formErrors, setFormErrors] = useState<IFormErrors>(emptyFormErrors);
+    const [backendErrors, setBackendErrors] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const onSubmit = async () => {
@@ -33,10 +34,12 @@ export const LoginForm = () => {
                     token: response.data.token,
                 });
                 setIsLoading(false);
+                globalCtx.setUserInfo(response.data.user);
                 globalCtx.setLoggedIn(true);
             })
             .catch((error) => {
-                console.log(error && error);
+                console.log(error && error.response);
+                setBackendErrors(error.response.data);
                 setIsLoading(false);
                 onFailure(error, globalCtx);
             });
@@ -86,6 +89,9 @@ export const LoginForm = () => {
                         </Text>
                     ) : null}
                 </View>
+                <Text style={styles.errorMessage}>
+                    {backendErrors}
+                </Text>
             </View>
             <SubmitButton text={"Log in"} onPress={onSubmit} />
         </View>

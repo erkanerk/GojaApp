@@ -3,6 +3,7 @@ import { Image, StyleSheet, View, Text, Pressable } from 'react-native';
 import axios from 'axios';
 import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
+import { Heart } from "react-native-feather";
 
 const styles = StyleSheet.create({
     container: {
@@ -12,16 +13,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     pressable: {
-        flexDirection: 'row'
-      },
-    image: {
-        width: 20,
-        height: 20,
+        flexDirection: 'row',
     },
     text: {
-        marginLeft: 5,
-        fontSize: 12,
-    }
+        marginTop: 2,
+        marginLeft: 7,
+        fontSize: 15,
+    },
 }); 
 
 interface Props {
@@ -38,13 +36,10 @@ export const Likes = ({
     const [likes, setLikes] = useState<number>(post.likes)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    // TODO: The name of the user of the application is not currently implemented
-    const tempUserName = "Yourself"
-
     // TODO: Maybe move this functionality to backend, preferably have it on post: post.isLikedByUser
     function likedByUser() {
       for (const like of post.likedByUsers) {
-        if (like.userName == tempUserName) {
+        if (like.userId == globalCtx.userInfo._id) {
           setIsLiked(true)
         }
       }
@@ -59,7 +54,7 @@ export const Likes = ({
         postId: post._id,
         likeType: likeType, //Liked the post: true, Unlike the post: false
         user: {
-          userName: tempUserName,
+          userName: globalCtx.userInfo.userName,
        }});
 
       APIKit.post("/posts/like", payload)
@@ -96,13 +91,9 @@ export const Likes = ({
             <View>
                 {isLiked 
                 ? 
-                <Image
-                    style={styles.image}
-                    source={require('../../assets/images/liked_icon.png')}/>
+                <Heart stroke="red" fill="red" width={25} height={25} />
                 : 
-                <Image
-                    style={styles.image}
-                    source={require('../../assets/images/not_liked_icon.png')}/>
+                <Heart stroke="black" fill="transparent" width={25} height={25} strokeWidth={1} />
                 }
             </View>
             <View>

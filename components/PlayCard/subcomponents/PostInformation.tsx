@@ -2,48 +2,59 @@ import React from 'react';
 import { Image, View, Text} from 'react-native';
 
 import { StyleSheet } from 'react-native';
-import { Reply } from './Reply';
+import { Reply } from '../../Post/subcomponents/Reply';
 import { Likes } from '../../Likes/Likes';
+import { Comments } from '../../Post/subcomponents/Comments';
 
 export const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     pictureView: {
-        flex: 1,
+        marginRight: 10,
     },
     textView: {
-        flex: 1,
+        flex: 2,
         flexDirection: "column",
     },
     replyView: {
-        flex: 1,
+        marginTop: 5,
+        marginRight: 15
     },
     likesView: {
+        marginTop: 5,
         flex: 1,
     },
     userName: {
-        fontSize: 12,
+        fontSize: 18,
     },
     profilePicture: {
-        width: 50,
-        height: 50,
+        width: 52,
+        height: 52,
+        borderRadius: 15
     },
     hashtagView: {
         flexDirection: "row",
+        flexWrap: 'wrap'
     },
     hashtag: {
-        fontSize: 10,
+        fontSize: 15,
+    },
+    actionButton: {
+        margin: 5,
+        justifyContent: 'flex-end',
     },
   }); 
 
 interface Props {
-    post: Post
+    post: Post;
+    showComments?: (arg0: Post) => void;
 }
 
 export const PostInformation = ({ 
-    post
+    post,
+    showComments,
 }: Props) => {
 
     return (
@@ -60,19 +71,23 @@ export const PostInformation = ({
             <View>
                 <Text style={styles.userName}>{post.user.userName}</Text>
             </View>
-            <View style={styles.hashtagView}>
+            <View style={styles.hashtagView}>  
                 {post.hashtags.map(hashtag => 
-                    <Text key={hashtag} style={styles.hashtag}>#{hashtag}</Text>
+                    <Text key={hashtag} style={styles.hashtag}>#{hashtag} </Text>
                 )}
             </View>
         </View>
-        <View style={styles.replyView}>
-            <Reply 
-            post={post}/>
-        </View>
-        <View style={styles.likesView}>
-            <Likes 
-            post={post}/>
+        <View style={{ flexDirection: 'row'}}>
+            <View style={styles.actionButton}>
+                <Likes post={post} />
+            </View>
+            <View style={styles.actionButton}>
+                <Comments post={post} showComments={showComments} />
+            </View>
+            <View style={styles.actionButton}>
+                <Reply 
+                post={post}/>
+            </View>
         </View>
     </View>
     );

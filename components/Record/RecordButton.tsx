@@ -1,82 +1,97 @@
-import React, { useContext, useRef } from "react";
-
-import { View, StyleSheet, Pressable, Text } from "react-native";
-import { Audio } from "expo-av";
-import { APIKit, getToken, onFailure } from "../../shared/APIkit";
-import Constants from "expo-constants";
-const { manifest } = Constants;
-import * as FileSystem from "expo-file-system";
-import Icon from "react-native-vector-icons/FontAwesome";
-import AppContext from "../../shared/AppContext";
-import LottieView from "lottie-react-native";
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Pressable, Text } from 'react-native';
+import { Audio, AVPlaybackStatus } from 'expo-av';
+import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  wrapper: {
-    width: 300,
-    flexDirection: "row",
-  },
-  buttonAndText: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: 25,
-  },
-  record: {
-    borderRadius: 100,
-    width: 70,
-    height: 70,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "red",
-    marginBottom: 20,
-  },
-  play: {
-    width: 0,
-    height: 0,
-    backgroundColor: "transparent",
-    borderStyle: "solid",
-    borderLeftWidth: 30,
-    borderRightWidth: 30,
-    borderBottomWidth: 50,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "red",
-    transform: [{ rotate: "90deg" }],
-    marginBottom: 20,
-  },
-  text: {
-    color: "black",
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  post: {
-    borderRadius: 19,
-    width: 100,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "red",
-    marginTop: 50,
-    marginBottom: 20,
-  },
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    recordIcon: {
+        borderRadius: 100,
+        width: 70,
+        height: 70,
+        backgroundColor: 'red',
+    },
+    text: {
+        color: 'black',
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    iconsView: {
+        flexDirection: 'row',
+        padding: 20,
+    },
+    deleteView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    recordView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    spaceView: {
+        flex: 1,
+    },
+    textView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
-export const RecordButton = () => {
-  const globalCtx = useContext(AppContext);
-  const [recording, setRecording] = React.useState<any | null>(null);
-  const [recordingURI, setRecordingURI] = React.useState<any | null>(null);
-  const [sound, setSound] = React.useState<any | null>(null);
-  const [posted, setPosted] = React.useState<true | false>(false);
-  const [waveHeight, setWaveHeight] = React.useState<number>(0);
+interface PropTypes {
+    recordingURISetter: any;
+    recordingURIP: any;
+    lengthOfAudio?: number;
+}
 
-  const lottieRef = useRef<LottieView>(null);
+export const RecordButton = ({
+    recordingURISetter,
+    recordingURIP,
+    lengthOfAudio = 10,
+}: PropTypes) => {
+    const [recording, setRecording] = useState<any | null>(null);
+    const [sound, setSound] = useState<Audio.Sound | null>(null);
+    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const [timer, setTimer] = useState<number | null>(null);
+    const lottieRef = useRef<LottieView>(null);
+      const [waveHeight, setWaveHeight] = React.useState<number>(0);
 
-  async function printVolume(status) {
+
+    let onionTime;
+
+    useEffect(() => {
+        if (timer !== null && timer > 0) {
+            onionTime = setTimeout(() => setTimer(timer - 1), 1000);
+        } else if (timer === 0 && recording !== undefined) {
+            stopRecording();
+        } else {
+            console.log('Time is out');
+        }
+        return () => {
+            clearTimeout(onionTime);
+        };
+    }, [recording, timer]);
+
+    function onPlaybackStatusUpdate(playbackStatus: AVPlaybackStatus) {
+        if (!playbackStatus.isLoaded) {
+            // Updating UI for the unloaded state
+            if (playbackStatus.error) {
+                console.log(
+                    `Encountered a fatal error during playback: ${playbackStatus.error}`
+                );
+            }
+        } else {
+            // Updating UI for the loaded state
+            setIsPlaying(playbackStatus.isPlaying);
+        }
+    }
+
+      async function printVolume(status) {
     /*
     const positiveNumber = status.metering * -1;
     const amplitude = (1 / positiveNumber) * 1000;
@@ -104,117 +119,129 @@ export const RecordButton = () => {
       }
     }
   }
-  async function startRecording() {
-    setPosted(false);
-    try {
-      console.log("Requesting permissions..");
-      await Audio.requestPermissionsAsync();
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
-      console.log("Starting recording..");
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-      );
-      recording.setOnRecordingStatusUpdate(printVolume);
-      setRecording(recording);
-      setWaveHeight(0);
-      console.log("Recording started");
-    } catch (err) {
-      console.error("Failed to start recording", err);
+
+    async function startRecording() {
+        try {
+            console.log('Requesting permissions..');
+            await Audio.requestPermissionsAsync();
+            await Audio.setAudioModeAsync({
+                allowsRecordingIOS: true,
+                playsInSilentModeIOS: true,
+            });
+            console.log('Starting recording..');
+            const { recording } = await Audio.Recording.createAsync(
+                Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+            );
+            setRecording(recording);
+            console.log('Recording started');
+            setTimer(lengthOfAudio);
+        } catch (err) {
+            console.error('Failed to start recording', err);
+        }
     }
-  }
 
-  async function stopRecording() {
-    console.log("Stopping recording..");
-    setRecording(undefined);
-    if (lottieRef && lottieRef.current) {
-      lottieRef.current.reset();
+    async function stopRecording() {
+        console.log('Stopping recording..');
+        setRecording(undefined);
+        await recording.stopAndUnloadAsync();
+        const uri = recording.getURI();
+        recordingURISetter(uri);
+        console.log('Recording stopped and stored at', uri);
+        setTimer(null);
     }
-    await recording.stopAndUnloadAsync();
-    const uri = recording.getURI();
-    setRecordingURI(uri);
-    console.log("Recording stopped and stored at", uri);
-  }
 
-  async function playSound() {
-    await Audio.setAudioModeAsync({
-      allowsRecordingIOS: false,
-    });
-    const { sound } = await Audio.Sound.createAsync({ uri: recordingURI });
-    setSound(sound);
-    console.log("Playing Sound");
-    await sound.playAsync();
-  }
+    async function playSound() {
+        await Audio.setAudioModeAsync({
+            allowsRecordingIOS: false,
+        });
+        const initialStatus = { progressUpdateIntervalMillis: 200 };
+        const { sound } = await Audio.Sound.createAsync(
+            { uri: recordingURIP },
+            initialStatus,
+            onPlaybackStatusUpdate
+        );
+        setSound(sound);
+        console.log('Playing Sound');
+        await sound.playAsync();
+    }
 
-  async function deleteSound() {
-    setPosted(false);
-    setSound(null);
-    setRecordingURI(null);
-    setRecording(null);
-  }
-  let animation = React.createRef();
+    async function pauseSound() {
+        if (sound?._loaded) {
+            await sound.pauseAsync();
+        } else {
+            console.log('error pausing post');
+        }
+    }
 
-  async function postSound() {
-    let apiUrl =
-      `http://${manifest?.debuggerHost?.split(":").shift()}:3000` +
-      "/posts/upload-audio/";
-    const token = await getToken();
+    async function deleteSound() {
+        setSound(null);
+        recordingURISetter(null);
+        setRecording(null);
+    }
 
-    const uriParts = recordingURI.split(".");
-    const fileType = "." + uriParts[uriParts.length - 1];
+    useEffect(() => {
+        return sound
+            ? () => {
+                  sound.unloadAsync();
+              }
+            : undefined;
+    }, [sound]);
 
-    FileSystem.uploadAsync(apiUrl, recordingURI, {
-      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-      fieldName: "file",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        var urlNoQuotes = res.body.split('"').join("");
-        // TODO: Change from mockup data to real user data
-        const payload = {
-          audio: urlNoQuotes,
-          audioFileType: fileType,
-          user: {
-            profileAudio: "url",
-            profilePicture: "url",
-            userName: "test",
-            email: "test@erk.com",
-          },
-        };
-        APIKit.post("/posts", payload)
-          .then((response) => {
-            console.log(response.data);
-            setPosted(true);
-          })
-          .catch((error) => {
-            console.log(error);
-            onFailure(error, globalCtx);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        onFailure(error, globalCtx);
-      });
-  }
-
-  return (
-    <View>
-      {!recordingURI && (
-        <View style={styles.buttonAndText}>
-          <Pressable
-            style={styles.record}
-            onPress={recording ? stopRecording : startRecording}
-          />
-          <Text style={styles.text}>
-            {recording ? "Stop Recording" : "Tap to record"}
-          </Text>
-          {recording && (
+    return (
+        <View style={styles.container}>
+            <View style={styles.iconsView}>
+                <View style={styles.deleteView}>
+                    {recordingURIP ? (
+                        <Pressable onPress={deleteSound}>
+                            <Feather name="trash-2" size={40} color="red" />
+                        </Pressable>
+                    ) : null}
+                </View>
+                <View style={styles.recordView}>
+                    {recordingURIP ? (
+                        <Pressable onPress={isPlaying ? pauseSound : playSound}>
+                            <FontAwesome
+                                name={isPlaying ? 'pause' : 'play'}
+                                size={70}
+                                color="red"
+                            />
+                        </Pressable>
+                    ) : (
+                        <Pressable
+                            style={styles.recordIcon}
+                            onPress={recording ? stopRecording : startRecording}
+                        >
+                            <View
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    paddingTop: 15,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: 30,
+                                        color: '#2ECA6F',
+                                    }}
+                                >
+                                    {timer && timer}
+                                </Text>
+                            </View>
+                        </Pressable>
+                    )}
+                </View>
+                <View style={styles.spaceView} />
+            </View>
+            <View style={styles.textView}>
+                {recordingURIP ? (
+                    <Text style={styles.text}>
+                        {isPlaying ? 'Pause' : 'Play recording'}
+                    </Text>
+                ) : (
+                    <Text style={styles.text}>
+                       {recording && (
             <LottieView
               style={{
                 width: 100,
@@ -228,32 +255,10 @@ export const RecordButton = () => {
               // Just click the one you like, place that file in the 'assets' folder to the left, and replace the above 'require' statement
             />
           )}
-        </View>
-      )}
-      {recordingURI && (
-        <View style={styles.container}>
-          <View style={styles.wrapper}>
-            <Icon.Button
-              name="trash-o"
-              color="red"
-              size={40}
-              backgroundColor="transparent"
-              borderRadius={0}
-              onPress={deleteSound}
-              underlayColor="white"
-            ></Icon.Button>
-            <View style={styles.buttonAndText}>
-              <Pressable style={styles.play} onPress={playSound} />
-              <Text style={styles.text}>{"Play recording"}</Text>
+                        {recording ? 'Stop Recording' : 'Tap to record'}
+                    </Text>
+                )}
             </View>
-          </View>
-          {/* TODO: REMOVE THIS LATER. Only there for demonstration of the posting functionality */}
-          <Pressable style={styles.post} onPress={postSound}>
-            <Text style={styles.text}>{"Post"}</Text>
-          </Pressable>
         </View>
-      )}
-      {posted && <Text style={styles.text}>{"Posted!"}</Text>}
-    </View>
-  );
+    );
 };

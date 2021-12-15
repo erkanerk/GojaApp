@@ -1,13 +1,10 @@
 import React from 'react';
 import { Image, StyleSheet, View, Pressable } from 'react-native';
+import { Play, Pause, FastForward, Rewind } from "react-native-feather";
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-    },
-    image: {
-        width: 30,
-        height: 30,
     },
     previousView: {
         flex: 1,
@@ -43,21 +40,15 @@ export const SoundController = ({
 }: Props) => {
 
     function handlePlayPrevious() {
-        console.log("Previous button pressed")
-        playPreviousPost()
+        playPreviousPost();
     }
-
 
     function handlePlayPause() {
-        console.log("Play/paused button pressed")
-        playPausePost()
+        playPausePost();
     }
 
-
-
     function handlePlayNext() {
-        console.log("Next button pressed")
-        playNextPost()
+        playNextPost();
     }
     
     return (
@@ -66,9 +57,7 @@ export const SoundController = ({
             <Pressable
             onPress={handlePlayPrevious}
             disabled={isLoading}>
-                <Image
-                style={styles.image}
-                source={require('../../../assets/images/previous_icon.png')}/>
+                <Rewind stroke="black" fill="black" width={40} height={40} />
             </Pressable>
         </View>
         <View style={styles.playPauseView}>
@@ -77,13 +66,9 @@ export const SoundController = ({
             disabled={isLoading}>
                 {isPlaying
                     ? 
-                    <Image
-                    style={styles.image}
-                    source={require('../../../assets/images/pause_button.png')}/>
+                    <Pause stroke="black" fill="black" width={40} height={40} />
                     : 
-                    <Image
-                    style={styles.image}
-                    source={require('../../../assets/images/play_button.png')}/>
+                    <Play stroke="black" fill="black" width={40} height={40} />
                 }
             </Pressable>
         </View>
@@ -91,9 +76,7 @@ export const SoundController = ({
             <Pressable
             onPress={handlePlayNext}
             disabled={isLoading}>
-                <Image
-                style={styles.image}
-                source={require('../../../assets/images/next_icon.png')}/>
+                <FastForward stroke="black" fill="black" width={40} height={40} />
             </Pressable>
         </View>
     </View>
