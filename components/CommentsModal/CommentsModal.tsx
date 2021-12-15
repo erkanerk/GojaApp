@@ -11,13 +11,10 @@ const styles = StyleSheet.create({
     footer: {
         flex: 1,
         backgroundColor: 'transparent',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 10,
+        height: 'auto',
     },
     replies: {
-        flex: 7,
+        flex: 3,
         width: '90%',
         alignSelf: 'flex-end',
     },
@@ -34,7 +31,6 @@ const styles = StyleSheet.create({
     modalViewStyle: {
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        overflow: 'hidden',
         width: '100%',
         height: '80%',
         marginTop: 'auto',
