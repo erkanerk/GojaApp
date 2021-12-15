@@ -53,67 +53,31 @@ export const styles = StyleSheet.create({
 });
 
 interface Props {
+    profile: Profile | undefined
     userId: string
     tab: number
     setTab: Dispatch<SetStateAction<number>>
-    followingCount: number
-    setFollowingCount: Dispatch<SetStateAction<number>>
+    getProfileInformation(): Promise<void>
 }
 
 export const ProfileInformation = ({ 
+    profile,
     tab, 
     userId,
     setTab,
-    followingCount,
-    setFollowingCount
+    getProfileInformation
  }: Props) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const isFocused = useIsFocused();
-    const [profile, setProfile] = useState<Profile | undefined>(undefined);
     const globalCtx = useContext(AppContext);
-
-    async function getProfileInformation() {
-        setIsLoading(true);
-        console.log('Fetching user information');
-        if (userId !== globalCtx.userInfo._id) {
-            APIKit.get(`/users/profile/${userId}`)
-            .then((response) => {
-                setProfile(response.data);
-                setFollowingCount(response.data.followingCount);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
-        } else {
-            APIKit.get('/users/profile/me')
-            .then((response) => {
-                setProfile(response.data);
-                setFollowingCount(response.data.followingCount);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
-        }
-    }
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         if (isFocused && profile == undefined) {
             getProfileInformation()
-        } 
+        }
     }, [isFocused]);
 
-    if (!profile || isLoading) {
-        return (
-            <View style={styles.spinner}>
-                <ActivityIndicator size="large" color={'lightgray'} />
-            </View>
-        )
+    if (!profile) {
+        return <></>
     }
 
     return (
@@ -142,7 +106,7 @@ export const ProfileInformation = ({
                 setTab={setTab} 
                 postCount={profile.postCount}
                 followerCount={profile.followerCount}
-                followingCount={followingCount}/>
+                followingCount={profile.followingCount}/>
             </View>
             <View style={styles.line} />
         </View>
