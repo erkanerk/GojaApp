@@ -32,28 +32,25 @@ export const styles = StyleSheet.create({
 });
 interface Props {
     userId: string | undefined;
+    posts: Post[] | undefined;
+    getPosts(): Promise<void>
 }
 
-export const ProfileFeed = ({ userId }: Props) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const isFocused = useIsFocused();
-    const [posts, setPosts] = useState<Post[] | undefined>(undefined);
+export const ProfileFeed = ({ 
+    userId,
+    posts,
+    getPosts
+ }: Props) => {
     const globalCtx = useContext(AppContext);
-    const [focusedPostIndex, setFocusedPostIndex] = useState<
-        number | undefined
-    >(undefined);
+    const [focusedPostIndex, setFocusedPostIndex] = useState<number | undefined>(undefined);
     const sound = useAudio(focusedPostIndex, posts);
     const myProfilePage = userId == globalCtx.userInfo._id ? true : false;
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const [showCommentsModal, setShowCommentsModal] = useState<
-        Post | undefined
-    >(undefined);
-    const [answerInfo, setAnswerInfo] = useState<AnswerInfo | undefined>(
-        undefined
-    );
+    const [showCommentsModal, setShowCommentsModal] = useState<Post | undefined>(undefined);
+    const [answerInfo, setAnswerInfo] = useState<AnswerInfo | undefined>(undefined);
     const [replyFromComment, setReplyFromComment] = useState<boolean>(false);
-
     const navigation = useNavigation();
+    const isFocused = useIsFocused();
 
     const showComments = (post) => {
         setModalVisible(true);
@@ -77,48 +74,19 @@ export const ProfileFeed = ({ userId }: Props) => {
         setAnswerInfo(undefined);
     }, [replyFromComment]);
 
-    async function getPosts() {
-        setIsLoading(true);
-        if (userId !== globalCtx.userInfo._id) {
-            APIKit.get(`/posts/by-user/${userId}`)
-                .then((response) => {
-                    const onlyOriginalPosts = response.data.filter(
-                        (post) => post.inReplyToPostId == null
-                    );
-                    setPosts(onlyOriginalPosts);
-                    setIsLoading(false);
-                })
-                .catch((error) => {
-                    onFailure(error, globalCtx);
-                    console.log(error && error);
-                    setIsLoading(false);
-                });
-        } else {
-            APIKit.get('/posts/by-user/me')
-                .then((response) => {
-                    const onlyOriginalPosts = response.data.filter(
-                        (post) => post.inReplyToPostId == null
-                    );
-                    setPosts(onlyOriginalPosts);
-                    setIsLoading(false);
-                })
-                .catch((error) => {
-                    onFailure(error, globalCtx);
-                    console.log(error && error);
-                    setIsLoading(false);
-                });
-        }
-    }
-
     useEffect(() => {
         if (isFocused) {
-            getPosts();
+            getPosts()
         }
     }, [isFocused]);
 
+    if (!posts) {
+        return <></>
+    }
+
     return (
         <View style={styles.container}>
-            {posts && posts?.length > 0 ? (
+            {posts?.length > 0 ? (
                 <View style={styles.feedView}>
                     <PostFeed
                         posts={posts}

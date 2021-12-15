@@ -29,70 +29,42 @@ export const styles = StyleSheet.create({
 
 interface Props {
     userId: string | undefined
-    currentCount: number
-    setCount: Dispatch<SetStateAction<number>>
+    users: Following[] | undefined
     navigation: NativeStackNavigationProp<RootStackParamList, "ProfileScreen">
+    getFollowing(): Promise<void>
 }
 
 export const FollowingFeed = ({
     userId,
-    currentCount,
-    setCount,
+    users,
     navigation,
+    getFollowing
 }: Props) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const isFocused = useIsFocused();
-    const [users, setUsers] = useState<Following[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
     const myProfilePage = userId == globalCtx.userInfo._id ? true : false;
-
-    async function getFollowing() {
-        setIsLoading(true)
-        if (userId !== globalCtx.userInfo._id) {
-            APIKit.get(`/users/following/${userId}`)
-            .then((response) => {
-                setUsers(response.data);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
-        } else {
-            APIKit.get("/users/following/me")
-            .then((response) => {
-                setUsers(response.data);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
-        }
-        
-    }
-
-    useEffect(() => {
-        if (isFocused) {
-            getFollowing()    
-        }
-    }, [isFocused]);
-
+    const isFocused = useIsFocused();
+    
     const renderItem = ({ item, index, separators }: any) => (
         <User 
         user={item} 
         following={true}
-        currentCount={currentCount}
-        setCount={setCount} 
         showFollowButton={myProfilePage} 
         navigation={navigation}/>
     );
 
+    useEffect(() => {
+        if (isFocused) {
+            getFollowing()
+        }
+    }, [isFocused]);
+
+    if (!users) {
+        return <></>
+    }
+
     return (
         <View style={styles.container}>
-            {users && users?.length > 0 ? (
+            {users?.length > 0 ? (
             <View style={styles.feedView}>
                 <FlatList
                 data={users}

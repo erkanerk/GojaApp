@@ -42,16 +42,12 @@ interface Props {
     userId: string
     following: boolean
     onMyProfile?: boolean
-    currentCount?: number
-    setCount?: Dispatch<SetStateAction<number>>
 }
 
 export const FollowButton = ({ 
     userId,
     following = false,
     onMyProfile = false,
-    currentCount,
-    setCount
 }: Props) => {
     const globalCtx = useContext(AppContext);
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -67,9 +63,6 @@ export const FollowButton = ({
         const payload = { userToFollow: userId }
         APIKit.post("/users/follow", payload)
         .then((response) => {
-            if (currentCount && setCount && onMyProfile) {
-                setCount(currentCount+1);
-            }
             setIsLoading(false);
         })
         .catch((error) => {
@@ -90,9 +83,6 @@ export const FollowButton = ({
         const payload = { userToUnfollow: userId }
         APIKit.post("/users/unfollow", payload)
         .then((response) => {
-            if (currentCount && setCount && onMyProfile) {
-                setCount(currentCount-1);
-            }
             setIsLoading(false);
         })
         .catch((error) => {
