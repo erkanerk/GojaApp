@@ -1,12 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { Dispatch, SetStateAction, useEffect, useState, useRef } from 'react';
+import React, {
+    Dispatch,
+    SetStateAction,
+    useEffect,
+    useState,
+    useRef,
+} from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Likes } from '../Likes/Likes';
 import { Comments } from './subcomponents/Comments';
 import { Reply } from './subcomponents/Reply';
 import CachedImage from 'expo-cached-image';
-import LottieView from "lottie-react-native";
+import LottieView from 'lottie-react-native';
 
 export const styles = StyleSheet.create({
     container: {
@@ -27,7 +33,7 @@ export const styles = StyleSheet.create({
     },
     animation: {
         width: 25,
-        marginLeft: 3
+        marginLeft: 3,
     },
     profilePicture: {
         width: 59,
@@ -152,7 +158,7 @@ export const Post = ({
                         </View>
                     </Pressable>
                     <View style={styles.textView}>
-                        <View style={{flexDirection: "row"}}>
+                        <View style={{ flexDirection: 'row' }}>
                             <Text
                                 style={
                                     isFocused
@@ -162,17 +168,17 @@ export const Post = ({
                             >
                                 {post.user.userName}
                             </Text>
-                            {(isFocused  && isPlaying) &&
+                            {isFocused && isPlaying && (
                                 <LottieView
                                     autoPlay
                                     loop={true}
                                     ref={lottieRef}
-                                    source={require("../../assets/animations/soundwave.json")}
+                                    source={require('../../assets/animations/soundwave.json')}
                                     style={styles.animation}
                                 />
-                            }
+                            )}
                         </View>
-                        
+
                         {post.hashtags && (
                             <View style={styles.hashtagView}>
                                 <Text numberOfLines={1}>
@@ -186,7 +192,7 @@ export const Post = ({
                                             }
                                             numberOfLines={1}
                                         >
-                                            #{hashtag}
+                                            {hashtag}
                                         </Text>
                                     ))}
                                 </Text>
