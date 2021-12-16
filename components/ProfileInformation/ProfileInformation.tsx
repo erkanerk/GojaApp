@@ -74,7 +74,7 @@ export const ProfileInformation = ({
 
     async function getProfileInformation() {
         setIsLoading(true);
-        console.log('Fetching user information');
+        //('Fetching user information');
         if (userId !== globalCtx.userInfo._id) {
             APIKit.get(`/users/profile/${userId}`)
             .then((response) => {

@@ -28,7 +28,7 @@ export const ProfileNavigator = ({ route, navigation }: Props) => {
     const globalCtx = useContext(AppContext);
 
     function handleOnPress() {
-        console.log('Pressed profile picture');
+        //console.log('Pressed profile picture');
         navigation.navigate('ProfileScreen', { userId: globalCtx.userInfo._id });
     }
 

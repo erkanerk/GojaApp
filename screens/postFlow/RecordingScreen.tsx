@@ -72,7 +72,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
 
     const postPostToBackend = async () => {
         if (canPost === false) {
-            console.log('Can not post');
+            //console.log('Can not post');
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
@@ -96,7 +96,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
     };
 
     useEffect(() => {
-        console.log('recording screen');
+        //console.log('recording screen');
         if (recordingURI !== null) {
             setCanPost(true);
         } else {

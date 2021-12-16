@@ -66,8 +66,8 @@ export const ProfileFeed = ({ userId }: Props) => {
 
     useEffect(() => {
         if (!modalVisible && answerInfo) {
-            console.log(modalVisible);
-            console.log(answerInfo);
+            //console.log(modalVisible);
+            //console.log(answerInfo);
             navigation.navigate('RecordModal', {
                 recordingScreenType: RecordType.ANSWER,
                 answerInfo: answerInfo,

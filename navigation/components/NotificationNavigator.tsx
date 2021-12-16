@@ -28,7 +28,7 @@ export const NotificationNavigator = ({
 }: Props) => {
 
     function handleOnPress() {
-        console.log('Pressed notification')
+        //console.log('Pressed notification')
         navigation.navigate('NotificationScreen')
     }
 

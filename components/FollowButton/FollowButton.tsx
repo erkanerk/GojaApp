@@ -64,7 +64,7 @@ export const FollowButton = ({
         }
         setIsFollowing(true);
         setIsLoading(true);
-        console.log('Following user');
+        //console.log('Following user');
         const payload = { userToFollow: userId }
         APIKit.post("/users/follow", payload)
         .then((response) => {
@@ -88,7 +88,7 @@ export const FollowButton = ({
         }
         setIsFollowing(false);
         setIsLoading(true)
-        console.log('Unfollowing user')
+        //console.log('Unfollowing user')
         const payload = { userToUnfollow: userId }
         APIKit.post("/users/unfollow", payload)
         .then((response) => {
