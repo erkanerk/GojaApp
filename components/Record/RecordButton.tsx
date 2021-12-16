@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { Audio, AVPlaybackStatus } from 'expo-av';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import LottieView from 'lottie-react-native';
 
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 40,
+    },
+    animationView: {
+        height: 100,
         justifyContent: 'center',
     },
     recordIcon: {
@@ -59,8 +65,7 @@ export const RecordButton = ({
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [timer, setTimer] = useState<number | null>(null);
     const lottieRef = useRef<LottieView>(null);
-      const [waveHeight, setWaveHeight] = React.useState<number>(0);
-
+    const [isTalking, setIsTalking] = useState<boolean>(false);
 
     let onionTime;
 
@@ -69,13 +74,18 @@ export const RecordButton = ({
             onionTime = setTimeout(() => setTimer(timer - 1), 1000);
         } else if (timer === 0 && recording !== undefined) {
             stopRecording();
-        } else {
-            console.log('Time is out');
         }
         return () => {
             clearTimeout(onionTime);
         };
     }, [recording, timer]);
+
+    useEffect(() => {
+        if (lottieRef && lottieRef.current && !isTalking) {
+            setIsTalking(false);
+            lottieRef.current.play(0, 7);
+        }
+    }, [isTalking]);
 
     function onPlaybackStatusUpdate(playbackStatus: AVPlaybackStatus) {
         if (!playbackStatus.isLoaded) {
@@ -87,38 +97,24 @@ export const RecordButton = ({
             }
         } else {
             // Updating UI for the loaded state
+            updateAnimationStatus(playbackStatus);
             setIsPlaying(playbackStatus.isPlaying);
         }
     }
 
-      async function printVolume(status) {
-    /*
-    const positiveNumber = status.metering * -1;
-    const amplitude = (1 / positiveNumber) * 1000;
-    setWaveHeight(positiveNumber);
-    */
-    const positiveNumber = status.metering * -1;
-    console.log(positiveNumber);
-    if (positiveNumber < 35) {
-      if (lottieRef && lottieRef.current) {
-        setWaveHeight(1);
-        lottieRef.current.play();
-      }
-    } else {
-      if (lottieRef && lottieRef.current) {
-        setWaveHeight(2);
-        setWaveHeight(3);
-        setWaveHeight(4);
-        setWaveHeight(5);
-        setWaveHeight(6);
-        setWaveHeight(7);
-        setWaveHeight(8);
-        setWaveHeight(9);
-        setWaveHeight(10);
-        lottieRef.current.reset();
-      }
+    function updateAnimationStatus(status) {
+        const positiveNumber = status.metering * -1;
+        if (positiveNumber < 35) {
+            if (lottieRef && lottieRef.current) {
+                lottieRef.current.play(15, 45);
+                setTimeout(() => {
+                    setIsTalking(true);
+                }, 1000);
+            }
+        } else {
+            setIsTalking(false);
+        }
     }
-  }
 
     async function startRecording() {
         try {
@@ -133,6 +129,7 @@ export const RecordButton = ({
                 Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
             );
             setRecording(recording);
+            recording.setOnRecordingStatusUpdate(updateAnimationStatus);
             console.log('Recording started');
             setTimer(lengthOfAudio);
         } catch (err) {
@@ -189,6 +186,21 @@ export const RecordButton = ({
 
     return (
         <View style={styles.container}>
+            <View style={styles.animationView}>
+                {recording ? (
+                    <LottieView
+                        style={{
+                            width: 100,
+                            flexShrink: 1,
+                        }}
+                        ref={lottieRef}
+                        resizeMode="cover"
+                        source={require('../../assets/animations/soundwave2.json')}
+                        // OR find more Lottie files @ https://lottiefiles.com/featured
+                        // Just click the one you like, place that file in the 'assets' folder to the left, and replace the above 'require' statement
+                    />
+                ) : null}
+            </View>
             <View style={styles.iconsView}>
                 <View style={styles.deleteView}>
                     {recordingURIP ? (
@@ -223,7 +235,7 @@ export const RecordButton = ({
                                     style={{
                                         textAlign: 'center',
                                         fontSize: 30,
-                                        color: '#2ECA6F',
+                                        color: '#FFFFFF',
                                     }}
                                 >
                                     {timer && timer}
@@ -241,20 +253,6 @@ export const RecordButton = ({
                     </Text>
                 ) : (
                     <Text style={styles.text}>
-                       {recording && (
-            <LottieView
-              style={{
-                width: 100,
-                aspectRatio: 3 / 1,
-                flexShrink: 1,
-              }}
-              ref={lottieRef}
-              resizeMode="cover"
-              source={require("../../assets/animations/soundwave.json")}
-              // OR find more Lottie files @ https://lottiefiles.com/featured
-              // Just click the one you like, place that file in the 'assets' folder to the left, and replace the above 'require' statement
-            />
-          )}
                         {recording ? 'Stop Recording' : 'Tap to record'}
                     </Text>
                 )}
