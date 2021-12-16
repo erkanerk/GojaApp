@@ -14,15 +14,7 @@ interface PropTypes {
 export const Hashtags = ({ hashtagSetter, hashtags }: PropTypes) => {
     const [isFocused, setFocus] = useState<boolean>(false);
 
-    const handleKeyPress = ({ nativeEvent: { key: keyValue } }) => {
-        console.log(keyValue);
-        if (keyValue === ' ') {
-            console.log('RUNNING HERE');
-            hashtagSetter(`${hashtags} hej#`);
-        }
-    };
-
-    const handleChange = ({ nativeEvent: { eventCount, target, text } }) => {
+    const handleChange = ({ nativeEvent: { text } }) => {
         if (text.slice(-1) === ' ') {
             hashtagSetter(`${hashtags}#`);
         } else if (text.slice(-2) === '##') {
@@ -31,18 +23,15 @@ export const Hashtags = ({ hashtagSetter, hashtags }: PropTypes) => {
         } else {
             hashtagSetter(text);
         }
-        console.log(text.slice(-1));
-        console.log(target);
     };
 
     useEffect(() => {
         if (hashtags.length === 0 && isFocused) {
-            console.log('USE EFFECT');
             hashtagSetter('#');
-        } else if (hashtags.length === 1) {
+        } else if (!isFocused && hashtags.length <= 1) {
             hashtagSetter('');
         }
-    }, [isFocused]);
+    }, [isFocused, hashtags]);
 
     return (
         <View

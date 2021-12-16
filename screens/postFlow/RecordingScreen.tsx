@@ -71,8 +71,6 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
     const profilePic = globalCtx.userInfo.profilePicture;
 
     const hashtagSetter = (hashtagsFunc: string) => {
-        console.log('SETTING HASHTAGS IN NEW FUNC');
-        console.log(hashtagsFunc);
         setHashtags(hashtagsFunc);
     };
 
@@ -82,6 +80,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
+        console.log('array', arrayHashtags);
         let audioUrl = await createPost(
             recordingURI,
             arrayHashtags,
