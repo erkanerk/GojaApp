@@ -188,7 +188,7 @@ export default function ProfileScreen({ route, navigation }: Props) {
 
     async function getProfileInformation() {
         setIsLoading(true);
-        console.log('Fetching user information');
+        //console.log('Fetching user information');
         if (userId !== globalCtx.userInfo._id) {
             APIKit.get(`/users/profile/${userId}`)
             .then((response) => {
