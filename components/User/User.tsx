@@ -49,8 +49,6 @@ interface Props {
     user: Follower | Following
     following?: boolean
     showFollowButton?: boolean
-    currentCount?: number
-    setCount?: Dispatch<SetStateAction<number>>
     navigation: any
 }
 
@@ -58,8 +56,6 @@ export const User = ({
     user,
     following = false,
     showFollowButton = true,
-    currentCount,
-    setCount,
     navigation
 }: Props) => {
     function handleOnPress() {
@@ -86,8 +82,6 @@ export const User = ({
                     <FollowButton 
                     userId={user.userId} 
                     following={following}
-                    currentCount={currentCount}
-                    setCount={setCount} 
                     onMyProfile={showFollowButton} />}
                 </View>
                 <View style={styles.line} />
