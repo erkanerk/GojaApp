@@ -9,19 +9,16 @@ import useAudio from '../../hooks/useAudio';
 
 const styles = StyleSheet.create({
     footer: {
-        flex: 1,
         backgroundColor: 'transparent',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 10,
+        height: 80,
     },
     replies: {
-        flex: 7,
+        flex: 1,
         width: '90%',
         alignSelf: 'flex-end',
     },
     modalStyle: {
+        flex:1,
         margin: 0,
         shadowColor: '#000',
         shadowOffset: {
@@ -34,8 +31,6 @@ const styles = StyleSheet.create({
     modalViewStyle: {
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        overflow: 'hidden',
-        width: '100%',
         height: '80%',
         marginTop: 'auto',
         backgroundColor: '#FDF6ED',

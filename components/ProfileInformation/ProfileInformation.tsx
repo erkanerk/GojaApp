@@ -67,6 +67,7 @@ export const ProfileInformation = ({
     setTab,
     getProfileInformation
  }: Props) => {
+     
     const globalCtx = useContext(AppContext);
     const isFocused = useIsFocused();
 
