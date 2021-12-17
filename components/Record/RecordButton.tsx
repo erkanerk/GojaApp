@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { Audio, AVPlaybackStatus } from 'expo-av';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import LottieView from 'lottie-react-native';
 
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 40,
+    },
+    animationView: {
+        height: 100,
         justifyContent: 'center',
     },
     recordIcon: {
@@ -58,6 +64,9 @@ export const RecordButton = ({
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [timer, setTimer] = useState<number | null>(null);
+    const lottieRef = useRef<LottieView>(null);
+    const [isTalking, setIsTalking] = useState<boolean>(false);
+
     let onionTime;
 
     useEffect(() => {
@@ -65,13 +74,18 @@ export const RecordButton = ({
             onionTime = setTimeout(() => setTimer(timer - 1), 1000);
         } else if (timer === 0 && recording !== undefined) {
             stopRecording();
-        } else {
-            //console.log('Time is out');
         }
         return () => {
             clearTimeout(onionTime);
         };
     }, [recording, timer]);
+
+    useEffect(() => {
+        if (lottieRef && lottieRef.current && !isTalking) {
+            setIsTalking(false);
+            lottieRef.current.play(0, 7);
+        }
+    }, [isTalking]);
 
     function onPlaybackStatusUpdate(playbackStatus: AVPlaybackStatus) {
         if (!playbackStatus.isLoaded) {
@@ -83,7 +97,22 @@ export const RecordButton = ({
             }
         } else {
             // Updating UI for the loaded state
+            updateAnimationStatus(playbackStatus);
             setIsPlaying(playbackStatus.isPlaying);
+        }
+    }
+
+    function updateAnimationStatus(status) {
+        const positiveNumber = status.metering * -1;
+        if (positiveNumber < 35) {
+            if (lottieRef && lottieRef.current) {
+                lottieRef.current.play(15, 45);
+                setTimeout(() => {
+                    setIsTalking(true);
+                }, 1000);
+            }
+        } else {
+            setIsTalking(false);
         }
     }
 
@@ -100,7 +129,8 @@ export const RecordButton = ({
                 Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
             );
             setRecording(recording);
-            //console.log('Recording started');
+            recording.setOnRecordingStatusUpdate(updateAnimationStatus);
+            console.log('Recording started');
             setTimer(lengthOfAudio);
         } catch (err) {
             console.error('Failed to start recording', err);
@@ -156,6 +186,21 @@ export const RecordButton = ({
 
     return (
         <View style={styles.container}>
+            <View style={styles.animationView}>
+                {recording ? (
+                    <LottieView
+                        style={{
+                            width: 100,
+                            flexShrink: 1,
+                        }}
+                        ref={lottieRef}
+                        resizeMode="cover"
+                        source={require('../../assets/animations/soundwave2.json')}
+                        // OR find more Lottie files @ https://lottiefiles.com/featured
+                        // Just click the one you like, place that file in the 'assets' folder to the left, and replace the above 'require' statement
+                    />
+                ) : null}
+            </View>
             <View style={styles.iconsView}>
                 <View style={styles.deleteView}>
                     {recordingURIP ? (
@@ -190,7 +235,7 @@ export const RecordButton = ({
                                     style={{
                                         textAlign: 'center',
                                         fontSize: 30,
-                                        color: '#2ECA6F',
+                                        color: '#FFFFFF',
                                     }}
                                 >
                                     {timer && timer}
