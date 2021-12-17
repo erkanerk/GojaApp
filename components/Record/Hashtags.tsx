@@ -16,7 +16,6 @@ export const Hashtags = ({ hashtagSetter, hashtags }: PropTypes) => {
     const [space, setSpace] = useState<boolean>(false);
 
     const handleChange = ({ nativeEvent: { text } }) => {
-        console.log(space);
         if (space) {
             hashtagSetter(`${hashtags} #`);
             setSpace(false);
@@ -29,7 +28,6 @@ export const Hashtags = ({ hashtagSetter, hashtags }: PropTypes) => {
     };
 
     const handleSpacePress = ({ nativeEvent: { key: keyValue } }) => {
-        console.log('keyvalue', keyValue);
         if (keyValue === ' ') {
             setSpace(true);
         }
@@ -39,8 +37,6 @@ export const Hashtags = ({ hashtagSetter, hashtags }: PropTypes) => {
         const hashtagArray = text.replace(/\s+/g, ' ').trim().split(' ');
         const fixedTags = hashtagArray.map((tag) => {
             if (tag.charAt(0) !== '#') {
-                console.log('INF IF');
-                console.log('#'.concat(tag));
                 return '#'.concat(tag);
             }
             return tag;
@@ -73,6 +69,7 @@ export const Hashtags = ({ hashtagSetter, hashtags }: PropTypes) => {
                     borderRadius: 20,
                     backgroundColor: '#ECE9E9',
                 }}
+                maxLength={30}
                 onKeyPress={handleSpacePress}
                 onFocus={() => {
                     setFocus(true);

@@ -80,7 +80,6 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
-        console.log('array', arrayHashtags);
         let audioUrl = await createPost(
             recordingURI,
             arrayHashtags,
