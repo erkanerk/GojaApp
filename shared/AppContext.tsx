@@ -6,6 +6,7 @@ const AppContext = React.createContext({
     userInfo: {
         _id: null,
         profileAudio: null,
+        profileAudioFileType: null,
         profilePicture: undefined,
         userName: null,
         email: null,
