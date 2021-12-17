@@ -71,12 +71,12 @@ export const TopBar = ({
     recordingScreenType,
 }: PropTypes) => {
     function handleOnPressClose() {
-        console.log('Left button pressed');
+        //console.log('Left button pressed');
         navigation.goBack();
     }
 
     async function handleOnPressPost() {
-        console.log('Right button pressed');
+        //console.log('Right button pressed');
         if (canPost) {
             await postToBackend();
             if (recordingScreenType !== RecordType.REGISTER) {

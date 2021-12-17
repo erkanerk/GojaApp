@@ -46,7 +46,7 @@ export default function ChoosePic({ navigation }) {
             quality: 1,
         });
 
-        console.log(result);
+        //console.log(result);
         if (!result.cancelled) {
             if (result.type == 'image') {
                 setImage(result.uri);

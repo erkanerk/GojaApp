@@ -21,7 +21,7 @@ export const CancelNavigator = () => {
     const globalCtx = useContext(AppContext);
 
     function handleOnPress() {
-        console.log('Pressed cancel')
+        //console.log('Pressed cancel')
         globalCtx.setLoggedIn(true)
     }
 

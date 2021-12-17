@@ -72,11 +72,11 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
 
     const postPostToBackend = async () => {
         if (canPost === false) {
-            console.log('Can not post');
+            //console.log('Can not post');
             return;
         }
         const arrayHashtags = hashtagHandler(hashtags);
-        let audioUrl = await createPost(
+        let post = await createPost(
             recordingURI,
             arrayHashtags,
             endPoint,
@@ -90,13 +90,14 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
             globalCtx.setLoggedIn(true);
             globalCtx.setUserInfo({
                 ...globalCtx.userInfo,
-                profileAudio: audioUrl,
+                profileAudio: post?.url,
+                profileAudioFileType: post?.fileType 
             });
         }
     };
 
     useEffect(() => {
-        console.log('recording screen');
+        //console.log('recording screen');
         if (recordingURI !== null) {
             setCanPost(true);
         } else {

@@ -29,51 +29,20 @@ export const styles = StyleSheet.create({
 
 interface Props {
     userId: string | undefined
+    users: Follower[] | undefined
     navigation: NativeStackNavigationProp<RootStackParamList, "ProfileScreen">
+    getFollowers(): Promise<void>
 }
 
 export const FollowersFeed = ({
     userId,
+    users,
     navigation,
+    getFollowers
 }: Props) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const isFocused = useIsFocused();
-    const [users, setUsers] = useState<Follower[] | undefined>(undefined);
     const globalCtx = useContext(AppContext);
     const myProfilePage = userId == globalCtx.userInfo._id ? true : false;
-
-    async function getFollowers() {
-        setIsLoading(true);
-        if (userId != globalCtx.userInfo._id) {
-            APIKit.get(`/users/followers/${userId}`)
-            .then((response) => {
-                setUsers(response.data);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
-        } else {
-            APIKit.get("/users/followers/me")
-            .then((response) => {
-                setUsers(response.data);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
-        }
-    }
-
-    useEffect(() => {
-        if (isFocused) {
-            getFollowers()    
-        }
-    }, [isFocused]);
+    const isFocused = useIsFocused();
 
     const renderItem = ({ item, index, separators }: any) => (
         <User 
@@ -82,10 +51,20 @@ export const FollowersFeed = ({
         showFollowButton={myProfilePage} 
         navigation={navigation}/>
     );
+    
+    useEffect(() => {
+        if (isFocused) {
+            getFollowers()
+        }
+    }, [isFocused]);
+
+    if (!users) {
+        return <></>
+    }
 
     return (
         <View style={styles.container}>
-            {users && users?.length > 0 ? (
+            {users?.length > 0 ? (
             <View style={styles.feedView}>
                 <FlatList
                 data={users}

@@ -41,6 +41,7 @@ async function createPost(
                     user: {
                         id: c.userInfo._id,
                         profileAudio: c.userInfo.profileAudio,
+                        profileAudioFileType: c.userInfo.profileAudioFileType,
                         profilePicture: c.userInfo.profilePicture,
                         userName: c.userInfo.userName,
                         email: c.userInfo.email,
@@ -49,11 +50,12 @@ async function createPost(
             } else {
                 payload = {
                     url: urlNoQuotes,
+                    profileAudioFileType: fileType
                 };
             }
             return APIKit.post(endPoint, payload)
                 .then(() => {
-                    return urlNoQuotes;
+                    return {url: urlNoQuotes, fileType: fileType};
                 })
                 .catch((error) => {
                     onFailure(error, c);

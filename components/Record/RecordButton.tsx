@@ -118,13 +118,13 @@ export const RecordButton = ({
 
     async function startRecording() {
         try {
-            console.log('Requesting permissions..');
+            //console.log('Requesting permissions..');
             await Audio.requestPermissionsAsync();
             await Audio.setAudioModeAsync({
                 allowsRecordingIOS: true,
                 playsInSilentModeIOS: true,
             });
-            console.log('Starting recording..');
+            //console.log('Starting recording..');
             const { recording } = await Audio.Recording.createAsync(
                 Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
             );
@@ -138,12 +138,12 @@ export const RecordButton = ({
     }
 
     async function stopRecording() {
-        console.log('Stopping recording..');
+        //console.log('Stopping recording..');
         setRecording(undefined);
         await recording.stopAndUnloadAsync();
         const uri = recording.getURI();
         recordingURISetter(uri);
-        console.log('Recording stopped and stored at', uri);
+        //console.log('Recording stopped and stored at', uri);
         setTimer(null);
     }
 
@@ -158,7 +158,7 @@ export const RecordButton = ({
             onPlaybackStatusUpdate
         );
         setSound(sound);
-        console.log('Playing Sound');
+        //console.log('Playing Sound');
         await sound.playAsync();
     }
 

@@ -1,10 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { Dispatch, SetStateAction } from 'react';
-import { Image, View, Text, Pressable } from 'react-native';
+import { Keyboard, Image, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import Navigation from '../../navigation';
 import { FollowButton } from '../FollowButton/FollowButton';
-import CachedImage from 'expo-cached-image';
 
 
 export const styles = StyleSheet.create({
@@ -50,8 +49,6 @@ interface Props {
     user: Follower | Following
     following?: boolean
     showFollowButton?: boolean
-    currentCount?: number
-    setCount?: Dispatch<SetStateAction<number>>
     navigation: any
 }
 
@@ -59,11 +56,10 @@ export const User = ({
     user,
     following = false,
     showFollowButton = true,
-    currentCount,
-    setCount,
     navigation
 }: Props) => {
     function handleOnPress() {
+        Keyboard.dismiss();
         navigation.push('ProfileScreen', { userId: user.userId })
     }
 
@@ -71,12 +67,11 @@ export const User = ({
         <Pressable onPress={handleOnPress}>
             <View style={styles.container}>
                 <View style={styles.imageView}>
-                    <CachedImage
+                    <Image
                         style={styles.image}
                         source={{
                             uri: user.profilePicture,
                         }}
-                        cacheKey={user.userId}
                     />
                 </View>
                 <View style={styles.textView}>
@@ -87,8 +82,6 @@ export const User = ({
                     <FollowButton 
                     userId={user.userId} 
                     following={following}
-                    currentCount={currentCount}
-                    setCount={setCount} 
                     onMyProfile={showFollowButton} />}
                 </View>
                 <View style={styles.line} />
