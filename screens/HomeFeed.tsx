@@ -209,8 +209,8 @@ export default function HomeFeed({ route, navigation }: Props) {
 
     useEffect(() => {
         if (!modalVisible && answerInfo) {
-            console.log(modalVisible);
-            console.log(answerInfo);
+            //console.log(modalVisible);
+            //console.log(answerInfo);
             navigation.navigate('RecordModal', {
                 recordingScreenType: RecordType.ANSWER,
                 answerInfo: answerInfo,
@@ -222,6 +222,7 @@ export default function HomeFeed({ route, navigation }: Props) {
 
     async function getMyFeed() {
         setIsRefreshing(true);
+        setFocusedPostIndex(undefined);
         APIKit.get('/posts/my-feed')
             .then((response) => {
                 const onlyOriginalPosts = response.data.filter(

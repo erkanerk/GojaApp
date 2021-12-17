@@ -49,7 +49,7 @@ export const PostNavigator = ({
 }: Props) => {
 
     function handleOnPress() {
-        console.log('Pressed Post')
+        //console.log('Pressed Post')
         if (route.params.canPost) {
             route.params.postToBackend()
             Alert.alert(

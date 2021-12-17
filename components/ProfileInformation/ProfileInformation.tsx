@@ -1,12 +1,14 @@
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, Image } from "react-native";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import { APIKit, onFailure } from "../../shared/APIkit";
 import AppContext from "../../shared/AppContext";
 import { useIsFocused } from "@react-navigation/native";
 import { FollowButton } from "../FollowButton/FollowButton";
 import { Stats } from "./subcomponents/Stats";
 import CachedImage from 'expo-cached-image';
+import { Audio } from 'expo-av';
+import * as FileSystem from 'expo-file-system';
 
 export const styles = StyleSheet.create({
     container: {
@@ -53,80 +55,71 @@ export const styles = StyleSheet.create({
 });
 
 interface Props {
+    profile: Profile | undefined
     userId: string
     tab: number
     setTab: Dispatch<SetStateAction<number>>
-    followingCount: number
-    setFollowingCount: Dispatch<SetStateAction<number>>
+    getProfileInformation(): Promise<void>
 }
 
 export const ProfileInformation = ({ 
+    profile,
     tab, 
     userId,
     setTab,
-    followingCount,
-    setFollowingCount
+    getProfileInformation
  }: Props) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const isFocused = useIsFocused();
-    const [profile, setProfile] = useState<Profile | undefined>(undefined);
+     
     const globalCtx = useContext(AppContext);
+    const isFocused = useIsFocused();
 
-    async function getProfileInformation() {
-        setIsLoading(true);
-        console.log('Fetching user information');
-        if (userId !== globalCtx.userInfo._id) {
-            APIKit.get(`/users/profile/${userId}`)
-            .then((response) => {
-                setProfile(response.data);
-                setFollowingCount(response.data.followingCount);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
+    async function handleOnPressPicture() {
+        if (profile) {
+            const url = profile.profileAudio;
+            const fileType = profile.profileAudioFileType;
+            const splitUrl = url.split('/');
+            const lastItem = splitUrl[splitUrl.length - 1];
+
+            await Audio.setAudioModeAsync({
+                allowsRecordingIOS: false,
+                playsInSilentModeIOS: true,
             });
-        } else {
-            APIKit.get('/users/profile/me')
-            .then((response) => {
-                setProfile(response.data);
-                setFollowingCount(response.data.followingCount);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                onFailure(error, globalCtx);
-                console.log(error && error);
-                setIsLoading(false);
-            });
+            if (url && fileType) {
+                const { uri } = await FileSystem.downloadAsync(url, FileSystem.documentDirectory + lastItem + fileType);
+                console.log(uri);
+                const source = { uri: uri };
+                const { sound } = await Audio.Sound.createAsync(
+                    { uri: source.uri },
+                );
+                await sound.playAsync();
+            } else {
+                console.log("No profile audio availible");
+            }
         }
     }
-
     useEffect(() => {
-        if (isFocused) {
+        if (isFocused && profile == undefined) {
             getProfileInformation()
-        } 
+        }
     }, [isFocused]);
 
-    if (!profile || isLoading) {
-        return (
-            <View style={styles.spinner}>
-                <ActivityIndicator size="large" color={'lightgray'} />
-            </View>
-        )
+    if (!profile) {
+        return <></>
     }
 
     return (
         <View style={styles.container}>
-            <View style={styles.imageView}>
-                <CachedImage
-                    style={styles.image}
-                    source={{
-                        uri: profile.profilePicture,
-                    }}
-                    cacheKey={profile._id}
-                />
-            </View>
+            <Pressable onPress={handleOnPressPicture}>
+                <View style={styles.imageView}>
+                    <CachedImage
+                        style={styles.image}
+                        source={{
+                            uri: profile.profilePicture,
+                        }}
+                        cacheKey={profile._id}
+                    />
+                </View>
+            </Pressable>
             <View style={styles.textView}>
                 <Text style={styles.UserNameText}>{profile.userName}</Text>
             </View>
@@ -142,7 +135,7 @@ export const ProfileInformation = ({
                 setTab={setTab} 
                 postCount={profile.postCount}
                 followerCount={profile.followerCount}
-                followingCount={followingCount}/>
+                followingCount={profile.followingCount}/>
             </View>
             <View style={styles.line} />
         </View>

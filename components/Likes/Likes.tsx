@@ -59,7 +59,7 @@ export const Likes = ({
 
       APIKit.post("/posts/like", payload)
         .then((response) => {
-          console.log("Successfull posts/like response: " + JSON.stringify(response.data));
+          //console.log("Successfull posts/like response: " + JSON.stringify(response.data));
         })
         .catch((error) => {
           console.log("Something went wrong when using posts/like: " + error.message);
@@ -70,12 +70,12 @@ export const Likes = ({
     function handleOnPress() {
       setIsLoading(true)
       if (isLiked) {
-        console.log("Unliking post")
+        //console.log("Unliking post")
         setIsLiked(false)
         setLikes(likes-1)
         handleLike(false)
       } else {
-        console.log("Liking post")
+        //console.log("Liking post")
         setIsLiked(true)
         setLikes(likes+1)
         handleLike(true)

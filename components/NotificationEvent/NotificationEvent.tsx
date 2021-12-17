@@ -39,12 +39,12 @@ export const NotificationEvent = ({
     const navigation = useNavigation();
     
     function handleOnPressImage() {
-        console.log('Picture pressed, redirecting to profile')
+        //console.log('Picture pressed, redirecting to profile')
         navigation.navigate('ProfileScreen', {userId: event.userId})
     }
 
     function handleOnPressText() {
-        console.log('Text pressed')
+        //console.log('Text pressed')
     }
 
     return (

@@ -38,11 +38,11 @@ export default function NotificationScreen({
     // TODO: change to a real endpoint
     async function getNotifications() {
         setIsLoading(true)
-        console.log('Fetching notifications')
+        //console.log('Fetching notifications')
         APIKit.get("/notifications/me")
         .then((response) => {
-            console.log("Successful /users/followers/:id response: ")
-            console.log(response.data)
+            //console.log("Successful /users/followers/:id response: ")
+            //console.log(response.data)
             setNotifications(response.data);
             setIsLoading(false);
         })

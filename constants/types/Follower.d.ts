@@ -3,6 +3,7 @@ interface Follower {
     userName: string;
     profilePicture: string;
     profileAudio: string;
+    profileAudioFileType: string;
     isMutualFollowers?: boolean;
     userId: string;
 }

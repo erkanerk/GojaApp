@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { Keyboard, View, Text, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { APIKit, onFailure } from '../../shared/APIkit';
 import AppContext from '../../shared/AppContext';
@@ -42,34 +42,28 @@ interface Props {
     userId: string
     following: boolean
     onMyProfile?: boolean
-    currentCount?: number
-    setCount?: Dispatch<SetStateAction<number>>
 }
 
 export const FollowButton = ({ 
     userId,
     following = false,
     onMyProfile = false,
-    currentCount,
-    setCount
 }: Props) => {
     const globalCtx = useContext(AppContext);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isFollowing, setIsFollowing] = useState<boolean>(following)
     
     async function followUser() {
+        Keyboard.dismiss();
         if (isLoading) {
             return;
         }
         setIsFollowing(true);
         setIsLoading(true);
-        console.log('Following user');
+        //console.log('Following user');
         const payload = { userToFollow: userId }
         APIKit.post("/users/follow", payload)
         .then((response) => {
-            if (currentCount && setCount && onMyProfile) {
-                setCount(currentCount+1);
-            }
             setIsLoading(false);
         })
         .catch((error) => {
@@ -81,18 +75,16 @@ export const FollowButton = ({
     }
 
     async function unfollowUser() {
+        Keyboard.dismiss();
         if (isLoading){
             return;
         }
         setIsFollowing(false);
         setIsLoading(true)
-        console.log('Unfollowing user')
+        //console.log('Unfollowing user')
         const payload = { userToUnfollow: userId }
         APIKit.post("/users/unfollow", payload)
         .then((response) => {
-            if (currentCount && setCount && onMyProfile) {
-                setCount(currentCount-1);
-            }
             setIsLoading(false);
         })
         .catch((error) => {
