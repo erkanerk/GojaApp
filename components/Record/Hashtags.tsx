@@ -13,16 +13,39 @@ interface PropTypes {
 
 export const Hashtags = ({ hashtagSetter, hashtags }: PropTypes) => {
     const [isFocused, setFocus] = useState<boolean>(false);
+    const [space, setSpace] = useState<boolean>(false);
 
     const handleChange = ({ nativeEvent: { text } }) => {
-        if (text.slice(-1) === ' ') {
-            hashtagSetter(`${hashtags}#`);
+        console.log(space);
+        if (space) {
+            hashtagSetter(`${hashtags} #`);
+            setSpace(false);
         } else if (text.slice(-2) === '##') {
             text = text.slice(0, -1);
             hashtagSetter(text);
         } else {
             hashtagSetter(text);
         }
+    };
+
+    const handleSpacePress = ({ nativeEvent: { key: keyValue } }) => {
+        console.log('keyvalue', keyValue);
+        if (keyValue === ' ') {
+            setSpace(true);
+        }
+    };
+
+    const fixHashtags = (text: string) => {
+        const hashtagArray = text.replace(/\s+/g, ' ').trim().split(' ');
+        const fixedTags = hashtagArray.map((tag) => {
+            if (tag.charAt(0) !== '#') {
+                console.log('INF IF');
+                console.log('#'.concat(tag));
+                return '#'.concat(tag);
+            }
+            return tag;
+        });
+        return fixedTags.join(' ');
     };
 
     useEffect(() => {
@@ -50,11 +73,14 @@ export const Hashtags = ({ hashtagSetter, hashtags }: PropTypes) => {
                     borderRadius: 20,
                     backgroundColor: '#ECE9E9',
                 }}
+                onKeyPress={handleSpacePress}
                 onFocus={() => {
                     setFocus(true);
                 }}
                 onBlur={() => {
                     setFocus(false);
+
+                    hashtagSetter(fixHashtags(hashtags));
                 }}
                 onChange={handleChange}
                 value={hashtags}
