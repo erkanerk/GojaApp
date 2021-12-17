@@ -90,6 +90,7 @@ export const ProfileFeed = ({
                 <View style={styles.feedView}>
                     <PostFeed
                         posts={posts}
+                        autoPlay={false}
                         showComments={showComments}
                         postType={PostType.PROFILE}
                         focusedPostIndex={focusedPostIndex}

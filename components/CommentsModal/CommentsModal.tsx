@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
 
 interface Props {
     post: Post;
+    isPlaying?: boolean;
+    isPaused?: boolean;
+    onPlaybackStatusUpdate?: any;
     setModalVisible: Dispatch<SetStateAction<boolean>>;
     modalVisible: boolean;
     hideComments?: (arg0: any) => void;
@@ -56,6 +59,9 @@ export const CommentsModal = ({
     post,
     setModalVisible,
     modalVisible,
+    isPlaying,
+    isPaused,
+    onPlaybackStatusUpdate,
     hideComments,
     setReplyFromComment,
 }: Props) => {
@@ -70,9 +76,9 @@ export const CommentsModal = ({
         undefined
     );
 
-    useAudio(focusedPostIndexReplies, replies);
+    useAudio(focusedPostIndexReplies, replies, onPlaybackStatusUpdate);
 
-    useAudio(focusedPostIndexRoot, [post]);
+    useAudio(focusedPostIndexRoot, [post], onPlaybackStatusUpdate);
 
     useEffect(() => {
         APIKit.get('/posts/replies/' + post._id)
@@ -113,9 +119,14 @@ export const CommentsModal = ({
                     <View style={styles.footer}>
                         <PostFeed
                             posts={[post]}
+                            autoPlay={false}
+                            isPlaying={isPlaying}
+                            isPaused={isPaused}
                             postType={PostType.COMMENT_PARENT}
                             focusedPostIndex={focusedPostIndexRoot}
                             setFocusedPostIndex={setFocusedPostIndexRoot}
+                            focusedPostIndexReplies={focusedPostIndexReplies}
+                            setFocusedPostIndexReplies={setFocusedPostIndexReplies}
                             hideComments={hideComments}
                             scrollEnabled={false}
                         />
@@ -123,8 +134,13 @@ export const CommentsModal = ({
                     <View style={styles.replies}>
                         <PostFeed
                             postType={PostType.COMMENT_CHILD}
+                            autoPlay={true}
+                            isPlaying={isPlaying}
+                            isPaused={isPaused}
                             focusedPostIndex={focusedPostIndexReplies}
                             setFocusedPostIndex={setFocusedPostIndexReplies}
+                            focusedPostIndexReplies={focusedPostIndexReplies}
+                            setFocusedPostIndexReplies={setFocusedPostIndexReplies}
                             posts={replies}
                         />
                     </View>

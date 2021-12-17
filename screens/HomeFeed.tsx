@@ -208,6 +208,10 @@ export default function HomeFeed({ route, navigation }: Props) {
     }, [isFocused]);
 
     useEffect(() => {
+        console.log(isPlaying);
+    }, [isPlaying]);
+
+    useEffect(() => {
         if (!modalVisible && answerInfo) {
             //console.log(modalVisible);
             //console.log(answerInfo);
@@ -275,6 +279,7 @@ export default function HomeFeed({ route, navigation }: Props) {
                     focusedPostIndex={focusedPostIndex}
                     isPlaying={isPlaying}
                     isPaused={isPaused}
+                    autoPlay={false}
                     setFocusedPostIndex={setFocusedPostIndex}
                     showComments={showComments}
                     posts={posts}
@@ -295,6 +300,9 @@ export default function HomeFeed({ route, navigation }: Props) {
             {posts && showCommentsModal ? (
                 <CommentsModal
                     post={showCommentsModal}
+                    onPlaybackStatusUpdate={onPlaybackStatusUpdate}
+                    isPlaying={isPlaying}
+                    isPaused={isPaused}
                     setModalVisible={setModalVisible}
                     modalVisible={modalVisible}
                     hideComments={hideComments}

@@ -42,12 +42,15 @@ export const styles = StyleSheet.create({
 interface Props {
     posts: Post[] | undefined;
     postType?: PostType;
+    autoPlay: boolean;
     showComments?: (arg0: Post) => void;
     hideComments?: (arg0: any) => void;
     focusedPostIndex: number | undefined;
+    focusedPostIndexReplies?: number | undefined;
     isPlaying?: boolean;
     isPaused?: boolean;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
+    setFocusedPostIndexReplies?: Dispatch<SetStateAction<number | undefined>>;
     onRefresh?: () => Promise<void> | undefined;
     refreshing?: boolean | undefined;
     onEndReached?: () => Promise<void> | undefined;
@@ -57,12 +60,15 @@ interface Props {
 export const PostFeed = ({
     posts,
     postType,
+    autoPlay,
     showComments,
     hideComments,
     focusedPostIndex,
+    focusedPostIndexReplies,
     isPlaying,
     isPaused,
     setFocusedPostIndex,
+    setFocusedPostIndexReplies,
     onRefresh,
     refreshing,
     onEndReached,
@@ -83,10 +89,13 @@ export const PostFeed = ({
             post={item}
             isPlaying={isPlaying}
             isPaused={isPaused}
+            autoPlay={autoPlay}
             postType={postType}
             index={index}
             focusedPostIndex={focusedPostIndex}
             setFocusedPostIndex={setFocusedPostIndex}
+            focusedPostIndexReplies={focusedPostIndexReplies}
+            setFocusedPostIndexReplies={setFocusedPostIndexReplies}
             showComments={showComments}
             hideComments={hideComments}
         />

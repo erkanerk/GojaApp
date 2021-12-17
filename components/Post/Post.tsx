@@ -84,24 +84,31 @@ export enum PostType {
 }
 interface Props {
     post: Post;
+    autoPlay: boolean;
     isPlaying?: boolean;
+    setIsPlaying?: Dispatch<SetStateAction<boolean>>;
     isPaused?: boolean;
     postType?: PostType;
     index: number;
     focusedPostIndex: number | undefined;
     setFocusedPostIndex: Dispatch<SetStateAction<number | undefined>>;
+    focusedPostIndexReplies?: number | undefined;
+    setFocusedPostIndexReplies?: Dispatch<SetStateAction<number | undefined>>;
     showComments?: (arg0: Post) => void;
     hideComments?: (arg0: any) => void;
 }
 
 export const Post = ({
     post,
+    autoPlay,
     isPlaying,
     isPaused,
     postType,
     index,
     focusedPostIndex,
     setFocusedPostIndex,
+    focusedPostIndexReplies,
+    setFocusedPostIndexReplies,
     showComments,
     hideComments,
 }: Props) => {
@@ -132,12 +139,12 @@ export const Post = ({
     }, [focusedPostIndex]);
 
     useEffect(() => {
-        console.log(isFocused)
-        console.log(isPlaying)
-        console.log(isPaused)
         if (isFocused && !isPlaying && !isPaused) {
-            console.log(index)
-            setFocusedPostIndex(index + 1)
+            //console.log(focusedPostIndexReplies)
+            if(index +1 < 2) {
+                //setFocusedPostIndexReplies(index + 1)
+            }
+            
         }
     }, [isPlaying]);
 
