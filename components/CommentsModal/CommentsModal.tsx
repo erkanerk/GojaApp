@@ -123,6 +123,12 @@ export const CommentsModal = ({
         }
     }, [focusedPostIndexRoot]);
 
+    useEffect(() => {
+        if (!modalVisible) {
+            setFocusedPostIndexReplies(undefined);
+        }
+    }, [modalVisible]);
+
     return (
         <View>
             <Modal
