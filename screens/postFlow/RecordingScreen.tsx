@@ -70,6 +70,10 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
     }
     const profilePic = globalCtx.userInfo.profilePicture;
 
+    const hashtagSetter = (hashtagsFunc: string) => {
+        setHashtags(hashtagsFunc);
+    };
+
     const postPostToBackend = async () => {
         if (canPost === false) {
             //console.log('Can not post');
@@ -140,7 +144,7 @@ export const RecordingScreen = ({ route, navigation }: PropTypes) => {
                 <View style={styles.hashtagsView}>
                     {recordingScreenType === RecordType.POST && (
                         <Hashtags
-                            hashtagSetter={setHashtags}
+                            hashtagSetter={hashtagSetter}
                             hashtags={hashtags}
                         />
                     )}
