@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PostFeed } from '../PostFeed/PostFeed';
 import { PostType } from '../Post/Post';
+import { AVPlaybackStatus } from 'expo-av';
 
 import Modal from 'react-native-modal';
 import useAudio from '../../hooks/useAudio';
@@ -70,9 +71,35 @@ export const CommentsModal = ({
         undefined
     );
 
-    useAudio(focusedPostIndexReplies, replies);
+    useAudio(focusedPostIndexRoot, [post], onPlaybackStatusUpdate);
+    
+    useAudio(focusedPostIndexReplies, replies, onPlaybackStatusUpdate);
 
-    useAudio(focusedPostIndexRoot, [post]);
+    function onPlaybackStatusUpdate(playbackStatus: AVPlaybackStatus) {
+        
+        if (!playbackStatus.isLoaded) {
+            if (playbackStatus.error) {
+                console.log(
+                    `Encountered a fatal error during playback: ${playbackStatus.error}`
+                );
+            }
+        } else {
+            if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
+                if (focusedPostIndexRoot != undefined && replies && replies.length > 0) {
+                    setFocusedPostIndexRoot(undefined);
+                    setFocusedPostIndexReplies(0);
+                } else {
+                    playNextReply();
+                }
+            }
+        }
+    }
+
+    async function playNextReply() {
+        if (focusedPostIndexReplies != undefined && replies && focusedPostIndexReplies < replies.length - 1) {
+            setFocusedPostIndexReplies(focusedPostIndexReplies + 1);
+        }
+    }
 
     useEffect(() => {
         APIKit.get('/posts/replies/' + post._id)
@@ -95,6 +122,12 @@ export const CommentsModal = ({
             setFocusedPostIndexReplies(undefined);
         }
     }, [focusedPostIndexRoot]);
+
+    useEffect(() => {
+        if (!modalVisible) {
+            setFocusedPostIndexReplies(undefined);
+        }
+    }, [modalVisible]);
 
     return (
         <View>
