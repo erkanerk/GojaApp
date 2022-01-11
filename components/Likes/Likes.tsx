@@ -33,23 +33,27 @@ export const Likes = ({
     // TODO: isLiked should be based on if the user has liked the post before or not
     const globalCtx = useContext(AppContext);
     const [isLiked, setIsLiked] = useState<boolean>(false)
-    const [likes, setLikes] = useState<number>(post.likes)
+    const [likes, setLikes] = useState<number>(0)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     // TODO: Maybe move this functionality to backend, preferably have it on post: post.isLikedByUser
     function likedByUser() {
       for (const like of post.likedByUsers) {
         if (like.userId == globalCtx.userInfo._id) {
-          setIsLiked(true)
+          setIsLiked(true);
+          return;
         }
       }
+      setIsLiked(false);
     }
 
     useEffect(() => {
+      console.log(post.likedByUsers)
+      setLikes(post.likes)
       likedByUser()
-    }, [])
+    }, [post])
 
-    function handleLike(likeType: boolean) {
+    async function handleLike(likeType: boolean) {
       const payload = JSON.stringify({
         postId: post._id,
         likeType: likeType, //Liked the post: true, Unlike the post: false
@@ -57,7 +61,7 @@ export const Likes = ({
           userName: globalCtx.userInfo.userName,
        }});
 
-      APIKit.post("/posts/like", payload)
+       APIKit.post("/posts/like", payload)
         .then((response) => {
           //console.log("Successfull posts/like response: " + JSON.stringify(response.data));
         })
@@ -67,18 +71,18 @@ export const Likes = ({
         });
     }
 
-    function handleOnPress() {
+    async function handleOnPress() {
       setIsLoading(true)
       if (isLiked) {
         //console.log("Unliking post")
         setIsLiked(false)
         setLikes(likes-1)
-        handleLike(false)
+        await handleLike(false)
       } else {
         //console.log("Liking post")
         setIsLiked(true)
         setLikes(likes+1)
-        handleLike(true)
+        await handleLike(true)
       }
       setIsLoading(false)
     }

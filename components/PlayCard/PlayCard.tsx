@@ -1,10 +1,12 @@
-import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useState, Dispatch, SetStateAction, useEffect, useContext } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { SoundSlider } from './subcomponents/SoundSlider';
 import { PostInformation } from './subcomponents/PostInformation';
 import { SoundController } from './subcomponents/SoundController';
 import { CommentsModal } from '../CommentsModal/CommentsModal';
+import { APIKit, onFailure } from "../../shared/APIkit";
+import AppContext from "../../shared/AppContext";
 
 export const styles = StyleSheet.create({
     container: {
@@ -45,10 +47,12 @@ export const PlayCard = ({
     playNextPost,
     showComments,
 }: Props) => {
+    const globalCtx = useContext(AppContext);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [showCommentsModal, setShowCommentsModal] = useState<
         Post | undefined
     >(undefined);
+    const [updatedPost, setUpdatedPost] = useState<Post>(post);
 
     useEffect(() => {
         if (showComments && showCommentsModal) {
@@ -56,10 +60,20 @@ export const PlayCard = ({
         }
     }, [showCommentsModal]);
 
+    useEffect(() => {
+        APIKit.get("/posts/by-id/" + post._id)
+        .then((response) => {
+          setUpdatedPost(response.data);
+        })
+        .catch((error) => {
+          onFailure(error, globalCtx);
+        });
+    }, [post]);
+
     return (
         <View style={styles.container}>
             <View>
-                <PostInformation post={post} showComments={showComments} />
+                <PostInformation post={updatedPost} showComments={showComments} />
             </View>
             <View>
                 <SoundSlider
